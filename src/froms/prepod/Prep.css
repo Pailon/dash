@@ -1,0 +1,38 @@
+/* .App {
+  text-align: center;
+}
+
+.p-block1{
+  font-weight:bold;
+  font-size: 110%
+}
+
+.p-block2{
+  font-weight:bold;
+  font-size: 110%
+}
+.doc1{
+  width:20%;
+  padding: 1%;
+  padding-right: 1%; 
+  border: solid 3px black; 
+  float: left;
+  margin-left: 2%;
+  margin-top:1%;
+  background: #FFFACD;
+} */
+
+.Prep{
+  position: fixed;
+  top: 40px;
+  left: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #fff;
+  transition: opacity, left .22s ease-in;
+  z-index: 100;
+  margin-left: 1200px;
+  margin-top:100px;
+}
+
+

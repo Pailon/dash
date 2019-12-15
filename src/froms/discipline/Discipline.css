@@ -1,0 +1,30 @@
+/* .p_blok1{
+    font-weight:bold;
+    font-size: 110%
+  }
+
+  .blok_main{
+    width:20%;
+    padding: 2.1%;
+    padding-right: 1%; 
+    border: solid 3px black; 
+    float: left;
+    margin-left: 2%;
+    margin-top:1%;
+    background: #FFFACD;
+  } */
+
+ 
+
+.Discipline{
+  position: fixed;
+  top: 40px;
+  left: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #fff;
+  transition: opacity, left .22s ease-in;
+  z-index: 100;
+  margin-top:100px;
+  margin-left: 500px;
+}
