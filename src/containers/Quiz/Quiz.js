@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import classes from './Quiz.module.css'
 import ActiveQuiz from '../../components/ActiveQuiz/ActivQuiz'
 import FinishedQuiz from '../../components/FinishedQuiz/FinishedQuiz.js'
+import TeatchersItem from '../Teatchers/TeatchersList/TeatchersItem/TeatchersItem'
 
 class Quiz extends Component{
     state = {
@@ -33,6 +34,7 @@ class Quiz extends Component{
                 ]
             }
         ]
+        
     }
 
     onAnswerClickHander = (answerId) =>{

@@ -29,3 +29,14 @@
 .QuizList li a:hover{
     color:#363f54
 }
+
+.Prep{
+    font-size: 150%;
+    color: #fff;
+    text-decoration: none;
+}
+
+.Prep :hover{
+    color:#363f54;
+    cursor:pointer;
+}

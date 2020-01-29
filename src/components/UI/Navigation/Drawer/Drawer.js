@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import classes from './Drawer.module.css'
 import Backdrop from '../../Backdrop/Backdrop'
 import {NavLink} from 'react-router-dom'
+
+
 const links = [
-    {to: '/', label:'Список', exact:true},
+    {to: '/', label:'Преподаватели', exact:true},
     {to: '/auth', label:'Авторизация', exact:false},
     //{to: '/quiz-creator', label:'Create', exact:false}
 ]

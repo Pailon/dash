@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import classes from './Auth.module.css'
 import Button from '../../components/UI/Button/Button.js'
 import Input from '../../components/UI/Input/Input.js'
+import { stat } from 'fs';
+import axios from 'axios'
 
 
 function validateEmail(email) {
@@ -10,12 +12,6 @@ function validateEmail(email) {
 }
 
 export default class Auth extends Component {
-
-    cookis ={
-        login:'',
-        password:'',
-        
-    }
 
     state = {
         formControls:{
@@ -43,15 +39,45 @@ export default class Auth extends Component {
                     minLength: 6
                 }  
             }
+        },
+
+        token:{
+
+        },
+    }
+
+    
+
+    loginHandler = async () => {
+
+        const authData={
+            email:this.state.formControls.email.value,
+            password:this.state.formControls.password.value,
+            returnSecureToken:true
         }
+        try{
+        const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyB1fRo7IHxrjMijezPwC9VZ45TpbXp8Sy4', authData)
+
+        console.log(response.data)
+        } catch(e){
+            console.log(e)
+        }
+
     }
 
-    loginHandler = () => {
+    registerHandler = async() => {
+        const authData={
+            email:this.state.formControls.email.value,
+            password:this.state.formControls.password.value,
+            returnSecureToken:true
+        }
+        try{
+        const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB1fRo7IHxrjMijezPwC9VZ45TpbXp8Sy4', authData)
 
-    }
-
-    registerHandler = () => {
-
+        console.log(response.data)
+        } catch(e){
+            console.log(e)
+        }
     }
 
     submitHandler = (event) => {
@@ -90,8 +116,14 @@ export default class Auth extends Component {
 
         formControls[controlName] = control
 
+        let isFormValid = true
+
+        Object.keys(formControls).forEach(name => {
+            isFormValid = formControls[name].valid && isFormValid
+        })
+
         this.setState({
-            formControls
+            formControls, isFormValid
         })
         
     }
