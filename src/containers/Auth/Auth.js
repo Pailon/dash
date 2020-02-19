@@ -17,7 +17,7 @@ export default class Auth extends Component {
         formControls:{
             email:{
                 value:'',
-                type:'email',
+                type:'text',
                 label:'Email',
                 errorMessage:'Введите корректный email',
                 valid: false,
