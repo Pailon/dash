@@ -4,7 +4,7 @@
     left: 40px;
     font-size: 20px;
     cursor: pointer;
-    color: #fff;
+    color: #000000;
     transition: opacity, left .22s ease-in;
     z-index: 100;
 }

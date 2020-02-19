@@ -1,0 +1,14 @@
+.Pd{
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+    flex-grow:1;
+    width: 100%;
+    background-color: #f6eec7
+}
+
+h1{
+	margin-left: 2%;
+	color: #000000;
+    text-align: center;
+}

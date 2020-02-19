@@ -1,31 +1,34 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import history from '../../history'
+import { Header, Image, Modal } from 'semantic-ui-react'
+import { Rpd_data, Prep, Personalities } from '../../Data/Data'
+import classes from './Modal.module.css'
+import Button from '../../components/UI/Button/Button.js'
 
-const Modal = props => {
+const ModalExampleTopAligned = (props) => (
+  <Modal trigger={<Button type='primary' >Подробнее</Button>} centered={false}>
+    <Modal.Header>Подробная информация</Modal.Header>
+    <Modal.Content image
+    
+    >
+      <Modal.Description>
+        <Header>{Personalities[props.id].surname}</Header>
+        <p>
+          {Personalities[props.id].name}
+        </p>
+        <p>
+          Дата рождения: {Personalities[props.id].birthday}
+        </p>
+        <p>
+          Телефон: {Personalities[props.id].phone}
+        </p>
+        <p>
+          E-mail: {Personalities[props.id].email}
+        </p>
+        
+        <p></p>
+      </Modal.Description>
+    </Modal.Content>
+  </Modal>
+)
 
-
-    return ReactDOM.createPortal(
-        <div onClick={() => history.push('/')} className='ui dimmer modals visible active'>
-            <div onClick={(e) => e.stopPropagation()} className='ui standard modal visible active'>
-                <div className='header'>Преподователь {props.name}</div>
-                <div className='content'>
-                    Его данные
-                    {props.number}
-                    {props.old}
-                    {props.email}
-                    {props.step}
-                    {props.zvanie}
-                    {props.indvidPaln}
-                </div>
-                <div className='actions'>
-                    <button onClick={() => history.push('/')} className='ui danger button'>Accet</button>
-                    <button onClick={() => history.push('/')} className='ui button'>Cancel</button>
-                </div>
-            </div>
-        </div>,
-        document.querySelector('#modal')
-    )
-}
-
-export default Modal
+export default ModalExampleTopAligned

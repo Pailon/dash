@@ -7,6 +7,8 @@ import {NavLink} from 'react-router-dom'
 const links = [
     {to: '/', label:'Преподаватели', exact:true},
     {to: '/auth', label:'Авторизация', exact:false},
+    {to: '/rpd', label:'РПД', exact:false},
+    {to: '/pd', label:'ПД', exact:false},
     //{to: '/quiz-creator', label:'Create', exact:false}
 ]
 

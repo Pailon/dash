@@ -1,37 +1,45 @@
 import React, { Component } from 'react'
 import classes from './QuizList.module.css'
-import { NavLink } from 'react-router-dom'
-import Prep from '../../froms/prepod/Prep'
-import Discipline from '../../froms/discipline/Discipline'
-import { Button, Modal, Label } from 'react-bootstrap'
-import { Link, Route, Router } from 'react-router-dom'
-import ModalShow from '../../components/ModalShow/ModalShow'
-import history from '../../history'
+import { Rpd_data, Prep, Personalities } from '../../Data/Data'
+import ModalExampleControlled from '../../components/ModalShow/Modal.js'
+import TableTeacher from '../../components/UI/Table/TableTeacher'
 
 
-//Вот так вот
+
+
 export default class QuizList extends Component {
 
 
-    renderPrep() {
-        return [
-            'Толстиков Антон Витальевич',
-            'Иванов Иван Иванович',
-            'Симонов Владлен Федорович'
-        ].map((quiz, index) => {
-            return (
-                <li
-                    key={index}
-                >
-                    <div
-                        className={classes.Prep}
+    showModal = () =>{
+        return <ModalExampleControlled/>
+    }
 
+
+    renderPrep() {
+
+        return <table className={classes.PrepTable}>
+            <tr>
+                <td>Имя</td>
+                <td>Отчество</td>
+                <td>Фамилия</td>
+                <td>Подробная информация</td>
+            </tr>
+            {Personalities.map(element => {
+                return (
+                    <tr 
+                    onClick={this.showModal}
                     >
-                        <p> {quiz} </p>
-                    </div>
-                </li>
-            )
-        })
+                        <td>{element.name}</td>
+                        <td>{element.patronymic}</td>
+                        <td>{element.surname}</td>
+                        <td><ModalExampleControlled id={element.id}/></td>
+                    </tr>
+                )
+
+            })}
+
+            
+        </table>
     }
 
 
@@ -39,20 +47,13 @@ export default class QuizList extends Component {
         return (
             <div className={classes.QuizList}>
                 <div>
-                    <h1>Преподаватели</h1>
-                    <ul>
+                    {/* <h1>Преподаватели</h1> */}
+                    {/* <ul> */}
 
-                        <Router history={history}>
-                            <div>
-                                <Link to='/modal'>{this.renderPrep()}</Link>
-                                <Route path='/modal' component={ModalShow} />
-                            </div>
-                        </Router>
+                                {/* {this.renderPrep()} */}
+                                <TableTeacher/>
 
-                        {/*  */}
-
-
-                    </ul>
+                    {/* </ul> */}
                 </div>
 
             </div>
