@@ -4,6 +4,8 @@ import Button from '../../components/UI/Button/Button.js'
 import Input from '../../components/UI/Input/Input.js'
 import { stat } from 'fs';
 import axios from 'axios'
+import {connect} from 'react-redux'
+import {auth} from '../../store/actions/auth'
 
 
 // function validateEmail(email) {
@@ -11,7 +13,7 @@ import axios from 'axios'
 //     return re.test(String(email).toLowerCase());
 // }
 
-export default class Auth extends Component {
+class Auth extends Component {
 
     state = {
         formControls:{
@@ -48,6 +50,12 @@ export default class Auth extends Component {
 
     loginHandler =  () => {
 
+        this.props.auth(
+            this.state.formControls.email.value,
+            this.state.formControls.password.value,
+            true
+        )
+
         // const authData={
         //     email:this.state.formControls.email.value,
         //     password:this.state.formControls.password.value,
@@ -61,25 +69,27 @@ export default class Auth extends Component {
         //     console.log(e)
         // }
 
-        fetch('http://dashboard.kholodov.xyz/api/login', { //http://dashboard.kholodov.xyz/api/
-            method:'post',
-            headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({
-                    login:this.state.formControls.email.value,
-                    password:this.state.formControls.password.value
+        // fetch('http://dashboard.kholodov.xyz/api/login', { //http://dashboard.kholodov.xyz/api/
+        //     method:'post',
+        //     headers:{'Content-Type':'application/json'},
+        //     body: JSON.stringify({
+        //             login:this.state.formControls.email.value,
+        //             password:this.state.formControls.password.value
             
-            })
+        //     })
 
-        }).then(function(response) {
-            return response.json();
+        // }).then(function(response) {
+        //     return response.json();
             
-        }).then(response => {
-            // response.message
-            this.state.token = response.token;
-            localStorage.setItem('token', response.token);
-        }).catch(err => {
-            console.error(err);
-        });
+        // }).then(response => {
+        //     // response.message
+        //     this.state.token = response.token;
+        //     localStorage.setItem('token', response.token);
+        // }).catch(err => {
+        //     console.error(err);
+        // });
+
+
         //  this.state.token=response.json()
         //  console.log(response.json())
 
@@ -87,20 +97,29 @@ export default class Auth extends Component {
 
     }
 
-    registerHandler = async() => {
-        const authData={
-            email:this.state.formControls.email.value,
-            password:this.state.formControls.password.value,
-            returnSecureToken:true
-        }
-        try{
-        const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB1fRo7IHxrjMijezPwC9VZ45TpbXp8Sy4', authData)
-        //this.state.token = response.idToken    
-        console.log(response.data)
-        //localStorage.setItem('token', response.data.idToken);
-        } catch(e){
-            console.log(e)
-        }
+    registerHandler = () => {
+
+        this.props.auth(
+            this.state.formControls.email.value,
+            this.state.formControls.password.value,
+            true
+        )
+
+
+
+        // const authData={
+        //     email:this.state.formControls.email.value,
+        //     password:this.state.formControls.password.value,
+        //     returnSecureToken:true
+        // }
+        // try{
+        // const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB1fRo7IHxrjMijezPwC9VZ45TpbXp8Sy4', authData)
+        // //this.state.token = response.idToken    
+        // console.log(response.data)
+        // //localStorage.setItem('token', response.data.idToken);
+        // } catch(e){
+        //     console.log(e)
+        // }
     }
 
     submitHandler = (event) => {
@@ -201,3 +220,11 @@ export default class Auth extends Component {
         )
     }
 }
+
+function mapDispatchToProps(dispatch){
+    return{
+        auth: (login, password, isLogin) =>  dispatch(auth(login, password, isLogin))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Auth)

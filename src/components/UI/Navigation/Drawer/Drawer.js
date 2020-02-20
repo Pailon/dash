@@ -5,8 +5,8 @@ import {NavLink} from 'react-router-dom'
 
 
 const links = [
-    {to: '/', label:'Преподаватели', exact:true},
-    {to: '/auth', label:'Авторизация', exact:false},
+    {to: '/', label:'Авторизация', exact:true},
+    {to: '/quizlist', label:'Преподаватели', exact:false},
     {to: '/rpd', label:'РПД', exact:false},
     {to: '/pd', label:'ПД', exact:false},
     //{to: '/quiz-creator', label:'Create', exact:false}
@@ -20,7 +20,7 @@ class Drawer extends Component {
         this.props.onClose()
     }
 
-    renderLinks() {
+    renderLinks(links) {
         return links.map((link, index) => {
             return (
                 <li key={index}>
@@ -43,12 +43,26 @@ class Drawer extends Component {
         if (!this.props.isOpen) {
             cls.push(classes.close)
         }
+
+        const links = [
+
+        ]
+
+        if(this.props.isAuthenticated){
+            links.push({to: '/quizlist', label:'Преподаватели', exact:false})
+            links.push({to: '/rpd', label:'РПД', exact:false})
+            links.push({to: '/pd', label:'ПД', exact:false})
+            links.push({to: '/logout', label:'Выход', exact:false})
+        }else{
+            links.push({to: '/', label:'Авторизация', exact:true})
+        }
+
         return (
 
             <React.Fragment>
                 <nav className={cls.join(' ')}>
                     <ul>
-                        {this.renderLinks()}
+                        {this.renderLinks(links)}
                     </ul>
                 </nav>
                 {this.props.isOpen? <Backdrop onClick={this.props.onClose} />: null}

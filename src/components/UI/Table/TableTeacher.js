@@ -3,6 +3,8 @@ import MaterialTable from 'material-table';
 import { Rpd_data, Prep, Personalities } from '../../../Data/Data'
 
 export default function TableTeacher() {
+
+  
   const [state, setState] = React.useState({
     columns: [
       { title: 'Фамилия', field: 'surname' },
