@@ -1,10 +1,37 @@
 import React from 'react';
 import MaterialTable from 'material-table';
 import { Rpd_data, Prep, Personalities } from '../../../Data/Data'
+import axios from 'axios'
+
 
 export default function TableTeacher() {
 
+  // fetch('http://dashboard.kholodov.xyz/api/teachers')
+  // .then(response => response.json())
+  // .then(json => console.log(json))
+
   
+  axios.get("http://dashboard.kholodov.xyz/Api/teachers")
+  .then(response => console.log("response", response.data))
+  
+    // let url = 'http://dashboard.kholodov.xyz/api/teachers'
+
+
+    //     fetch(url, { //http://dashboard.kholodov.xyz/api/
+    //         method:'get',
+    //         headers:{'Content-Type':'application/json'},
+
+    //     }).then(function(response) {
+    //         return response.json();
+            
+    //     }).then(response => {
+    //         //const data = response
+    //         console.log(response.json())
+    //     }).catch(err => {
+    //         console.error(err);
+    //     });
+  
+
   const [state, setState] = React.useState({
     columns: [
       { title: 'Фамилия', field: 'surname' },
