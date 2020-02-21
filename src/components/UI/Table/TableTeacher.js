@@ -11,25 +11,30 @@ export default function TableTeacher() {
   // .then(json => console.log(json))
 
   
-  axios.get("http://dashboard.kholodov.xyz/Api/teachers")
-  .then(response => console.log("response", response.data))
+  // axios.get("https://dashboard-13952.firebaseio.com/teactchers.json")
+  // .then(response => console.log("response", response.data))
   
-    // let url = 'http://dashboard.kholodov.xyz/api/teachers'
+    let url = 'http://dashboard.kholodov.xyz/api/teachers'
+    const token = localStorage.getItem('token')
+    console.log(token)
 
+        fetch(url, { //http://dashboard.kholodov.xyz/api/
+            method:'get',
+            headers:{
+              'Content-Type':'application/json',
+              'Authorization': `Bearer ${token}` 
+          },
+            token:token
 
-    //     fetch(url, { //http://dashboard.kholodov.xyz/api/
-    //         method:'get',
-    //         headers:{'Content-Type':'application/json'},
-
-    //     }).then(function(response) {
-    //         return response.json();
+        }).then(function(response) {
+            return response.json();
             
-    //     }).then(response => {
-    //         //const data = response
-    //         console.log(response.json())
-    //     }).catch(err => {
-    //         console.error(err);
-    //     });
+        }).then(response => {
+            //const data = response
+            console.log(response.json())
+        }).catch(err => {
+            console.error(err);
+        });
   
 
   const [state, setState] = React.useState({
