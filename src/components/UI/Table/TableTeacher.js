@@ -1,40 +1,11 @@
 import React from 'react';
 import MaterialTable from 'material-table';
-import { Rpd_data, Prep, Personalities } from '../../../Data/Data'
-import axios from 'axios'
+import {Personalities} from '../../../Data/Data'
 
 
-export default function TableTeacher() {
+export default function TableTeacher(props) {
 
-  // fetch('http://dashboard.kholodov.xyz/api/teachers')
-  // .then(response => response.json())
-  // .then(json => console.log(json))
-
-  
-  // axios.get("https://dashboard-13952.firebaseio.com/teactchers.json")
-  // .then(response => console.log("response", response.data))
-  
-    let url = 'http://dashboard.kholodov.xyz/api/teachers'
-    const token = localStorage.getItem('token')
-    console.log(token)
-
-        fetch(url, { //http://dashboard.kholodov.xyz/api/
-            method:'get',
-            headers:{
-              'Content-Type':'application/json',
-              'Authorization': `Bearer ${token}` 
-          },
-            token:token
-
-        }).then(function(response) {
-            return response.json();
-            
-        }).then(response => {
-            //const data = response
-            console.log(response.json())
-        }).catch(err => {
-            console.error(err);
-        });
+  console.log(props.data)
   
 
   const [state, setState] = React.useState({

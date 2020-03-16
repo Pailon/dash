@@ -6,7 +6,7 @@ export function auth(login, password, isLogin){
         let url = 'http://dashboard.kholodov.xyz/api/register'
 
         if(isLogin){
-            url = 'http://dashboard.kholodov.xyz/api/login'
+            url = 'http://dashboard.kholodov.xyz/api/users/login'
         }
 
         fetch(url, { //http://dashboard.kholodov.xyz/api/
