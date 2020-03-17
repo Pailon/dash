@@ -7,13 +7,13 @@ import Rpd from './containers/Rpd/Rpd'
 import Pd from './containers/Pd/Pd'
 import Logout from './components/Logout/Logout'
 import {connect} from 'react-redux'
-import autoLogin from './store/actions/auth'
+import {autoLogin} from './store/actions/auth'
 
 
 class App extends Component {
 
   componentDidMount(){
-    //this.props.autoLogin
+    this.props.autoLogin()
   }
   render(){
 
@@ -50,10 +50,10 @@ function mapStateToProps(state){
   }
 }
 
-// function mapDispatchToProps(dispatch){
-//   return{
-//     autoLogin: () => dispatch(autoLogin())
-//   }
-// }
+function mapDispatchToProps(dispatch){
+  return{
+    autoLogin: () => dispatch(autoLogin())
+  }
+}
 
-export default withRouter(connect(mapStateToProps)(App)) 
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App)) 

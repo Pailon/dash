@@ -50,15 +50,15 @@ export function authSuccess(token){
 }
 
 export function autoLogin(){
-    // return dispatch =>{
-    //     const token = localStorage.getItem('token')
+    return dispatch =>{
+        const token = localStorage.getItem('token')
 
-    //     if(!token){
-    //         dispatch(logout())
-    //     }else{
-    //         return true
-    //     }
+        if(!token){
+            dispatch(logout())
+        }else{
+            dispatch(authSuccess(token))
+        }
 
-    // }
-    return true
+    }
+    // return true
 }
