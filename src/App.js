@@ -8,6 +8,7 @@ import Pd from './containers/Pd/Pd'
 import Logout from './components/Logout/Logout'
 import {connect} from 'react-redux'
 import {autoLogin} from './store/actions/auth'
+import Group from './containers/Group/Group';
 
 
 class App extends Component {
@@ -31,6 +32,7 @@ class App extends Component {
         <Route path="/pd" component={Pd}/>
         <Route path="/rpd" component={Rpd}/>
         <Route path="/" exact component={QuizList}/>
+        <Route path="/group" exact component={Group}/>
         <Route path="/logout" component={Logout}/>
         <Redirect to={'/'}/>
       </Switch>

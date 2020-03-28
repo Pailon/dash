@@ -1,17 +1,13 @@
 import React, { Component } from 'react'
-import classes from './QuizList.module.css'
 import Loader from '../../components/UI/Loader/Loader'
-import Table from '../../components/UI//Table/Table'
 import _ from 'lodash'
-import DetailRowView from '../../components/UI/DetailRowView/DetailRowView'
 import ReactPaginate from 'react-paginate';
-import TableSearch from '../../containers/TableSearch/TableSearch'
+import GroupSearch from './GroupSearch'
+import GroupTable from './GroupTable'
 
 
-
-export default class QuizList extends Component {
-
-    state = {
+export default class Group extends Component{
+    state ={
         data: [],
         isLoading: true, //отображать загрузку или нет
         sort: 'asc',  //desc сортировка - asc - это по возрастанию, desc - по убыванию
@@ -25,7 +21,7 @@ export default class QuizList extends Component {
 
         //в этом методе происходит запрос к серверу по ссылке из параметра url
 
-        let url = 'http://dashboard.kholodov.xyz/api/teachers'
+        let url = 'http://dashboard.kholodov.xyz/api/groups'
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
         //console.log(token)
         try {
@@ -37,11 +33,11 @@ export default class QuizList extends Component {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            // console.log('Я ответ', response)
+             console.log('Я ответ', response)
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            // console.log('Я ответ', data)
+             console.log('Я дата', data)
             this.setState({ // обновляем state
                 isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -86,6 +82,7 @@ export default class QuizList extends Component {
         this.setState({search, currentPage: 0})
     }
 
+
     getFiltredData(){
         const {data, search} = this.state
         //фильтрация данных
@@ -98,19 +95,16 @@ export default class QuizList extends Component {
         //иначе получаем поле для фильтра, приводим его к нижнему регистру на всякий случай на будущее, используем 
         //из state поле search и на основе него проводим поиск
         return data.filter(item=>{
-            return item['name'].toLowerCase().includes(search.toLowerCase()) 
-            || item['surname'].toLowerCase().includes(search.toLowerCase())
-            || item['patronymic'].toLowerCase().includes(search.toLowerCase())
-            || item['email'].toLowerCase().includes(search.toLowerCase())
+            return item['id'].toLowerCase().includes(search.toLowerCase()) 
+            || item['specialties_id'].toLowerCase().includes(search.toLowerCase())
+            || item['name'].toLowerCase().includes(search.toLowerCase())
         })
     }
-
-
-
 
     render() {
         //количество строк на одну страницу
         const pageSize = 10
+
 
         //вызываем функцию поиска
         const filtredData = this.getFiltredData()
@@ -128,8 +122,8 @@ export default class QuizList extends Component {
                     this.state.isLoading
                         ? <Loader /> //пока не получены данные отображается loader иначе отображам таблицу
                         : <React.Fragment> 
-                            <TableSearch onSearch={this.searchHandler}/>
-                            <Table
+                            <GroupSearch onSearch={this.searchHandler}/>
+                            <GroupTable
                                 data={displayData}
                                 onSort={this.onSort}
                                 sort={this.state.sort}
@@ -164,12 +158,13 @@ export default class QuizList extends Component {
                         /> : null
                 }
 
-                {
+                {/* {
                     this.state.row //отрисовка окна дополнительных данных
                         ? <DetailRowView person={this.state.row} />
                         : null
-                }
+                } */}
             </div>
         )
     }
+
 }

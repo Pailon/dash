@@ -9,6 +9,8 @@ const links = [
     {to: '/quizlist', label:'Преподаватели', exact:false},
     {to: '/rpd', label:'РПД', exact:false},
     {to: '/pd', label:'ПД', exact:false},
+    {to: '/group', label:'Группы', exact:false},
+
     //{to: '/quiz-creator', label:'Create', exact:false}
 ]
 
@@ -52,6 +54,7 @@ class Drawer extends Component {
             links.push({to: '/quizlist', label:'Преподаватели', exact:false})
             links.push({to: '/rpd', label:'РПД', exact:false})
             links.push({to: '/pd', label:'ПД', exact:false})
+            links.push({to: '/group', label:'Группы', exact:false})
             links.push({to: '/logout', label:'Выход', exact:false})
         }else{
             links.push({to: '/', label:'Авторизация', exact:true})

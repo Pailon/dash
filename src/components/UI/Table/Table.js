@@ -1,11 +1,14 @@
 import React from 'react'
 
+//компонент отображения таблицы
+
 export default props => (
-    <table className="table">
+    // таблица в стиле bootstrap 
+    <table className="table">  
         <thead>
             <tr>
                 <th onClick={props.onSort.bind(null, 'person_id')}>
-                    ID {props.sortField === 'person_id' ? <small>{props.sort}</small> : null}
+                    ID {props.sortField === 'person_id' ? <small>{props.sort}</small> : null}   
                 </th>
                 <th onClick={props.onSort.bind(null, 'name')}>
                     Имя {props.sortField === 'name' ? <small>{props.sort}</small> : null}
