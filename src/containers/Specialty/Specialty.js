@@ -21,7 +21,7 @@ export default class Specialty extends Component{
 
         //в этом методе происходит запрос к серверу по ссылке из параметра url
 
-        let url = 'http://dashboard.kholodov.xyz/api/specialty/'
+        let url = 'http://dashboard.kholodov.xyz/api/specialties/'
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
         //console.log(token)
         try {

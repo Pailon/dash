@@ -43,6 +43,7 @@ class App extends Component {
         <Route path="/acad_plan" exact component={Acad_plan}/>
         <Route path="/dep_load" exact component={Dep_load}/>
         <Route path="/project" exact component={Project}/>
+        <Route path="/specialties" exact component={Specialty}/>
         <Route path="/logout" component={Logout}/>
         <Redirect to={'/'}/>
       </Switch>
