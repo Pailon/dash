@@ -2,28 +2,32 @@ import React from 'react'
 
 //компонент отображения таблицы
 
+var FA = require('react-fontawesome')
+
 export default props => (
+
+
     // таблица в стиле bootstrap 
     <table className="table">  
         <thead>
             <tr>
                 <th onClick={props.onSort.bind(null, 'person_id')}>
-                    ID {props.sortField === 'person_id' ? <small>{props.sort}</small> : null}   
+                    ID {props.sortField === 'person_id' ? <small><FA name={props.sortArrow}/></small> : null}   
                 </th>
                 <th onClick={props.onSort.bind(null, 'name')}>
-                    Имя {props.sortField === 'name' ? <small>{props.sort}</small> : null}
+                    Имя {props.sortField === 'name' ? <small><FA name={props.sortArrow}/></small> : null}
                     </th>
                 <th onClick={props.onSort.bind(null, 'surname')}>
-                    Фамилия {props.sortField === 'surname' ? <small>{props.sort}</small> : null}
+                    Фамилия {props.sortField === 'surname' ? <small><FA name={props.sortArrow}/></small> : null}
                     </th>
                 <th onClick={props.onSort.bind(null, 'patronymic')}>
-                    Отчество {props.sortField === 'patronymic' ? <small>{props.sort}</small> : null}
+                    Отчество {props.sortField === 'patronymic' ? <small><FA name={props.sortArrow}/></small> : null}
                     </th>
                 <th onClick={props.onSort.bind(null, 'email')}>
-                    E-mail {props.sortField === 'email' ? <small>{props.sort}</small> : null}
+                    E-mail {props.sortField === 'email' ? <small><FA name={props.sortArrow}/></small> : null}
                     </th>
                 <th onClick={props.onSort.bind(null, 'phone')}>
-                    Номер телефона {props.sortField === 'phone' ? <small>{props.sort}</small> : null}
+                    Номер телефона {props.sortField === 'phone' ? <small><FA name={props.sortArrow}/></small> : null}
                     </th>
             </tr>
         </thead>

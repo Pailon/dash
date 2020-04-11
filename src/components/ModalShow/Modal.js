@@ -3,26 +3,26 @@ import { Header, Image, Modal } from 'semantic-ui-react'
 import { Rpd_data, Prep, Personalities } from '../../Data/Data'
 import classes from './Modal.module.css'
 import Button from '../../components/UI/Button/Button.js'
+import Input from '../UI/Input/Input'
 
 const ModalExampleTopAligned = (props) => (
   <Modal trigger={<Button type='primary' >Подробнее</Button>} centered={false}>
     <Modal.Header>Подробная информация</Modal.Header>
-    <Modal.Content image
-    
-    >
+    <Modal.Content>
       <Modal.Description>
-        <Header>{Personalities[props.id].surname}</Header>
+        <Header>Раз</Header>
         <p>
-          {Personalities[props.id].name}
+          Два
+          <Input/>
         </p>
         <p>
-          Дата рождения: {Personalities[props.id].birthday}
+          Дата рождения: Три
         </p>
         <p>
-          Телефон: {Personalities[props.id].phone}
+          Телефон: Четыре
         </p>
         <p>
-          E-mail: {Personalities[props.id].email}
+          E-mail: Пять
         </p>
         
         <p></p>
