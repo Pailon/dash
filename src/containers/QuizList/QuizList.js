@@ -32,21 +32,35 @@ export default class QuizList extends Component {
         errorModal:false,
         id:'',
         name:'',
-        secondName:'',
-        patronomic:'',
+        surname:'',
+        patronymic:'',
         email:'',
-        number:'',
-        // modalData:{
-        //     name:'',
-        //     secondName:''
-        // },
+        phone:'',
+        rank_id:'',
+        degree_id:'',
+        rate:'',
+        hourse_worked:'',
+        rinc:'',
+        web_of_science:'',
+        scopus:'',
+        person_id:'',
+        birthday:'',
         errors:{
-            id:'',
+            // id:'',
             name:'',
-            secondName:'',
-            patronomic:'',
+            surname:'',
+            patronymic:'',
             email:'',
-            number:'',
+            phone:'',
+            rank_id:'',
+            degree_id:'',
+            rate:'',
+            hourse_worked:'',
+            rinc:'',
+            web_of_science:'',
+            scopus:'',
+            person_id:'',
+            birthday:'',
         }
     }
 
@@ -144,69 +158,103 @@ export default class QuizList extends Component {
 
 
         let errors = {}
+        // if (!this.state.id) {
+        //     errors.id = 'Это поле не может быть пустым' 
+        // }
+        if (!this.state.rank_id) {
+            errors.rank_id = 'Это поле не может быть пустым'
+        }
+        if (!this.state.degree_id) {
+            errors.degree_id = 'Это поле не может быть пустым' 
+        }
+        if (!this.state.rate) {
+            errors.rate = 'Это поле не может быть пустым'
+        }
+        if (!this.state.hourse_worked) {
+            errors.hourse_worked = 'Это поле не может быть пустым'
+        }
+        if (!this.state.rinc) {
+            errors.rinc = 'Это поле не может быть пустым'
+        }
+        if (!this.state.web_of_science) {
+            errors.web_of_science = 'Это поле не может быть пустым'
+        }
+        if (!this.state.scopus) {
+            errors.scopus = 'Это поле не может быть пустым'
+        }
+        if (!this.state.person_id) {
+            errors.person_id = 'Это поле не может быть пустым'
+        }
         if (!this.state.name) {
-            errors.name = 'Это поле не может быть пустым' 
+            errors.name = 'Это поле не может быть пустым'
         }
-        if (!this.state.secondName) {
-            errors.secondName = 'Это поле не может быть пустым'
+        if (!this.state.surname) {
+            errors.surname = 'Это поле не может быть пустым'
         }
-        if (!this.state.patronomic) {
-            errors.patronomic = 'Это поле не может быть пустым' 
+        if (!this.state.patronymic) {
+            errors.patronymic = 'Это поле не может быть пустым'
+        }
+        if (!this.state.birthday) {
+            errors.birthday = 'Это поле не может быть пустым'
+        }
+        if (!this.state.phone) {
+            errors.phone = 'Это поле не может быть пустым'
         }
         if (!this.state.email) {
             errors.email = 'Это поле не может быть пустым'
         }
-        if (!this.state.number) {
-            errors.number = 'Это поле не может быть пустым'
-        }
 
 
-        if(errors.name || errors.secondName || this.state.patronomic || this.state.email || this.state.number){
+        if(errors.position || this.state.rank_id || this.state.degree_id || this.state.rate
+            || this.state.hourse_worked || this.state.rinc || this.state.web_of_science || this.state.scopus || this.state.person_id || this.state.name
+            || this.state.surname || this.state.patronymic || this.state.birthday || this.state.phone || this.state.email){
             this.setState({errors})
             console.log(this.state.data);
         
 
         let data = this.state.data
         data.push({
-            id:10,
+            // id:this.state.id,
             position:'Преподаватель',
-            rank_id:null,
-            degree_id:null,
-            rate:null,
-            hourse_worked:null,
-            rinc:null,
-            web_of_science:null,
-            scopus:null,
-            person_id:66,
+            rank_id:this.state.rank_id,
+            degree_id:this.state.degree_id,
+            rate:this.state.rate,
+            hourse_worked:this.state.hourse_worked,
+            rinc:this.state.rinc,
+            web_of_science:this.state.web_of_science,
+            scopus:this.state.scopus,
+            person_id:this.state.person_id,
             name:this.state.name,
             surname:this.state.secondName,
             patronymic:this.state.patronomic,
-            birthday:null,
-            phone:this.state.number,
+            birthday:this.state.birthday,
+            phone:this.state.phone,
             email:this.state.email,
             status:2
         })
 
         this.setState({
+            //id:'',
             name:'',
             secondName:'',
-            patronomic:'',
-            number:'',
-            email:''
+            patronymic:'',
+            email:'',
+            phone:'',
+            rank_id:'',
+            degree_id:'',
+            rate:'',
+            hourse_worked:'',
+            rinc:'',
+            web_of_science:'',
+            scopus:'',
+            person_id:'',
+            birthday:'',
         })
         console.log(this.state.data);
         this.setState({openModal:false})
         return
         }
-
-        
-        
     }
-
-
-
-
-
 
     render() {
         //количество строк на одну страницу
@@ -284,8 +332,101 @@ export default class QuizList extends Component {
           <DialogContentText>
             Введите данные нового преподавателя
           </DialogContentText>
-          <TextField
+
+           {/* <TextField
             autoFocus
+            margin="dense"
+            id="id"
+            label="ID преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.id}
+            helperText={this.state.errors.id}
+            onChange={(event)=>this.setState({id :event.target.value})}
+          /> */}
+          <TextField
+            margin="dense"
+            id="rank_id"
+            label="rank_id преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.rank_id}
+            helperText={this.state.errors.rank_id}
+            onChange={(event)=>this.setState({rank_id :event.target.value})}
+          />
+
+        <TextField
+            margin="dense"
+            id="degree_id"
+            label="degree_id преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.degree_id}
+            helperText={this.state.errors.degree_id}
+            onChange={(event)=>this.setState({degree_id :event.target.value})}
+          />
+
+        <TextField
+            margin="dense"
+            id="rate"
+            label="rate преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.rate}
+            helperText={this.state.errors.rate}
+            onChange={(event)=>this.setState({rate :event.target.value})}
+          />
+        <TextField
+            margin="dense"
+            id="email"
+            label="hourse_worked преподавателя"
+            type="hourse_worked"
+            fullWidth = {true}
+            error={!!this.state.errors.hourse_worked}
+            helperText={this.state.errors.hourse_worked}
+            onChange={(event)=>this.setState({hourse_worked :event.target.value})}
+          />
+        <TextField
+            margin="dense"
+            id="rinc"
+            label="rinc преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.rinc}
+            helperText={this.state.errors.rinc}
+            onChange={(event)=>this.setState({rinc :event.target.value})}
+          />
+        <TextField
+            margin="dense"
+            id="web_of_science"
+            label="web_of_science преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.web_of_science}
+            helperText={this.state.errors.web_of_science}
+            onChange={(event)=>this.setState({web_of_science :event.target.value})}
+          />
+        <TextField
+            margin="dense"
+            id="id"
+            label="scopus преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.scopus}
+            helperText={this.state.errors.scopus}
+            onChange={(event)=>this.setState({scopus :event.target.value})}
+          />
+        <TextField
+            margin="dense"
+            id="person_id"
+            label="person_id преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.person_id}
+            helperText={this.state.errors.person_id}
+            onChange={(event)=>this.setState({person_id :event.target.value})}
+          />
+        <TextField
             margin="dense"
             id="name"
             label="Имя преподавателя"
@@ -295,52 +436,56 @@ export default class QuizList extends Component {
             helperText={this.state.errors.name}
             onChange={(event)=>this.setState({name :event.target.value})}
           />
-
         <TextField
-            autoFocus
             margin="dense"
-            id="secondName"
+            id="surname"
             label="Фамилия преподавателя"
             type="text"
             fullWidth = {true}
-            error={!!this.state.errors.secondName}
-            helperText={this.state.errors.secondName}
-            onChange={(event)=>this.setState({secondName :event.target.value})}
+            error={!!this.state.errors.surname}
+            helperText={this.state.errors.surname}
+            onChange={(event)=>this.setState({surname :event.target.value})}
           />
-
         <TextField
-            autoFocus
             margin="dense"
-            id="patronomic"
+            id="patronymic"
             label="Отчество преподавателя"
             type="text"
             fullWidth = {true}
-            error={!!this.state.errors.patronomic}
-            helperText={this.state.errors.patronomic}
-            onChange={(event)=>this.setState({patronomic :event.target.value})}
+            error={!!this.state.errors.patronymic}
+            helperText={this.state.errors.patronymic}
+            onChange={(event)=>this.setState({patronymic :event.target.value})}
           />
         <TextField
-            autoFocus
+            margin="dense"
+            id="birthday"
+            label="День рождение преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.birthday}
+            helperText={this.state.errors.birthday}
+            onChange={(event)=>this.setState({birthday :event.target.value})}
+          />
+        <TextField
+            margin="dense"
+            id="phone"
+            label="Телефон преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.phone}
+            helperText={this.state.errors.phone}
+            onChange={(event)=>this.setState({phone :event.target.value})}
+          />
+        <TextField
             margin="dense"
             id="email"
-            label="E-mail преподавателя"
+            label="E-mail адрес преподавателя"
             type="text"
             fullWidth = {true}
             error={!!this.state.errors.email}
             helperText={this.state.errors.email}
             onChange={(event)=>this.setState({email :event.target.value})}
-          />
-        <TextField
-            autoFocus
-            margin="dense"
-            id="number"
-            label="Мобильный номер преподавателя"
-            type="text"
-            fullWidth = {true}
-            error={!!this.state.errors.number}
-            helperText={this.state.errors.number}
-            onChange={(event)=>this.setState({number :event.target.value})}
-          />
+          /> 
         </DialogContent>
         <DialogActions>
           <Button onClick={()=> this.setState({openModal:false})} color="primary" variant="contained">
