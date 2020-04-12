@@ -30,13 +30,23 @@ export default class QuizList extends Component {
         search: '', //что искать
         openModal:false,
         errorModal:false,
-        modalData:{
-            name:'',
-            secondName:''
-        },
+        id:'',
+        name:'',
+        secondName:'',
+        patronomic:'',
+        email:'',
+        number:'',
+        // modalData:{
+        //     name:'',
+        //     secondName:''
+        // },
         errors:{
-            name:false,
-            secondName:false,
+            id:'',
+            name:'',
+            secondName:'',
+            patronomic:'',
+            email:'',
+            number:'',
         }
     }
 
@@ -129,26 +139,68 @@ export default class QuizList extends Component {
     }
 
     onAdd() {
+        console.log('i add somethick', this.state.name, '+', this.state.secondName, '+', this.state.patronomic
+        , '+', this.state.email, '+', this.state.number);
 
-        if (!this.state.modalData.name){
-            this.setState({errorModal:true})
+
+        let errors = {}
+        if (!this.state.name) {
+            errors.name = 'Это поле не может быть пустым' 
         }
-        else{
-            this.setState({errorModal:false})
+        if (!this.state.secondName) {
+            errors.secondName = 'Это поле не может быть пустым'
         }
-        if (!this.state.modalData.secondName){
-            this.setState({errorModal:true})
-        }  
-        else{
-            this.setState({errorModal:false})
+        if (!this.state.patronomic) {
+            errors.patronomic = 'Это поле не может быть пустым' 
+        }
+        if (!this.state.email) {
+            errors.email = 'Это поле не может быть пустым'
+        }
+        if (!this.state.number) {
+            errors.number = 'Это поле не может быть пустым'
         }
 
 
+        if(errors.name || errors.secondName || this.state.patronomic || this.state.email || this.state.number){
+            this.setState({errors})
+            console.log(this.state.data);
+        
 
-        // if( this.state.errors.name || this.state.errors.secondName){
-        //     this.setState({errorModal:false})
-            
-        // }
+        let data = this.state.data
+        data.push({
+            id:10,
+            position:'Преподаватель',
+            rank_id:null,
+            degree_id:null,
+            rate:null,
+            hourse_worked:null,
+            rinc:null,
+            web_of_science:null,
+            scopus:null,
+            person_id:66,
+            name:this.state.name,
+            surname:this.state.secondName,
+            patronymic:this.state.patronomic,
+            birthday:null,
+            phone:this.state.number,
+            email:this.state.email,
+            status:2
+        })
+
+        this.setState({
+            name:'',
+            secondName:'',
+            patronomic:'',
+            number:'',
+            email:''
+        })
+        console.log(this.state.data);
+        this.setState({openModal:false})
+        return
+        }
+
+        
+        
     }
 
 
@@ -239,8 +291,9 @@ export default class QuizList extends Component {
             label="Имя преподавателя"
             type="text"
             fullWidth = {true}
-            error={false}
-            onChange={(event, name)=>this.setState({name})}
+            error={!!this.state.errors.name}
+            helperText={this.state.errors.name}
+            onChange={(event)=>this.setState({name :event.target.value})}
           />
 
         <TextField
@@ -250,8 +303,43 @@ export default class QuizList extends Component {
             label="Фамилия преподавателя"
             type="text"
             fullWidth = {true}
-            error={false}
-            onChange={(event, secondName)=>this.setState({secondName})}
+            error={!!this.state.errors.secondName}
+            helperText={this.state.errors.secondName}
+            onChange={(event)=>this.setState({secondName :event.target.value})}
+          />
+
+        <TextField
+            autoFocus
+            margin="dense"
+            id="patronomic"
+            label="Отчество преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.patronomic}
+            helperText={this.state.errors.patronomic}
+            onChange={(event)=>this.setState({patronomic :event.target.value})}
+          />
+        <TextField
+            autoFocus
+            margin="dense"
+            id="email"
+            label="E-mail преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.email}
+            helperText={this.state.errors.email}
+            onChange={(event)=>this.setState({email :event.target.value})}
+          />
+        <TextField
+            autoFocus
+            margin="dense"
+            id="number"
+            label="Мобильный номер преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.number}
+            helperText={this.state.errors.number}
+            onChange={(event)=>this.setState({number :event.target.value})}
           />
         </DialogContent>
         <DialogActions>
