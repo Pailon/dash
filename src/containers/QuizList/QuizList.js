@@ -30,7 +30,7 @@ export default class QuizList extends Component {
         search: '', //что искать
         openModal:false,
         errorModal:false,
-        id:'',
+        // id:'',
         name:'',
         surname:'',
         patronymic:'',
@@ -45,6 +45,8 @@ export default class QuizList extends Component {
         scopus:'',
         person_id:'',
         birthday:'',
+        login:'',
+        password:'',
         errors:{
             // id:'',
             name:'',
@@ -61,6 +63,8 @@ export default class QuizList extends Component {
             scopus:'',
             person_id:'',
             birthday:'',
+            login:'',
+            password:'',
         }
     }
 
@@ -152,15 +156,51 @@ export default class QuizList extends Component {
 
     }
 
-    onAdd() {
-        console.log('i add somethick', this.state.name, '+', this.state.secondName, '+', this.state.patronomic
-        , '+', this.state.email, '+', this.state.number);
+    onClose = () =>{
+        this.setState({
+            openModal:false,
+            name:'',
+            secondName:'',
+            patronymic:'',
+            email:'',
+            phone:'',
+            rank_id:'',
+            degree_id:'',
+            rate:'',
+            hourse_worked:'',
+            rinc:'',
+            web_of_science:'',
+            scopus:'',
+            person_id:'',
+            birthday:'',
+            login:'',
+            password:'',
+            errors:{
+                name:'',
+                surname:'',
+                patronymic:'',
+                email:'',
+                phone:'',
+                rank_id:'',
+                degree_id:'',
+                rate:'',
+                hourse_worked:'',
+                rinc:'',
+                web_of_science:'',
+                scopus:'',
+                person_id:'',
+                birthday:'',
+                login:'',
+                password:'',
+            }
+            
+        })
 
+    }
 
+    async onAdd() {
         let errors = {}
-        // if (!this.state.id) {
-        //     errors.id = 'Это поле не может быть пустым' 
-        // }
+
         if (!this.state.rank_id) {
             errors.rank_id = 'Это поле не может быть пустым'
         }
@@ -182,9 +222,6 @@ export default class QuizList extends Component {
         if (!this.state.scopus) {
             errors.scopus = 'Это поле не может быть пустым'
         }
-        if (!this.state.person_id) {
-            errors.person_id = 'Это поле не может быть пустым'
-        }
         if (!this.state.name) {
             errors.name = 'Это поле не может быть пустым'
         }
@@ -203,18 +240,69 @@ export default class QuizList extends Component {
         if (!this.state.email) {
             errors.email = 'Это поле не может быть пустым'
         }
+        if (!this.state.login) {
+            errors.login = 'Это поле не может быть пустым'
+        }
+        if (!this.state.password) {
+            errors.password = 'Это поле не может быть пустым'
+        }
 
 
-        if(errors.position || this.state.rank_id || this.state.degree_id || this.state.rate
-            || this.state.hourse_worked || this.state.rinc || this.state.web_of_science || this.state.scopus || this.state.person_id || this.state.name
-            || this.state.surname || this.state.patronymic || this.state.birthday || this.state.phone || this.state.email){
-            this.setState({errors})
-            console.log(this.state.data);
-        
-
+        if(errors.rank_id || errors.degree_id || errors.rate
+            || errors.hourse_worked || errors.rinc || errors.web_of_science || errors.scopus || errors.name
+            || errors.surname || errors.patronymic || errors.birthday || errors.phone || errors.email ||errors.login || errors.password)
+            {
+                this.setState({errors})
+                console.log(this.state.data);
+                return 
+            }else{
         let data = this.state.data
+
+        let newTeatcher ={
+            position:'Преподаватель',
+            rank_id: null,//this.state.rank_id,
+            degree_id:null,//this.state.degree_id,
+            rate:this.state.rate,
+            hours_worked:this.state.hourse_worked,
+            rinc:this.state.rinc,
+            web_of_science:this.state.web_of_science,
+            scopus:this.state.scopus,
+            name:this.state.name,
+            surname:this.state.surname,
+            patronymic:this.state.patronymic,
+            birthday:this.state.birthday,
+            phone:this.state.phone,
+            email:this.state.email,
+            status:2,
+            role:4,
+            sub_unit_id:1,
+            login:this.state.login,
+            password:this.state.password
+        }
+
+        // newTeatcher.push({
+        //     position:'Преподаватель',
+        //     rank_id:this.state.rank_id,
+        //     degree_id:this.state.degree_id,
+        //     rate:this.state.rate,
+        //     hourse_worked:this.state.hourse_worked,
+        //     rinc:this.state.rinc,
+        //     web_of_science:this.state.web_of_science,
+        //     scopus:this.state.scopus,
+        //     name:this.state.name,
+        //     surname:this.state.surname,
+        //     patronymic:this.state.patronymic,
+        //     birthday:this.state.birthday,
+        //     phone:this.state.phone,
+        //     email:this.state.email,
+        //     status:2,
+        //     role:4,
+        //     sub_unit_id:1,
+        //     login:this.state.login,
+        //     password:this.state.password
+        // })
+
         data.push({
-            // id:this.state.id,
             position:'Преподаватель',
             rank_id:this.state.rank_id,
             degree_id:this.state.degree_id,
@@ -223,18 +311,20 @@ export default class QuizList extends Component {
             rinc:this.state.rinc,
             web_of_science:this.state.web_of_science,
             scopus:this.state.scopus,
-            person_id:this.state.person_id,
             name:this.state.name,
-            surname:this.state.secondName,
-            patronymic:this.state.patronomic,
+            surname:this.state.surname,
+            patronymic:this.state.patronymic,
             birthday:this.state.birthday,
             phone:this.state.phone,
             email:this.state.email,
-            status:2
+            status:2,
+            role:4,
+            sub_unit_id:1,
+            login:this.state.login,
+            password:this.state.password
         })
 
         this.setState({
-            //id:'',
             name:'',
             secondName:'',
             patronymic:'',
@@ -247,13 +337,53 @@ export default class QuizList extends Component {
             rinc:'',
             web_of_science:'',
             scopus:'',
-            person_id:'',
             birthday:'',
+            login:'',
+            password:'',
+            errors:{
+                name:'',
+                surname:'',
+                patronymic:'',
+                email:'',
+                phone:'',
+                rank_id:'',
+                degree_id:'',
+                rate:'',
+                hourse_worked:'',
+                rinc:'',
+                web_of_science:'',
+                scopus:'',
+                birthday:'',
+                login:'',
+                password:'',
+            }
+            
         })
         console.log(this.state.data);
         this.setState({openModal:false})
-        return
-        }
+
+        let url = 'http://dashboard.kholodov.xyz/api/teachers'
+        const token = localStorage.getItem('token')
+
+        try {
+            const response = await fetch(url, {
+              method: 'POST', // или 'PUT'
+              body: JSON.stringify(newTeatcher), // данные могут быть 'строкой' или {объектом}!
+              headers: {
+                'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                'Authorization': `Bearer ${token}`
+            }
+            });
+            const json = await response.json();
+            console.log('Успех:', JSON.stringify(json));
+            console.log(newTeatcher)
+            newTeatcher = {}
+          } catch (error) {
+            console.error('Ошибка:', error);
+          }
+        
+        }   
+
     }
 
     render() {
@@ -327,106 +457,13 @@ export default class QuizList extends Component {
                 }
 
     <Dialog open={this.state.openModal} onClose={()=> this.setState({openModal:false})} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Добавление</DialogTitle>
+        <DialogTitle id="form-dialog-title">Добавление нового преподавателя</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Введите данные нового преподавателя
           </DialogContentText>
-
-           {/* <TextField
+        <TextField
             autoFocus
-            margin="dense"
-            id="id"
-            label="ID преподавателя"
-            type="text"
-            fullWidth = {true}
-            error={!!this.state.errors.id}
-            helperText={this.state.errors.id}
-            onChange={(event)=>this.setState({id :event.target.value})}
-          /> */}
-          <TextField
-            margin="dense"
-            id="rank_id"
-            label="rank_id преподавателя"
-            type="text"
-            fullWidth = {true}
-            error={!!this.state.errors.rank_id}
-            helperText={this.state.errors.rank_id}
-            onChange={(event)=>this.setState({rank_id :event.target.value})}
-          />
-
-        <TextField
-            margin="dense"
-            id="degree_id"
-            label="degree_id преподавателя"
-            type="text"
-            fullWidth = {true}
-            error={!!this.state.errors.degree_id}
-            helperText={this.state.errors.degree_id}
-            onChange={(event)=>this.setState({degree_id :event.target.value})}
-          />
-
-        <TextField
-            margin="dense"
-            id="rate"
-            label="rate преподавателя"
-            type="text"
-            fullWidth = {true}
-            error={!!this.state.errors.rate}
-            helperText={this.state.errors.rate}
-            onChange={(event)=>this.setState({rate :event.target.value})}
-          />
-        <TextField
-            margin="dense"
-            id="email"
-            label="hourse_worked преподавателя"
-            type="hourse_worked"
-            fullWidth = {true}
-            error={!!this.state.errors.hourse_worked}
-            helperText={this.state.errors.hourse_worked}
-            onChange={(event)=>this.setState({hourse_worked :event.target.value})}
-          />
-        <TextField
-            margin="dense"
-            id="rinc"
-            label="rinc преподавателя"
-            type="text"
-            fullWidth = {true}
-            error={!!this.state.errors.rinc}
-            helperText={this.state.errors.rinc}
-            onChange={(event)=>this.setState({rinc :event.target.value})}
-          />
-        <TextField
-            margin="dense"
-            id="web_of_science"
-            label="web_of_science преподавателя"
-            type="text"
-            fullWidth = {true}
-            error={!!this.state.errors.web_of_science}
-            helperText={this.state.errors.web_of_science}
-            onChange={(event)=>this.setState({web_of_science :event.target.value})}
-          />
-        <TextField
-            margin="dense"
-            id="id"
-            label="scopus преподавателя"
-            type="text"
-            fullWidth = {true}
-            error={!!this.state.errors.scopus}
-            helperText={this.state.errors.scopus}
-            onChange={(event)=>this.setState({scopus :event.target.value})}
-          />
-        <TextField
-            margin="dense"
-            id="person_id"
-            label="person_id преподавателя"
-            type="text"
-            fullWidth = {true}
-            error={!!this.state.errors.person_id}
-            helperText={this.state.errors.person_id}
-            onChange={(event)=>this.setState({person_id :event.target.value})}
-          />
-        <TextField
             margin="dense"
             id="name"
             label="Имя преподавателя"
@@ -465,6 +502,7 @@ export default class QuizList extends Component {
             error={!!this.state.errors.birthday}
             helperText={this.state.errors.birthday}
             onChange={(event)=>this.setState({birthday :event.target.value})}
+            defaultValue='05-03-2020'
           />
         <TextField
             margin="dense"
@@ -475,6 +513,7 @@ export default class QuizList extends Component {
             error={!!this.state.errors.phone}
             helperText={this.state.errors.phone}
             onChange={(event)=>this.setState({phone :event.target.value})}
+            defaultValue='8(800)555-35-35'
           />
         <TextField
             margin="dense"
@@ -485,10 +524,111 @@ export default class QuizList extends Component {
             error={!!this.state.errors.email}
             helperText={this.state.errors.email}
             onChange={(event)=>this.setState({email :event.target.value})}
+            defaultValue='myMail@mail.ru'
           /> 
+          <TextField
+            margin="dense"
+            id="rank_id"
+            label="rank_id преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.rank_id}
+            helperText={this.state.errors.rank_id}
+            onChange={(event)=>this.setState({rank_id :event.target.value})}
+            defaultValue='null'
+          />
+
+        <TextField
+            margin="dense"
+            id="degree_id"
+            label="degree_id преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.degree_id}
+            helperText={this.state.errors.degree_id}
+            onChange={(event)=>this.setState({degree_id :event.target.value})}
+            defaultValue='null'
+          />
+
+        <TextField
+            margin="dense"
+            id="rate"
+            label="rate преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.rate}
+            helperText={this.state.errors.rate}
+            onChange={(event)=>this.setState({rate :event.target.value})}
+            defaultValue='0.25'
+          />
+        <TextField
+            margin="dense"
+            id="hourse_worked"
+            label="hourse_worked преподавателя"
+            type="hourse_worked"
+            fullWidth = {true}
+            error={!!this.state.errors.hourse_worked}
+            helperText={this.state.errors.hourse_worked}
+            onChange={(event)=>this.setState({hourse_worked :event.target.value})}
+            defaultValue='300'
+          />
+        <TextField
+            margin="dense"
+            id="rinc"
+            label="rinc преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.rinc}
+            helperText={this.state.errors.rinc}
+            onChange={(event)=>this.setState({rinc :event.target.value})}
+            defaultValue='0.1'
+          />
+        <TextField
+            margin="dense"
+            id="web_of_science"
+            label="web_of_science преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.web_of_science}
+            helperText={this.state.errors.web_of_science}
+            onChange={(event)=>this.setState({web_of_science :event.target.value})}
+            defaultValue='0.1'
+          />
+        <TextField
+            margin="dense"
+            id="scopus"
+            label="scopus преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.scopus}
+            helperText={this.state.errors.scopus}
+            onChange={(event)=>this.setState({scopus :event.target.value})}
+            defaultValue='0.1'
+          />
+        <TextField
+            margin="dense"
+            id="login"
+            label="Login преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.login}
+            helperText={this.state.errors.login}
+            onChange={(event)=>this.setState({login :event.target.value})}
+          />
+        <TextField
+            margin="dense"
+            id="password"
+            label="Password преподавателя"
+            type="text"
+            fullWidth = {true}
+            error={!!this.state.errors.password}
+            helperText={this.state.errors.password}
+            onChange={(event)=>this.setState({password :event.target.value})}
+            defaultValue='root'
+          />
         </DialogContent>
         <DialogActions>
-          <Button onClick={()=> this.setState({openModal:false})} color="primary" variant="contained">
+          <Button onClick={this.onClose.bind(this)} color="primary" variant="contained">
             Отмена
           </Button>
           <Button 
