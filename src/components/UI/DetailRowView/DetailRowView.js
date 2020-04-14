@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default ({person}) =>(
-    <div>
+    <div className='container'>
         <p>Выбранный пользователь <b>{person.name + ' ' + person.surname}</b></p>
 
         <p>

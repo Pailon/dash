@@ -15,12 +15,15 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 
+var item = ''
+
 export default class QuizList extends Component {
 
 
 
     state = {
         data: [],
+        itemActive:false,
         isLoading: true, //отображать загрузку или нет
         sort: 'asc',  //desc сортировка - asc - это по возрастанию, desc - по убыванию
         sortArrow: 'arrow-up',
@@ -30,7 +33,7 @@ export default class QuizList extends Component {
         search: '', //что искать
         openModal:false,
         errorModal:false,
-        // id:'',
+        item:'',
         name:'',
         surname:'',
         patronymic:'',
@@ -97,6 +100,37 @@ export default class QuizList extends Component {
             console.log(e)
         }
 
+
+
+        var tds = document.querySelectorAll('td')
+
+
+       
+            for(var i=0; i<tds.length; i++){
+            
+                tds[i].addEventListener('click', function func(){
+                    var input = document.createElement('input')
+                    input.value = this.innerHTML
+                    this.innerHTML = ''
+                    this.appendChild(input)
+    
+                    var td = this
+                    input.addEventListener('blur', function(){
+                        td.innerHTML = this.value
+                        item = this.value
+                        td.addEventListener('click', func)
+
+                        
+                    })
+    
+                    this.removeEventListener('click', func)
+                    console.log(item);
+                })
+        }
+        
+
+        
+        
     }
 
     onSort = (sortField) => { // функция для сортировки данных в таблице
@@ -114,6 +148,8 @@ export default class QuizList extends Component {
             sortField,
             sortArrow
         })
+
+        
 
     }
 
@@ -201,12 +237,12 @@ export default class QuizList extends Component {
     async onAdd() {
         let errors = {}
 
-        if (!this.state.rank_id) {
-            errors.rank_id = 'Это поле не может быть пустым'
-        }
-        if (!this.state.degree_id) {
-            errors.degree_id = 'Это поле не может быть пустым' 
-        }
+        // if (!this.state.rank_id) {
+        //     errors.rank_id = 'Это поле не может быть пустым'
+        // }
+        // if (!this.state.degree_id) {
+        //     errors.degree_id = 'Это поле не может быть пустым' 
+        // }
         if (!this.state.rate) {
             errors.rate = 'Это поле не может быть пустым'
         }
@@ -248,7 +284,7 @@ export default class QuizList extends Component {
         }
 
 
-        if(errors.rank_id || errors.degree_id || errors.rate
+        if(/*errors.rank_id || errors.degree_id ||*/ errors.rate
             || errors.hourse_worked || errors.rinc || errors.web_of_science || errors.scopus || errors.name
             || errors.surname || errors.patronymic || errors.birthday || errors.phone || errors.email ||errors.login || errors.password)
             {
@@ -279,28 +315,6 @@ export default class QuizList extends Component {
             login:this.state.login,
             password:this.state.password
         }
-
-        // newTeatcher.push({
-        //     position:'Преподаватель',
-        //     rank_id:this.state.rank_id,
-        //     degree_id:this.state.degree_id,
-        //     rate:this.state.rate,
-        //     hourse_worked:this.state.hourse_worked,
-        //     rinc:this.state.rinc,
-        //     web_of_science:this.state.web_of_science,
-        //     scopus:this.state.scopus,
-        //     name:this.state.name,
-        //     surname:this.state.surname,
-        //     patronymic:this.state.patronymic,
-        //     birthday:this.state.birthday,
-        //     phone:this.state.phone,
-        //     email:this.state.email,
-        //     status:2,
-        //     role:4,
-        //     sub_unit_id:1,
-        //     login:this.state.login,
-        //     password:this.state.password
-        // })
 
         data.push({
             position:'Преподаватель',
@@ -386,6 +400,23 @@ export default class QuizList extends Component {
 
     }
 
+    
+
+
+    onUpdate = (name) =>{
+        console.log(name)
+        //console.log(item);
+        
+    }
+
+
+        
+    
+        
+        
+        
+    
+
     render() {
         //количество строк на одну страницу
         const pageSize = 10
@@ -421,6 +452,8 @@ export default class QuizList extends Component {
                                 sortField={this.state.sortField}
                                 onRowSelect={this.onRowSelect}
                                 sortArrow={this.state.sortArrow}
+                                onUpdate={this.onUpdate}
+                                itemActive={this.state.itemActive}
                             />
                         </React.Fragment>
 
@@ -526,7 +559,7 @@ export default class QuizList extends Component {
             onChange={(event)=>this.setState({email :event.target.value})}
             defaultValue='myMail@mail.ru'
           /> 
-          <TextField
+          {/* <TextField
             margin="dense"
             id="rank_id"
             label="rank_id преподавателя"
@@ -536,9 +569,9 @@ export default class QuizList extends Component {
             helperText={this.state.errors.rank_id}
             onChange={(event)=>this.setState({rank_id :event.target.value})}
             defaultValue='null'
-          />
+          /> */}
 
-        <TextField
+        {/* <TextField
             margin="dense"
             id="degree_id"
             label="degree_id преподавателя"
@@ -548,7 +581,7 @@ export default class QuizList extends Component {
             helperText={this.state.errors.degree_id}
             onChange={(event)=>this.setState({degree_id :event.target.value})}
             defaultValue='null'
-          />
+          /> */}
 
         <TextField
             margin="dense"
