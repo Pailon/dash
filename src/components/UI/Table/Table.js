@@ -1,38 +1,22 @@
 import React from 'react'
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
+import classes from './Table.module.css'
+import $ from 'jquery'
+window.$ = $;
 
 
 
 //компонент отображения таблицы
 
+
+
+
 var FA = require('react-fontawesome')
-export let name ='sad'
-
-
-const textFiled= (item) => (
-    <React.Fragment>
-    <TextField
-    margin="dense"
-    id="updateData"
-    label="Изменить"
-    type="text"
-    fullWidth = {true}
-    error={false}
-    onChange={(event)=>item.name = event.target.value}
-    defaultValue={item.name}
-  />
-  </React.Fragment>
-)
-
-
-
-
-
-
-
 
 export default props => (
+
+    
 
     // таблица в стиле bootstrap 
     <table className="table">
@@ -62,12 +46,53 @@ export default props => (
         <tbody>
             {props.data.map(item => (
                 <tr key={item.id} onClick={props.onRowSelect.bind(null, item)}>
+
                     <td>{item.person_id}</td>
-                    <td onDoubleClick={props.onUpdate.bind(null, 'name')} >{item.name}</td>
-                    <td onDoubleClick={props.onUpdate.bind(null, 'surname')} >{item.surname}</td>
-                    <td onDoubleClick={props.onUpdate.bind(null, 'patronymic')} >{item.patronymic}</td>
-                    <td onDoubleClick={props.onUpdate.bind(null, 'email')} >{item.email}</td>
-                    <td onDoubleClick={props.onUpdate.bind(null, 'phone')} >{item.phone}</td>
+
+                    
+                    <td 
+                    className={classes.edit} 
+                    contentEditable="true"  
+                    onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault() }}
+                    onBlur={(event)=>{
+                        item.name = event.currentTarget.firstChild.data
+                        props.onUpdate(event.currentTarget.firstChild.data, item, item.id) 
+                    
+                    }}
+                    //onBlur={(event)=>{item.name = event.currentTarget.firstChild.data}}
+                    suppressContentEditableWarning={true}
+                    
+                    >{item.name}</td>
+
+
+                    <td
+                        className={classes.edit} 
+                        contentEditable="true"  
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        onBlur={(event)=>{props.onUpdate(event.currentTarget.firstChild.data)}}
+                        suppressContentEditableWarning={true}
+                    >{item.surname}</td>
+                    <td
+                        className={classes.edit} 
+                        contentEditable="true"  
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        onBlur={(event)=>{props.onUpdate(event.currentTarget.firstChild.data)}}
+                        suppressContentEditableWarning={true}
+                    >{item.patronymic}</td>
+                    <td
+                        className={classes.edit} 
+                        contentEditable="true"  
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        onBlur={(event)=>{props.onUpdate(event.currentTarget.firstChild.data)}}
+                        suppressContentEditableWarning={true}
+                    >{item.email}</td>
+                    <td
+                        className={classes.edit} 
+                        contentEditable="true"  
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        onBlur={(event)=>{props.onUpdate(event.currentTarget.firstChild.data)}}
+                        suppressContentEditableWarning={true}
+                    >{item.phone}</td>
                     <td>
                         <Checkbox
                             defaultChecked

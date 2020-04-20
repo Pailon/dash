@@ -13,7 +13,17 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import $ from 'jquery'
+window.$ = $;
 
+
+// $(function(){
+//     $('.edit').keypress(function(e){
+//         if(e.which == 13){
+//             return false
+//         }
+//     })
+// })
 
 var item = ''
 
@@ -99,35 +109,25 @@ export default class QuizList extends Component {
         } catch (e) { // на случай ошибки
             console.log(e)
         }
-
-
-
-        var tds = document.querySelectorAll('td')
-
-
-       
-            for(var i=0; i<tds.length; i++){
-            
-                tds[i].addEventListener('click', function func(){
-                    var input = document.createElement('input')
-                    input.value = this.innerHTML
-                    this.innerHTML = ''
-                    this.appendChild(input)
-    
-                    var td = this
-                    input.addEventListener('blur', function(){
-                        td.innerHTML = this.value
-                        item = this.value
-                        td.addEventListener('click', func)
-
-                        
-                    })
-    
-                    this.removeEventListener('click', func)
-                    console.log(item);
-                })
-        }
+        // var tds = document.querySelectorAll('td')
+        //     for(var i=0; i<tds.length; i++){
+        //         tds[i].addEventListener('click', function func(){
+        //             var input = document.createElement('input')
+        //             input.value = this.innerHTML
+        //             this.innerHTML = ''
+        //             this.appendChild(input)
+        //             var td = this
+        //             input.addEventListener('blur', function(){
+        //                 td.innerHTML = this.value
+        //                 item = this.value
+        //                 td.addEventListener('click', func)
+        //             })
+        //             this.removeEventListener('click', func)
+        //             console.log(item);
+        //         })
+        // }
         
+
 
         
         
@@ -136,7 +136,7 @@ export default class QuizList extends Component {
     onSort = (sortField) => { // функция для сортировки данных в таблице
         const clonedData = this.state.data.concat() // клонируем массив из state чтобы случайно не изменить исходные данные
         const sort = this.state.sort === 'asc' ? 'desc' : 'asc' // выбор метода сортировки
-        const sortArrow = this.state.sortArrow === 'arrow-up' ? 'arrow-down' : 'arrow-up'
+        const sortArrow = this.state.sortArrow === 'arrow-up' ? 'arrow-down' : 'arrow-up'//выбор в какую сторону отображать "стрелочку"
 
         const data = _.orderBy(clonedData, sortField, sort) // создание нового объекта data при помощи библиотеки logash,  
         // которая на вход получала 3 параметра, необходимый массив, по какому полю фильтровать
@@ -403,21 +403,39 @@ export default class QuizList extends Component {
     
 
 
-    onUpdate = (name) =>{
-        console.log(name)
-        //console.log(item);
+    async onUpdate (data, item, id) {
+        console.log(data)
+        console.log(item)
+
         
+
+
+        let url = `http://dashboard.kholodov.xyz/api/teachers/${id}`
+        const token = localStorage.getItem('token')
+
+        try {
+            const response = await fetch(url, {
+              method: 'PUT', // или 'PUT'
+              body: JSON.stringify(item), // данные могут быть 'строкой' или {объектом}!
+              headers: {
+                'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                'Authorization': `Bearer ${token}`
+            }
+            });
+            const json = await response.json();
+            console.log('Результат:', JSON.stringify(json));
+            console.log(item)
+            item = {}
+          } catch (error) {
+            console.error('Ошибка:', error);
+          }
+    
     }
 
-
-        
-    
-        
-        
-        
-    
-
     render() {
+
+
+
         //количество строк на одну страницу
         const pageSize = 10
 
