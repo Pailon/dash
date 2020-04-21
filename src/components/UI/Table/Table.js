@@ -2,15 +2,8 @@ import React from 'react'
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import classes from './Table.module.css'
-import $ from 'jquery'
-window.$ = $;
-
-
 
 //компонент отображения таблицы
-
-
-
 
 var FA = require('react-fontawesome')
 
@@ -55,8 +48,9 @@ export default props => (
                     contentEditable="true"  
                     onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault() }}
                     onBlur={(event)=>{
+                        let oldData = item.name
                         item.name = event.currentTarget.firstChild.data
-                        props.onUpdate(event.currentTarget.firstChild.data, item, item.id) 
+                        props.onUpdate.call(this,event.currentTarget.firstChild.data, item, item.id, oldData) 
                     
                     }}
                     //onBlur={(event)=>{item.name = event.currentTarget.firstChild.data}}
@@ -69,28 +63,44 @@ export default props => (
                         className={classes.edit} 
                         contentEditable="true"  
                         onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
-                        onBlur={(event)=>{props.onUpdate(event.currentTarget.firstChild.data)}}
+                        onBlur={(event)=>{
+                            item.surname = event.currentTarget.firstChild.data
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id) 
+                        
+                        }}
                         suppressContentEditableWarning={true}
                     >{item.surname}</td>
                     <td
                         className={classes.edit} 
                         contentEditable="true"  
                         onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
-                        onBlur={(event)=>{props.onUpdate(event.currentTarget.firstChild.data)}}
+                        onBlur={(event)=>{
+                            item.patronymic = event.currentTarget.firstChild.data
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id) 
+                        
+                        }}
                         suppressContentEditableWarning={true}
                     >{item.patronymic}</td>
                     <td
                         className={classes.edit} 
                         contentEditable="true"  
                         onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
-                        onBlur={(event)=>{props.onUpdate(event.currentTarget.firstChild.data)}}
+                        onBlur={(event)=>{
+                            item.email = event.currentTarget.firstChild.data
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id) 
+                        
+                        }}
                         suppressContentEditableWarning={true}
                     >{item.email}</td>
                     <td
                         className={classes.edit} 
                         contentEditable="true"  
                         onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
-                        onBlur={(event)=>{props.onUpdate(event.currentTarget.firstChild.data)}}
+                        onBlur={(event)=>{
+                            item.phone = event.currentTarget.firstChild.data
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id) 
+                        
+                        }}
                         suppressContentEditableWarning={true}
                     >{item.phone}</td>
                     <td>

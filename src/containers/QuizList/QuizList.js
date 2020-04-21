@@ -13,8 +13,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import $ from 'jquery'
-window.$ = $;
+import Alert from '../../components/UI/Alert/Alert'
 
 
 // $(function(){
@@ -30,6 +29,11 @@ var item = ''
 export default class QuizList extends Component {
 
 
+    constructor(props){
+        super(props);
+        this.onUpdate = this.onUpdate.bind(this)
+    }
+
 
     state = {
         data: [],
@@ -43,6 +47,9 @@ export default class QuizList extends Component {
         search: '', //что искать
         openModal:false,
         errorModal:false,
+        openAlert:false,
+        color:'success',
+        text:'Типа текст',
         item:'',
         name:'',
         surname:'',
@@ -403,19 +410,19 @@ export default class QuizList extends Component {
     
 
 
-    async onUpdate (data, item, id) {
-        console.log(data)
-        console.log(item)
-
+    async onUpdate (data, item, id, oldData) {
+        //console.log(data)
+        //console.log(item)
+        //console.log(oldData)
         
-
+        if (data != oldData){
 
         let url = `http://dashboard.kholodov.xyz/api/teachers/${id}`
         const token = localStorage.getItem('token')
 
         try {
             const response = await fetch(url, {
-              method: 'PUT', // или 'PUT'
+              method: 'PUT', // или 'POST'
               body: JSON.stringify(item), // данные могут быть 'строкой' или {объектом}!
               headers: {
                 'Content-Type': 'application/json',//заголовки обязателны для получения данных
@@ -424,13 +431,27 @@ export default class QuizList extends Component {
             });
             const json = await response.json();
             console.log('Результат:', JSON.stringify(json));
-            console.log(item)
+            //console.log(item)
+            this.setState({openAlert:true, color:'success', text:'Изменено'})
             item = {}
           } catch (error) {
             console.error('Ошибка:', error);
           }
+        }else{
+            console.log('Изменений не было', item.name)
+        }
     
     }
+
+    // onCloseAlert(){
+        
+    // }
+
+    onCloseAlert = () =>{
+        this.setState({openAlert:false})
+    }
+
+    
 
     render() {
 
@@ -452,9 +473,18 @@ export default class QuizList extends Component {
             //отрисовка таблицы в базовом контейнере bootstrap
             <div className="container">
                 {
+                    this.state.openAlert ?
+                    <Alert
+                        color={this.state.color}
+                        text={this.state.text}
+                        onCloseAlert={this.onCloseAlert}
+                    />
+                    :null
+                }
+                {
                     this.state.isLoading
                         ? <Loader /> //пока не получены данные отображается loader иначе отображам таблицу
-                        : <React.Fragment>
+                        : <React.Fragment>                       
                             <TableSearch onSearch={this.searchHandler} />
 
                             <Button

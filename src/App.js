@@ -14,6 +14,7 @@ import Specialty from './containers/Specialty/Specialty';
 import Acad_plan from './containers/Acad_plan/Acad_plan';
 import Dep_load from './containers/Dep_load/Dep_load';
 import Project from './containers/Project/Project';
+import Alert from './components/UI/Alert/Alert'
 
 
 class App extends Component {
