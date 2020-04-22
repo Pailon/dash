@@ -16,41 +16,34 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Alert from '../../components/UI/Alert/Alert'
 
 
-// $(function(){
-//     $('.edit').keypress(function(e){
-//         if(e.which == 13){
-//             return false
-//         }
-//     })
-// })
-
-var item = ''
+//var item = ''
 
 export default class QuizList extends Component {
 
 
-    constructor(props){
+    constructor(props){ //конструктор этого класса
         super(props);
         this.onUpdate = this.onUpdate.bind(this)
     }
 
 
     state = {
-        data: [],
+        data: [],//тут хранится массив приходящих данных
         itemActive:false,
         isLoading: true, //отображать загрузку или нет
         sort: 'asc',  //desc сортировка - asc - это по возрастанию, desc - по убыванию
-        sortArrow: 'arrow-up',
+        sortArrow: 'arrow-up',//куда по умолчанию показывает стрелочка сортировки
         sortField: 'person_id', // параметр для сортировки, person_id - дефолтный
         row: null, // поле для хранения строки для её будущего отображения отдельно/подробно
         currentPage: 0, //количество страниц на данный момент
         search: '', //что искать
-        openModal:false,
-        errorModal:false,
-        openAlert:false,
-        color:'success',
-        text:'Типа текст',
+        openModal:false,// видно ли модальное окно
+        errorModal:false, 
+        openAlert:false,//видно ли окно оповещения
+        color:'',//значение для окна оповещения - его цвет
+        text:'',//текст окна оповещения
         item:'',
+        //буферные значения для добавления преподавателя
         name:'',
         surname:'',
         patronymic:'',
@@ -67,6 +60,7 @@ export default class QuizList extends Component {
         birthday:'',
         login:'',
         password:'',
+        //значения ошибок при добавлении преподавателя
         errors:{
             // id:'',
             name:'',
@@ -116,6 +110,7 @@ export default class QuizList extends Component {
         } catch (e) { // на случай ошибки
             console.log(e)
         }
+        //вариантивно нужный код, для альтернативного редактирования данных в таблице, не доработан, удалять жалко
         // var tds = document.querySelectorAll('td')
         //     for(var i=0; i<tds.length; i++){
         //         tds[i].addEventListener('click', function func(){
@@ -194,12 +189,14 @@ export default class QuizList extends Component {
         })
     }
 
-    newTeatcher = () => {
+    newTeatcher = () => { //открыть модальное окно для добавления преподавателя
         this.setState({openModal:true})
 
     }
 
     onClose = () =>{
+        //функция зарытия модального окна без завершения добавления преподавателя
+        //обнуления буферных данных, и закрытие самого окна
         this.setState({
             openModal:false,
             name:'',
@@ -241,7 +238,7 @@ export default class QuizList extends Component {
 
     }
 
-    async onAdd() {
+    async onAdd() {  //Функция добавления нового преподавателя в таблицу и на сервер
         let errors = {}
 
         // if (!this.state.rank_id) {
@@ -250,6 +247,10 @@ export default class QuizList extends Component {
         // if (!this.state.degree_id) {
         //     errors.degree_id = 'Это поле не может быть пустым' 
         // }
+
+
+        //Серия проверок на пустоту полей, если пусто, то мы добавим в state сообщение об ошибке, для будущего отображения
+        //Можно кастомизировать ошибку для каждого поля
         if (!this.state.rate) {
             errors.rate = 'Это поле не может быть пустым'
         }
@@ -291,20 +292,22 @@ export default class QuizList extends Component {
         }
 
 
+        //Если хотя бы одно из этих полей пустое мы обновляем state и добавляем туда сообщения об ошибках в пустых полях
+        //В ином случае, если все поля заполнены мы берем все данные из полей и производим запрос к серверу
         if(/*errors.rank_id || errors.degree_id ||*/ errors.rate
             || errors.hourse_worked || errors.rinc || errors.web_of_science || errors.scopus || errors.name
             || errors.surname || errors.patronymic || errors.birthday || errors.phone || errors.email ||errors.login || errors.password)
             {
-                this.setState({errors})
-                console.log(this.state.data);
+                this.setState({errors}) //добавление ошибок в state
+                console.log(this.state.data);//для проверки выводим в консоль - временно
                 return 
             }else{
-        let data = this.state.data
+        let data = this.state.data // клонируем обьект data из state
 
-        let newTeatcher ={
-            position:'Преподаватель',
-            rank_id: null,//this.state.rank_id,
-            degree_id:null,//this.state.degree_id,
+        let newTeatcher ={  //Создаём обьект нового преподавателя, чтобы потом отправить на сервер
+            position:'Преподаватель', //Позиция статична, так как таблица преподавателей
+            rank_id: null,//this.state.rank_id, //сейчас статично null потом поменять
+            degree_id:null,//this.state.degree_id, //сейчас статично null потом поменять
             rate:this.state.rate,
             hours_worked:this.state.hourse_worked,
             rinc:this.state.rinc,
@@ -316,14 +319,14 @@ export default class QuizList extends Component {
             birthday:this.state.birthday,
             phone:this.state.phone,
             email:this.state.email,
-            status:2,
-            role:4,
-            sub_unit_id:1,
+            status:2,//статично
+            role:4,//статично
+            sub_unit_id:1,//не знаю что это
             login:this.state.login,
             password:this.state.password
         }
 
-        data.push({
+        data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
             position:'Преподаватель',
             rank_id:this.state.rank_id,
             degree_id:this.state.degree_id,
@@ -345,7 +348,7 @@ export default class QuizList extends Component {
             password:this.state.password
         })
 
-        this.setState({
+        this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
             name:'',
             secondName:'',
             patronymic:'',
@@ -380,11 +383,11 @@ export default class QuizList extends Component {
             }
             
         })
-        console.log(this.state.data);
-        this.setState({openModal:false})
+        console.log(this.state.data);// выведем обьект с данными для проверки
+        this.setState({openModal:false})//Закрываем модальное окно добавления преподавателя
 
-        let url = 'http://dashboard.kholodov.xyz/api/teachers'
-        const token = localStorage.getItem('token')
+        let url = 'http://dashboard.kholodov.xyz/api/teachers' //ссылка для запроса к таблице преподаавтелей
+        const token = localStorage.getItem('token')// взяли токен
 
         try {
             const response = await fetch(url, {
@@ -396,11 +399,11 @@ export default class QuizList extends Component {
             }
             });
             const json = await response.json();
-            console.log('Успех:', JSON.stringify(json));
-            console.log(newTeatcher)
-            newTeatcher = {}
+            console.log('Успех:', JSON.stringify(json));// результат запроса
+            console.log(newTeatcher)//выводит обьект того, что добавлено на сервер
+            newTeatcher = {}//обнулили буферный обьект для нового преподавателя
           } catch (error) {
-            console.error('Ошибка:', error);
+            console.error('Ошибка:', error); //выдаёт ошибку в консоль
           }
         
         }   
@@ -410,18 +413,18 @@ export default class QuizList extends Component {
     
 
 
-    async onUpdate (data, item, id, oldData) {
-        //console.log(data)
-        //console.log(item)
+    async onUpdate (data, item, id, oldData) { //функция обновления данных в таблице, получает от таблицы
+        //console.log(data)                    //data-значение которое меняют item-весь обьект, в котором значение меняют id oldData 
+        //console.log(item)                    //id-параметр из обьекта item чтобы проще производить запрос к api oldData-значение до изменения  
         //console.log(oldData)
         
-        if (data != oldData){
+        if (data != oldData){ //узнаём изменилось ли значение функции, если нет, то зачем производить запрос?
 
-        let url = `http://dashboard.kholodov.xyz/api/teachers/${id}`
-        const token = localStorage.getItem('token')
+        let url = `http://dashboard.kholodov.xyz/api/teachers/${id}` //ссылка для запросов, куда подставляется id
+        const token = localStorage.getItem('token')//берем токен и локального хранилищя
 
         try {
-            const response = await fetch(url, {
+            const response = await fetch(url, { //производим запрос
               method: 'PUT', // или 'POST'
               body: JSON.stringify(item), // данные могут быть 'строкой' или {объектом}!
               headers: {
@@ -432,14 +435,14 @@ export default class QuizList extends Component {
             const json = await response.json();
             console.log('Результат:', JSON.stringify(json));
             //console.log(item)
-            this.setState({openAlert:true, color:'success', text:'Изменено'})
+            this.setState({openAlert:true, color:'success', text:'Изменено'})//при успешном отображении отображаем окно об успешноти
             item = {}
           } catch (error) {
-            console.error('Ошибка:', error);
+            console.error('Ошибка:', error);//Отображаем ошибку в консоль
+            this.setState({openAlert:true, color:'danger', text:'Произошла ошибка'})//Выводим окно ошибки
           }
         }else{
-            console.log('Изменений не было')
-            this.setState({openAlert:true, color:'danger', text:'Произошла ошибка'})
+            console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
         }
     
     }
@@ -534,23 +537,29 @@ export default class QuizList extends Component {
                         ? <DetailRowView person={this.state.row} />
                         : null
                 }
-
-    <Dialog open={this.state.openModal} onClose={()=> this.setState({openModal:false})} aria-labelledby="form-dialog-title">
+    { //Далее идет описание модального окна в которое входят все поля ввода, прописанные отдель
+    }
+    <Dialog 
+            open={this.state.openModal} 
+            onClose={()=> this.setState({openModal:false})} 
+            aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Добавление нового преподавателя</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Введите данные нового преподавателя
           </DialogContentText>
-        <TextField
-            autoFocus
+        <TextField   //все модули TextFiled это поля ввода имеющие несколько ключевых свойств
+            autoFocus 
             margin="dense"
             id="name"
-            label="Имя преподавателя"
-            type="text"
-            fullWidth = {true}
-            error={!!this.state.errors.name}
-            helperText={this.state.errors.name}
-            onChange={(event)=>this.setState({name :event.target.value})}
+            label="Имя преподавателя" //описание поля ввода
+            type="text" //тип вводимой информации
+            fullWidth = {true} 
+            error={!!this.state.errors.name}// true or false, отображать ошибку или нет
+            helperText={this.state.errors.name} // текст отображаемый при ошибке
+            onChange={(event)=>this.setState({name :event.target.value})} //функция которая вызывается при изменении значения
+                                                                          //функция записывает новое значение при  
+                                                                          //каждом изменении в нужную  буферную переменную в state
           />
         <TextField
             margin="dense"
@@ -682,7 +691,7 @@ export default class QuizList extends Component {
             error={!!this.state.errors.scopus}
             helperText={this.state.errors.scopus}
             onChange={(event)=>this.setState({scopus :event.target.value})}
-            defaultValue='0.1'
+            defaultValue='0.1'//знчение по умолчанию
           />
         <TextField
             margin="dense"
@@ -707,7 +716,11 @@ export default class QuizList extends Component {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.onClose.bind(this)} color="primary" variant="contained">
+          <Button  //компонент кнопки закрытия модального окна
+          onClick={this.onClose.bind(this)} 
+          color="primary" 
+          variant="contained"
+          >
             Отмена
           </Button>
           <Button 
