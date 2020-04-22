@@ -438,17 +438,15 @@ export default class QuizList extends Component {
             console.error('Ошибка:', error);
           }
         }else{
-            console.log('Изменений не было', item.name)
+            console.log('Изменений не было')
+            this.setState({openAlert:true, color:'danger', text:'Произошла ошибка'})
         }
     
     }
 
-    // onCloseAlert(){
-        
-    // }
 
     onCloseAlert = () =>{
-        this.setState({openAlert:false})
+        this.setState({openAlert:false}) // закрыть окно оповещения
     }
 
     
@@ -473,11 +471,11 @@ export default class QuizList extends Component {
             //отрисовка таблицы в базовом контейнере bootstrap
             <div className="container">
                 {
-                    this.state.openAlert ?
-                    <Alert
-                        color={this.state.color}
-                        text={this.state.text}
-                        onCloseAlert={this.onCloseAlert}
+                    this.state.openAlert ?  //компонент вывода предупреждения
+                    <Alert  
+                        color={this.state.color} //цвет оповещения
+                        text={this.state.text} // текст в оповещении
+                        onCloseAlert={this.onCloseAlert} // функция как закрыть это окошко
                     />
                     :null
                 }

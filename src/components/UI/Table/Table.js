@@ -64,8 +64,9 @@ export default props => (
                         contentEditable="true"  
                         onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
                         onBlur={(event)=>{
+                            let oldData = item.surname
                             item.surname = event.currentTarget.firstChild.data
-                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id) 
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData) 
                         
                         }}
                         suppressContentEditableWarning={true}
@@ -75,8 +76,9 @@ export default props => (
                         contentEditable="true"  
                         onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
                         onBlur={(event)=>{
+                            let oldData = item.patronymic
                             item.patronymic = event.currentTarget.firstChild.data
-                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id) 
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData) 
                         
                         }}
                         suppressContentEditableWarning={true}
@@ -86,8 +88,9 @@ export default props => (
                         contentEditable="true"  
                         onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
                         onBlur={(event)=>{
+                            let oldData = item.email
                             item.email = event.currentTarget.firstChild.data
-                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id) 
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData) 
                         
                         }}
                         suppressContentEditableWarning={true}
@@ -97,8 +100,9 @@ export default props => (
                         contentEditable="true"  
                         onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
                         onBlur={(event)=>{
+                            let oldData = item.phone
                             item.phone = event.currentTarget.firstChild.data
-                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id) 
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData) 
                         
                         }}
                         suppressContentEditableWarning={true}

@@ -6,7 +6,7 @@ export default (props) => {
         // <div className={`alert alert-${props.color} mt-2`} role="alert">
         //     {props.text}
         // </div>
-        <div className={`alert alert-${props.color||'secondary'} alert-dismissible`} 
+        <div className={`alert alert-${props.color||'secondary'} alert-dismissible mt-4`} 
         role="alert"
         >
             <strong>{props.text}!</strong>
