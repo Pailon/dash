@@ -3,6 +3,8 @@ import Loader from '../../components/UI/Loader/Loader'
 import TeatcherInfo from './TeatcherInfo/TeatcherInfo'
 import {Redirect} from 'react-router-dom'
 import {Link} from 'react-router-dom'
+import Curator from './Curator/Curator.js'
+import Discip from './Discip/Discip'
 
 
 
@@ -54,6 +56,8 @@ export default class Teatcher extends Component{
                         person ={this.props.location.propsItem}
                         />
 
+                        <Discip/>
+                        <Curator/>
 
                         <button type="button" className="btn btn-link"><Link to='/'>Назад</Link> </button>
                 </div>

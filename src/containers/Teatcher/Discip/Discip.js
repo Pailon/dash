@@ -1,12 +1,12 @@
 import React from 'react'
 
-let array = ['Лодка', 'Машина', 'Таймер', 'Кран']
+let array = ['Веб-разработка', 'Программирование В САПР', 'Взлом систем', '1С бухгалтерия']
 
 
 export default (props) => {
     return (
         <div className='container m-5 bg-light'>
-            <h3>Куратор проектов</h3>
+            <h3>Преподаёт актуальные дисциплины</h3>
             <div className="input-group mb-3">
 
                 <input 
