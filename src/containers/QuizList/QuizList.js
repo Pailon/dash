@@ -492,7 +492,8 @@ export default class QuizList extends Component {
                                 color="primary"
                                 variant="contained"
                                 onClick={this.newTeatcher}
-                            >NEW</Button>
+                                className="mb-2"
+                            >Добавить <br/>преподавателя</Button>
 
                             <Table
                                 data={displayData}
@@ -532,11 +533,11 @@ export default class QuizList extends Component {
                         /> : null
                 }
 
-                {
+                {/* {
                     this.state.row //отрисовка окна дополнительных данных
                         ? <DetailRowView person={this.state.row} />
                         : null
-                }
+                } */}
     { //Далее идет описание модального окна в которое входят все поля ввода, прописанные отдель
     }
     <Dialog 

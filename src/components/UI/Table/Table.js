@@ -2,6 +2,7 @@ import React from 'react'
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import classes from './Table.module.css'
+import {Link} from 'react-router-dom'
 
 //компонент отображения таблицы
 
@@ -33,7 +34,7 @@ export default props => (
                 <th onClick={props.onSort.bind(null, 'phone')}>
                     Номер телефона {props.sortField === 'phone' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
-                <th> ЧекБокс </th>
+                <th> </th>
                 </tr>
         </thead>
         <tbody>
@@ -108,11 +109,7 @@ export default props => (
                         suppressContentEditableWarning={true}
                     >{item.phone}</td>
                     <td>
-                        <Checkbox
-                            defaultChecked
-                            color="primary"
-                            inputProps={{ 'aria-label': 'secondary checkbox' }}
-                        />
+                        <button type="button" className="btn btn-link"><Link to={{pathname: "/teatcher", propsItem: item}}>Подробнее</Link></button>
                     </td>
                 </tr>
             ))}

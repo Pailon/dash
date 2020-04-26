@@ -55,7 +55,7 @@ class Drawer extends Component {
             links.push({to: '/rpd', label:'РПД', exact:false})
             links.push({to: '/project', label:'Проектная деятельность', exact:false})
             links.push({to: '/group', label:'Группы', exact:false})
-            links.push({to: '/teatcher', label:'Преподаватель', exact:false})
+            //links.push({to: '/teatcher', label:'Преподаватель', exact:false})
             // links.push({to: '/students', label:'Студенты', exact:false})
             links.push({to: '/specialties', label:'Специальности', exact:false})
             links.push({to: '/acad_plan', label:'Академический план', exact:false})
