@@ -21,9 +21,9 @@ export default (props) => {
                     </div>
             </div>
 
-            <ul class="list-group">
+            <ul className="list-group">
                 {array.map(item=>(
-                    <il class="list-group-item">{item}</il>
+                    <li key={item} className="list-group-item">{item}</li>
 
                 ))}
             </ul>

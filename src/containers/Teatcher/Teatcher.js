@@ -5,6 +5,7 @@ import {Redirect} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import Curator from './Curator/Curator.js'
 import Discip from './Discip/Discip'
+import classes from './Teatcher.module.css'
 
 
 
@@ -51,15 +52,15 @@ export default class Teatcher extends Component{
         //console.log(this.props.location.propsItem)
         return(
                 <div className='container mt-5'>
-
+                    <button type="button" className="btn btn-link"><Link to='/'>Назад</Link> </button>
+                    
                         <TeatcherInfo
                         person ={this.props.location.propsItem}
                         />
 
-                        <Discip/>
-                        <Curator/>
+                        <div className={classes.discip}><Discip/></div>
+                        <div className={classes.curator}><Curator/></div>
 
-                        <button type="button" className="btn btn-link"><Link to='/'>Назад</Link> </button>
                 </div>
         )
     }
