@@ -322,8 +322,8 @@ export default class QuizList extends Component {
             status:2,//статично
             role:4,//статично
             sub_unit_id:1,//не знаю что это
-            login:this.state.login,
-            password:this.state.password
+            login:this.state.login.trim(),
+            password:this.state.password.trim()
         }
 
         data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
@@ -558,7 +558,7 @@ export default class QuizList extends Component {
             fullWidth = {true} 
             error={!!this.state.errors.name}// true or false, отображать ошибку или нет
             helperText={this.state.errors.name} // текст отображаемый при ошибке
-            onChange={(event)=>this.setState({name :event.target.value})} //функция которая вызывается при изменении значения
+            onChange={(event)=>this.setState({name :event.target.value.trim()})} //функция которая вызывается при изменении значения
                                                                           //функция записывает новое значение при  
                                                                           //каждом изменении в нужную  буферную переменную в state
           />
@@ -570,7 +570,7 @@ export default class QuizList extends Component {
             fullWidth = {true}
             error={!!this.state.errors.surname}
             helperText={this.state.errors.surname}
-            onChange={(event)=>this.setState({surname :event.target.value})}
+            onChange={(event)=>this.setState({surname :event.target.value.trim()})}
           />
         <TextField
             margin="dense"
@@ -580,7 +580,7 @@ export default class QuizList extends Component {
             fullWidth = {true}
             error={!!this.state.errors.patronymic}
             helperText={this.state.errors.patronymic}
-            onChange={(event)=>this.setState({patronymic :event.target.value})}
+            onChange={(event)=>this.setState({patronymic :event.target.value.trim()})}
           />
         <TextField
             margin="dense"
@@ -590,7 +590,7 @@ export default class QuizList extends Component {
             fullWidth = {true}
             error={!!this.state.errors.birthday}
             helperText={this.state.errors.birthday}
-            onChange={(event)=>this.setState({birthday :event.target.value})}
+            onChange={(event)=>this.setState({birthday :event.target.value.trim()})}
             defaultValue='05-03-2020'
           />
         <TextField
@@ -601,7 +601,7 @@ export default class QuizList extends Component {
             fullWidth = {true}
             error={!!this.state.errors.phone}
             helperText={this.state.errors.phone}
-            onChange={(event)=>this.setState({phone :event.target.value})}
+            onChange={(event)=>this.setState({phone :event.target.value.trim()})}
             defaultValue='8(800)555-35-35'
           />
         <TextField
@@ -612,7 +612,7 @@ export default class QuizList extends Component {
             fullWidth = {true}
             error={!!this.state.errors.email}
             helperText={this.state.errors.email}
-            onChange={(event)=>this.setState({email :event.target.value})}
+            onChange={(event)=>this.setState({email :event.target.value.trim()})}
             defaultValue='myMail@mail.ru'
           /> 
           {/* <TextField
@@ -647,7 +647,7 @@ export default class QuizList extends Component {
             fullWidth = {true}
             error={!!this.state.errors.rate}
             helperText={this.state.errors.rate}
-            onChange={(event)=>this.setState({rate :event.target.value})}
+            onChange={(event)=>this.setState({rate :event.target.value.trim()})}
             defaultValue='0.25'
           />
         <TextField
@@ -658,7 +658,7 @@ export default class QuizList extends Component {
             fullWidth = {true}
             error={!!this.state.errors.hourse_worked}
             helperText={this.state.errors.hourse_worked}
-            onChange={(event)=>this.setState({hourse_worked :event.target.value})}
+            onChange={(event)=>this.setState({hourse_worked :event.target.value.trim()})}
             defaultValue='300'
           />
         <TextField
@@ -669,7 +669,7 @@ export default class QuizList extends Component {
             fullWidth = {true}
             error={!!this.state.errors.rinc}
             helperText={this.state.errors.rinc}
-            onChange={(event)=>this.setState({rinc :event.target.value})}
+            onChange={(event)=>this.setState({rinc :event.target.value.trim()})}
             defaultValue='0.1'
           />
         <TextField
@@ -680,7 +680,7 @@ export default class QuizList extends Component {
             fullWidth = {true}
             error={!!this.state.errors.web_of_science}
             helperText={this.state.errors.web_of_science}
-            onChange={(event)=>this.setState({web_of_science :event.target.value})}
+            onChange={(event)=>this.setState({web_of_science :event.target.value.trim()})}
             defaultValue='0.1'
           />
         <TextField
@@ -691,7 +691,7 @@ export default class QuizList extends Component {
             fullWidth = {true}
             error={!!this.state.errors.scopus}
             helperText={this.state.errors.scopus}
-            onChange={(event)=>this.setState({scopus :event.target.value})}
+            onChange={(event)=>this.setState({scopus :event.target.value.trim()})}
             defaultValue='0.1'//знчение по умолчанию
           />
         <TextField
@@ -702,7 +702,7 @@ export default class QuizList extends Component {
             fullWidth = {true}
             error={!!this.state.errors.login}
             helperText={this.state.errors.login}
-            onChange={(event)=>this.setState({login :event.target.value})}
+            onChange={(event)=>this.setState({login :event.target.value.trim()})}
           />
         <TextField
             margin="dense"
@@ -712,7 +712,7 @@ export default class QuizList extends Component {
             fullWidth = {true}
             error={!!this.state.errors.password}
             helperText={this.state.errors.password}
-            onChange={(event)=>this.setState({password :event.target.value})}
+            onChange={(event)=>this.setState({password :event.target.value.trim()})}
             defaultValue='root'
           />
         </DialogContent>

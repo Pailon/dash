@@ -39,7 +39,7 @@ export default props => (
         </thead>
         <tbody>
             {props.data.map(item => (
-                <tr key={item.id} onClick={props.onRowSelect.bind(null, item)} spellcheck="false">
+                <tr key={item.id} onClick={props.onRowSelect.bind(null, item)} spellCheck="false">
 
                     <td>{item.person_id}</td>
 
