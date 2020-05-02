@@ -8,3 +8,9 @@
 //         }
 //     })
 // })
+
+
+// str = 'asdasd'
+// str2=`asdd${str}asdasd`
+
+// console.log(str +' ' + str2);

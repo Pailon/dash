@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import classes from './Auth.module.css'
 import Button from '../../components/UI/Button/Button.js'
 import Input from '../../components/UI/Input/Input.js'
-import { stat } from 'fs';
-import axios from 'axios'
 import {connect} from 'react-redux'
 import {auth} from '../../store/actions/auth'
 
@@ -93,7 +91,7 @@ class Auth extends Component {
         //  this.state.token=response.json()
         //  console.log(response.json())
 
-        //localStorage.setItem('token', this.state.token);
+        // localStorage.setItem('token', this.state.token);
 
     }
 

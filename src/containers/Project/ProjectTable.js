@@ -1,50 +1,116 @@
 import React from 'react'
-
+import classes from './Project'
 //компонент отображения таблицы
+
+var FA = require('react-fontawesome')
+
 
 export default props => (
     // таблица в стиле bootstrap 
-    <table className="table">  
+    <table className="table">
         <thead>
             <tr>
                 <th onClick={props.onSort.bind(null, 'id')}>
-                    ID {props.sortField === 'person_id' ? <small>{props.sort}</small> : null}   
+                    ID {props.sortField === 'id' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
-                {/* <th onClick={props.onSort.bind(null, 'specialties_id')}>
-                    Specialties_id {props.sortField === 'specialties_id' ? <small>{props.sort}</small> : null}
-                </th> */}
                 <th onClick={props.onSort.bind(null, 'name')}>
-                    Name {props.sortField === 'name' ? <small>{props.sort}</small> : null}
+                    Name {props.sortField === 'name' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
-                <th onClick={props.onSort.bind(null, 'code')}>
-                    Код {props.sortField === 'code' ? <small>{props.sort}</small> : null}
+                <th onClick={props.onSort.bind(null, 'students_count')}>
+                    Количество студентов {props.sortField === 'students_count' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
-                <th onClick={props.onSort.bind(null, 'profile')}>
-                    Профиль {props.sortField === 'profile' ? <small>{props.sort}</small> : null}
+                <th onClick={props.onSort.bind(null, 'link_trello')}>
+                    Trello {props.sortField === 'link_trello' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
-                <th onClick={props.onSort.bind(null, 'educ_form')}>
-                    Форма обучения {props.sortField === 'educ_form' ? <small>{props.sort}</small> : null}
+                <th onClick={props.onSort.bind(null, 'begin_date')}>
+                    Дата начала {props.sortField === 'begin_date' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
-                <th onClick={props.onSort.bind(null, 'educ_programm')}>
-                    Программа обучения {props.sortField === 'educ_programm' ? <small>{props.sort}</small> : null}
+                <th onClick={props.onSort.bind(null, 'end_date')}>
+                    Дата окончания {props.sortField === 'end_date' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
-                <th onClick={props.onSort.bind(null, 'educ_years')}>
-                    Срок обучения {props.sortField === 'educ_years' ? <small>{props.sort}</small> : null}
+                <th onClick={props.onSort.bind(null, 'description')}>
+                    Описание {props.sortField === 'description' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
-                <th onClick={props.onSort.bind(null, 'year_join')}>
-                    Дата окончания {props.sortField === 'year_join' ? <small>{props.sort}</small> : null}
-                </th>
-                {/* <th onClick={props.onSort.bind(null, 'sub_unit_id')}>
-                    Что то {props.sortField === 'sub_unit_id' ? <small>{props.sort}</small> : null}
-                </th> */}
-                
+
             </tr>
         </thead>
         <tbody>
             {props.data.map(item => (
                 <tr key={item.id + item.specialties_id} onClick={props.onRowSelect.bind(null, item)}>
                     <td>{item.id}</td>
-                    {/* <td>{item.specialties_id}</td> */}
+                    <td
+                        className={classes.edit}
+                        contentEditable="true"
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault() }}
+                        onBlur={(event) => {
+                            let oldData = item.name
+                            item.name = event.currentTarget.firstChild.data
+                            props.onUpdate.call(this, event.currentTarget.firstChild.data, item, item.id, oldData)
+
+                        }}
+                        //onBlur={(event)=>{item.name = event.currentTarget.firstChild.data}}
+                        suppressContentEditableWarning={true}
+                    >{item.name}</td>
+                    <td
+                        className={classes.edit}
+                        contentEditable="true"
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        onBlur={(event) => {
+                            let oldData = item.surname
+                            item.students_count = event.currentTarget.firstChild.data
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
+
+                        }}
+                        suppressContentEditableWarning={true}
+                    >{item.students_count}</td>
+                    <td
+                        className={classes.edit}
+                        contentEditable="true"
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        onBlur={(event) => {
+                            let oldData = item.surname
+                            item.link_trello = event.currentTarget.firstChild.data
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
+
+                        }}
+                        suppressContentEditableWarning={true}
+                    >{item.link_trello}</td>
+                    <td
+                        className={classes.edit}
+                        contentEditable="true"
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        onBlur={(event) => {
+                            let oldData = item.patronymic
+                            item.begin_date = event.currentTarget.firstChild.data
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
+
+                        }}
+                        suppressContentEditableWarning={true}
+                    >{item.begin_date}</td>
+                    <td
+                        className={classes.edit}
+                        contentEditable="true"
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        onBlur={(event) => {
+                            let oldData = item.patronymic
+                            item.end_date = event.currentTarget.firstChild.data
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
+
+                        }}
+                        suppressContentEditableWarning={true}
+                    >{item.end_date}</td>
+                    <td
+                        className={classes.edit}
+                        contentEditable="true"
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        onBlur={(event) => {
+                            let oldData = item.patronymic
+                            item.description = event.currentTarget.firstChild.data
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
+
+                        }}
+                        suppressContentEditableWarning={true}
+                    >{item.description}</td>
                 </tr>
             ))}
         </tbody>

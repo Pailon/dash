@@ -60,5 +60,4 @@ export function autoLogin(){
         }
 
     }
-    // return true
 }

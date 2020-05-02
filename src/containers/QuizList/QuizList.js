@@ -88,7 +88,7 @@ export default class QuizList extends Component {
 
         let url = 'http://dashboard.kholodov.xyz/api/teachers'
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
-        //console.log(token) //проверяем взяли ли токен
+        console.log(token) //проверяем взяли ли токен
         try {
 
             const response = await fetch(url, {
@@ -98,7 +98,7 @@ export default class QuizList extends Component {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            // console.log('Я ответ', response)
+             console.log('Я ответ', response)
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
@@ -150,9 +150,6 @@ export default class QuizList extends Component {
             sortField,
             sortArrow
         })
-
-        
-
     }
 
     onRowSelect = row => {
@@ -183,7 +180,7 @@ export default class QuizList extends Component {
         //из state поле search и на основе него проводим поиск
         return data.filter(item => {
             return item['name'].toLowerCase().includes(search.toLowerCase())
-                || item['surname'].toLowerCase().includes(search.toLowerCase())
+                || item['surname'].toLowerCase().includes(search.toLowerCase()) 
                 || item['patronymic'].toLowerCase().includes(search.toLowerCase())
                 || item['email'].toLowerCase().includes(search.toLowerCase())
         })
@@ -238,135 +235,120 @@ export default class QuizList extends Component {
 
     }
 
-    async onAdd() {  //Функция добавления нового преподавателя в таблицу и на сервер
-        let errors = {}
+        async onAdd() {  //Функция добавления нового преподавателя в таблицу и на сервер
+            let errors = {}
 
-        // if (!this.state.rank_id) {
-        //     errors.rank_id = 'Это поле не может быть пустым'
-        // }
-        // if (!this.state.degree_id) {
-        //     errors.degree_id = 'Это поле не может быть пустым' 
-        // }
-
-
-        //Серия проверок на пустоту полей, если пусто, то мы добавим в state сообщение об ошибке, для будущего отображения
-        //Можно кастомизировать ошибку для каждого поля
-        if (!this.state.rate) {
-            errors.rate = 'Это поле не может быть пустым'
-        }
-        if (!this.state.hourse_worked) {
-            errors.hourse_worked = 'Это поле не может быть пустым'
-        }
-        if (!this.state.rinc) {
-            errors.rinc = 'Это поле не может быть пустым'
-        }
-        if (!this.state.web_of_science) {
-            errors.web_of_science = 'Это поле не может быть пустым'
-        }
-        if (!this.state.scopus) {
-            errors.scopus = 'Это поле не может быть пустым'
-        }
-        if (!this.state.name) {
-            errors.name = 'Это поле не может быть пустым'
-        }
-        if (!this.state.surname) {
-            errors.surname = 'Это поле не может быть пустым'
-        }
-        if (!this.state.patronymic) {
-            errors.patronymic = 'Это поле не может быть пустым'
-        }
-        if (!this.state.birthday) {
-            errors.birthday = 'Это поле не может быть пустым'
-        }
-        if (!this.state.phone) {
-            errors.phone = 'Это поле не может быть пустым'
-        }
-        if (!this.state.email) {
-            errors.email = 'Это поле не может быть пустым'
-        }
-        if (!this.state.login) {
-            errors.login = 'Это поле не может быть пустым'
-        }
-        if (!this.state.password) {
-            errors.password = 'Это поле не может быть пустым'
-        }
+            // if (!this.state.rank_id) {
+            //     errors.rank_id = 'Это поле не может быть пустым'
+            // }
+            // if (!this.state.degree_id) {
+            //     errors.degree_id = 'Это поле не может быть пустым' 
+            // }
 
 
-        //Если хотя бы одно из этих полей пустое мы обновляем state и добавляем туда сообщения об ошибках в пустых полях
-        //В ином случае, если все поля заполнены мы берем все данные из полей и производим запрос к серверу
-        if(/*errors.rank_id || errors.degree_id ||*/ errors.rate
-            || errors.hourse_worked || errors.rinc || errors.web_of_science || errors.scopus || errors.name
-            || errors.surname || errors.patronymic || errors.birthday || errors.phone || errors.email ||errors.login || errors.password)
-            {
-                this.setState({errors}) //добавление ошибок в state
-                console.log(this.state.data);//для проверки выводим в консоль - временно
-                return 
-            }else{
-        let data = this.state.data // клонируем обьект data из state
+            //Серия проверок на пустоту полей, если пусто, то мы добавим в state сообщение об ошибке, для будущего отображения
+            //Можно кастомизировать ошибку для каждого поля
+            if (!this.state.rate) {
+                errors.rate = 'Это поле не может быть пустым'
+            }
+            if (!this.state.hourse_worked) {
+                errors.hourse_worked = 'Это поле не может быть пустым'
+            }
+            if (!this.state.rinc) {
+                errors.rinc = 'Это поле не может быть пустым'
+            }
+            if (!this.state.web_of_science) {
+                errors.web_of_science = 'Это поле не может быть пустым'
+            }
+            if (!this.state.scopus) {
+                errors.scopus = 'Это поле не может быть пустым'
+            }
+            if (!this.state.name) {
+                errors.name = 'Это поле не может быть пустым'
+            }
+            if (!this.state.surname) {
+                errors.surname = 'Это поле не может быть пустым'
+            }
+            if (!this.state.patronymic) {
+                errors.patronymic = 'Это поле не может быть пустым'
+            }
+            if (!this.state.birthday) {
+                errors.birthday = 'Это поле не может быть пустым'
+            }
+            if (!this.state.phone) {
+                errors.phone = 'Это поле не может быть пустым'
+            }
+            if (!this.state.email) {
+                errors.email = 'Это поле не может быть пустым'
+            }
+            if (!this.state.login) {
+                errors.login = 'Это поле не может быть пустым'
+            }
+            if (!this.state.password) {
+                errors.password = 'Это поле не может быть пустым'
+            }
 
-        let newTeatcher ={  //Создаём обьект нового преподавателя, чтобы потом отправить на сервер
-            position:'Преподаватель', //Позиция статична, так как таблица преподавателей
-            rank_id: null,//this.state.rank_id, //сейчас статично null потом поменять
-            degree_id:null,//this.state.degree_id, //сейчас статично null потом поменять
-            rate:this.state.rate,
-            hours_worked:this.state.hourse_worked,
-            rinc:this.state.rinc,
-            web_of_science:this.state.web_of_science,
-            scopus:this.state.scopus,
-            name:this.state.name,
-            surname:this.state.surname,
-            patronymic:this.state.patronymic,
-            birthday:this.state.birthday,
-            phone:this.state.phone,
-            email:this.state.email,
-            status:2,//статично
-            role:4,//статично
-            sub_unit_id:1,//не знаю что это
-            login:this.state.login.trim(),
-            password:this.state.password.trim()
-        }
 
-        data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
-            position:'Преподаватель',
-            rank_id:this.state.rank_id,
-            degree_id:this.state.degree_id,
-            rate:this.state.rate,
-            hourse_worked:this.state.hourse_worked,
-            rinc:this.state.rinc,
-            web_of_science:this.state.web_of_science,
-            scopus:this.state.scopus,
-            name:this.state.name,
-            surname:this.state.surname,
-            patronymic:this.state.patronymic,
-            birthday:this.state.birthday,
-            phone:this.state.phone,
-            email:this.state.email,
-            status:2,
-            role:4,
-            sub_unit_id:1,
-            login:this.state.login,
-            password:this.state.password
-        })
+            //Если хотя бы одно из этих полей пустое мы обновляем state и добавляем туда сообщения об ошибках в пустых полях
+            //В ином случае, если все поля заполнены мы берем все данные из полей и производим запрос к серверу
+            if(/*errors.rank_id || errors.degree_id ||*/ errors.rate
+                || errors.hourse_worked || errors.rinc || errors.web_of_science || errors.scopus || errors.name
+                || errors.surname || errors.patronymic || errors.birthday || errors.phone || errors.email 
+                ||errors.login || errors.password)
+                {
+                    this.setState({errors}) //добавление ошибок в state
+                    console.log(this.state.data);//для проверки выводим в консоль - временно
+                    return 
+                }else{
+            let data = this.state.data // клонируем обьект data из state
 
-        this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
-            name:'',
-            secondName:'',
-            patronymic:'',
-            email:'',
-            phone:'',
-            rank_id:'',
-            degree_id:'',
-            rate:'',
-            hourse_worked:'',
-            rinc:'',
-            web_of_science:'',
-            scopus:'',
-            birthday:'',
-            login:'',
-            password:'',
-            errors:{
+            let newTeatcher ={  //Создаём обьект нового преподавателя, чтобы потом отправить на сервер
+                position:'Преподаватель', //Позиция статична, так как таблица преподавателей
+                rank_id: null,//this.state.rank_id, //сейчас статично null потом поменять
+                degree_id:null,//this.state.degree_id, //сейчас статично null потом поменять
+                rate:this.state.rate,
+                hours_worked:this.state.hourse_worked,
+                rinc:this.state.rinc,
+                web_of_science:this.state.web_of_science,
+                scopus:this.state.scopus,
+                name:this.state.name,
+                surname:this.state.surname,
+                patronymic:this.state.patronymic,
+                birthday:this.state.birthday,
+                phone:this.state.phone,
+                email:this.state.email,
+                status:2,//статично
+                role:4,//статично
+                sub_unit_id:1,//не знаю что это
+                login:this.state.login.trim(),
+                password:this.state.password.trim()
+            }
+
+            data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
+                position:'Преподаватель',
+                rank_id:this.state.rank_id,
+                degree_id:this.state.degree_id,
+                rate:this.state.rate,
+                hourse_worked:this.state.hourse_worked,
+                rinc:this.state.rinc,
+                web_of_science:this.state.web_of_science,
+                scopus:this.state.scopus,
+                name:this.state.name,
+                surname:this.state.surname,
+                patronymic:this.state.patronymic,
+                birthday:this.state.birthday,
+                phone:this.state.phone,
+                email:this.state.email,
+                status:2,
+                role:4,
+                sub_unit_id:1,
+                login:this.state.login,
+                password:this.state.password
+            })
+
+            this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
                 name:'',
-                surname:'',
+                secondName:'',
                 patronymic:'',
                 email:'',
                 phone:'',
@@ -380,35 +362,51 @@ export default class QuizList extends Component {
                 birthday:'',
                 login:'',
                 password:'',
+                errors:{
+                    name:'',
+                    surname:'',
+                    patronymic:'',
+                    email:'',
+                    phone:'',
+                    rank_id:'',
+                    degree_id:'',
+                    rate:'',
+                    hourse_worked:'',
+                    rinc:'',
+                    web_of_science:'',
+                    scopus:'',
+                    birthday:'',
+                    login:'',
+                    password:'',
+                }
+                
+            })
+            console.log(this.state.data);// выведем обьект с данными для проверки
+            this.setState({openModal:false})//Закрываем модальное окно добавления преподавателя
+
+            let url = 'http://dashboard.kholodov.xyz/api/teachers' //ссылка для запроса к таблице преподаавтелей
+            const token = localStorage.getItem('token')// взяли токен
+
+            try {
+                const response = await fetch(url, {
+                method: 'POST', // или 'PUT'
+                body: JSON.stringify(newTeatcher), // данные могут быть 'строкой' или {объектом}!
+                headers: {
+                    'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                    'Authorization': `Bearer ${token}`
+                }
+                });
+                const json = await response.json();
+                console.log('Успех:', JSON.stringify(json));// результат запроса
+                console.log(newTeatcher)//выводит обьект того, что добавлено на сервер
+                newTeatcher = {}//обнулили буферный обьект для нового преподавателя
+            } catch (error) {
+                console.error('Ошибка:', error); //выдаёт ошибку в консоль
             }
             
-        })
-        console.log(this.state.data);// выведем обьект с данными для проверки
-        this.setState({openModal:false})//Закрываем модальное окно добавления преподавателя
+            }   
 
-        let url = 'http://dashboard.kholodov.xyz/api/teachers' //ссылка для запроса к таблице преподаавтелей
-        const token = localStorage.getItem('token')// взяли токен
-
-        try {
-            const response = await fetch(url, {
-              method: 'POST', // или 'PUT'
-              body: JSON.stringify(newTeatcher), // данные могут быть 'строкой' или {объектом}!
-              headers: {
-                'Content-Type': 'application/json',//заголовки обязателны для получения данных
-                'Authorization': `Bearer ${token}`
-            }
-            });
-            const json = await response.json();
-            console.log('Успех:', JSON.stringify(json));// результат запроса
-            console.log(newTeatcher)//выводит обьект того, что добавлено на сервер
-            newTeatcher = {}//обнулили буферный обьект для нового преподавателя
-          } catch (error) {
-            console.error('Ошибка:', error); //выдаёт ошибку в консоль
-          }
-        
-        }   
-
-    }
+        }
 
     
 
@@ -455,9 +453,6 @@ export default class QuizList extends Component {
     
 
     render() {
-
-
-
         //количество строк на одну страницу
         const pageSize = 10
 
@@ -469,7 +464,7 @@ export default class QuizList extends Component {
         const pageCount = Math.ceil(filtredData.length / pageSize)
 
 
-        const displayData = _.chunk(filtredData, pageSize)[this.state.currentPage]
+        const displayData = _.chunk(filtredData, pageSize)[this.state.currentPage]// 
         return (
             //отрисовка таблицы в базовом контейнере bootstrap
             <div className="container">
@@ -542,7 +537,7 @@ export default class QuizList extends Component {
     }
     <Dialog 
             open={this.state.openModal} 
-            onClose={()=> this.setState({openModal:false})} 
+            onClose={this.onClose.bind(this)} 
             aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Добавление нового преподавателя</DialogTitle>
         <DialogContent>

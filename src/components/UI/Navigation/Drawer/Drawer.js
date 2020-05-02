@@ -10,8 +10,6 @@ const links = [
     {to: '/rpd', label:'РПД', exact:false},
     {to: '/pd', label:'ПД', exact:false},
     {to: '/group', label:'Группы', exact:false},
-
-    //{to: '/quiz-creator', label:'Create', exact:false}
 ]
 
 

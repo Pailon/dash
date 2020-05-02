@@ -1,8 +1,5 @@
 import React, {useState} from 'react'
 
-//компонент поиска данных в таблице написанный на react hooks
-
-
 export default (props) => {
 
     const [value, setValue] = useState('') 
