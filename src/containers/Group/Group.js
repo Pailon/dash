@@ -4,17 +4,45 @@ import _ from 'lodash'
 import ReactPaginate from 'react-paginate';
 import GroupSearch from './GroupSearch'
 import GroupTable from './GroupTable'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Alert from '../../components/UI/Alert/Alert'
 
 
-export default class Group extends Component{
-    state ={
+export default class Group extends Component {
+
+    
+    constructor(props){ //конструктор этого класса
+        super(props);
+        this.onUpdate = this.onUpdate.bind(this)
+    }
+    
+    state = {
         data: [],
         isLoading: true, //отображать загрузку или нет
         sort: 'asc',  //desc сортировка - asc - это по возрастанию, desc - по убыванию
         sortField: 'person_id', // параметр для сортировки, person_id - дефолтный
         row: null, // поле для хранения строки для её будущего отображения отдельно
         currentPage: 0, //количество страниц на данный момент
-        search:'' //что искать
+        search: '', //что искать
+        openModal: false,// видно ли модальное окно
+        errorModal: false,
+        openAlert: false,//видно ли окно оповещения
+        color: '',//значение для окна оповещения - его цвет
+        text: '',//текст окна оповещения
+
+        name: '',
+        specialties_id: '',
+
+        errors: {
+            name: '',
+            specialties_id: '',
+        }
     }
 
     async componentDidMount() {
@@ -33,11 +61,11 @@ export default class Group extends Component{
                     'Authorization': `Bearer ${token}`
                 }
             })
-             console.log('Я ответ', response)
+            console.log('Я ответ', response)
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-             console.log('Я дата', data)
+            console.log('Я дата', data)
             this.setState({ // обновляем state
                 isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -54,15 +82,17 @@ export default class Group extends Component{
     onSort = (sortField) => { // функция для сортировки данных в таблице
         const clonedData = this.state.data.concat() // клонируем массив из state чтобы случайно не изменить исходные данные
         const sort = this.state.sort === 'asc' ? 'desc' : 'asc' // выбор метода сортировки
+        const sortArrow = this.state.sortArrow === 'arrow-up' ? 'arrow-down' : 'arrow-up'//выбор в какую сторону отображать "стрелочку"
 
         const data = _.orderBy(clonedData, sortField, sort) // создание нового объекта data при помощи библиотеки logash,  
-                                                            // которая на вход получала 3 параметра, необходимый массив, по какому полю фильтровать
-                                                            // и в какую сторону фильтровать
+        // которая на вход получала 3 параметра, необходимый массив, по какому полю фильтровать
+        // и в какую сторону фильтровать
 
         this.setState({
             data,
             sort,
-            sortField
+            sortField,
+            sortArrow
         })
 
     }
@@ -77,29 +107,171 @@ export default class Group extends Component{
         this.setState({ currentPage: selected })
     }
 
-    searchHandler = search =>{
+    searchHandler = search => {
         // обновляет переменную для поиска данных и обнуляет счеткик страниц
-        this.setState({search, currentPage: 0})
+        this.setState({ search, currentPage: 0 })
     }
 
 
-    getFiltredData(){
-        const {data, search} = this.state
+    getFiltredData() {
+        const { data, search } = this.state
         //фильтрация данных
 
 
-        if (!search){//если нечего фильтровать то отображать все данные
+        if (!search) {//если нечего фильтровать то отображать все данные
             return data
         }
 
         //иначе получаем поле для фильтра, приводим его к нижнему регистру на всякий случай на будущее, используем 
         //из state поле search и на основе него проводим поиск
-        return data.filter(item=>{
-            return item['id'].toLowerCase().includes(search.toLowerCase()) 
-            || item['specialties_id'].toLowerCase().includes(search.toLowerCase())
-            || item['name'].toLowerCase().includes(search.toLowerCase())
+        return data.filter(item => {
+            return item['id'].toLowerCase().includes(search.toLowerCase())
+                || item['name'].toLowerCase().includes(search.toLowerCase())
+                || item['specialties_code'].toLowerCase().includes(search.toLowerCase())
+                || item['specialties_name'].toLowerCase().includes(search.toLowerCase())
+                || item['sub_unit_name'].toLowerCase().includes(search.toLowerCase())
+
         })
     }
+
+    newGroup = () => { //открыть модальное окно для добавления преподавателя
+        this.setState({ openModal: true })
+
+    }
+
+    onClose = () => {
+        //функция зарытия модального окна без завершения добавления преподавателя
+        //обнуления буферных данных, и закрытие самого окна
+        this.setState({
+            openModal: false,
+            name: '',
+            specialties_id: '',
+            errors: {
+                name: '',
+                specialties_id: '',
+            }
+        })
+    }
+
+    async onAdd() {  //Функция добавления нового преподавателя в таблицу и на сервер
+        let errors = {}
+
+        // if (!this.state.rank_id) {
+        //     errors.rank_id = 'Это поле не может быть пустым'
+        // }
+        // if (!this.state.degree_id) {
+        //     errors.degree_id = 'Это поле не может быть пустым' 
+        // }
+
+
+        //Серия проверок на пустоту полей, если пусто, то мы добавим в state сообщение об ошибке, для будущего отображения
+        //Можно кастомизировать ошибку для каждого поля
+        if (!this.state.name) {
+            errors.name = 'Это поле не может быть пустым'
+        }
+        if (!this.state.specialties_id) {
+            errors.specialties_id = 'Это поле не может быть пустым'
+        }
+
+
+        //Если хотя бы одно из этих полей пустое мы обновляем state и добавляем туда сообщения об ошибках в пустых полях
+        //В ином случае, если все поля заполнены мы берем все данные из полей и производим запрос к серверу
+        if (errors.name || errors.specialties_id) {
+            this.setState({ errors }) //добавление ошибок в state
+            console.log(this.state.data);//для проверки выводим в консоль - временно
+            return
+        } else {
+            let data = this.state.data // клонируем обьект data из state
+
+            let newGroup = {  //Создаём обьект нового преподавателя, чтобы потом отправить на сервер
+                name: this.state.name,
+                specialties_id: this.state.specialties_id,
+            }
+
+            data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
+                name: this.state.name,
+                specialties_id: this.state.specialties_id,
+            })
+
+            this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
+                name: '',
+                specialties_id: '',
+                errors: {
+                    name: '',
+                    specialties_id: '',
+                }
+            })
+            console.log(this.state.data);// выведем обьект с данными для проверки
+            this.setState({ openModal: false })//Закрываем модальное окно добавления преподавателя
+
+            let url = 'http://dashboard.kholodov.xyz/api//groups' //ссылка для запроса к таблице преподаавтелей
+            const token = localStorage.getItem('token')// взяли токен
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST', // или 'PUT'
+                    body: JSON.stringify(newGroup), // данные могут быть 'строкой' или {объектом}!
+                    headers: {
+                        'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const json = await response.json();
+                console.log('Успех:', JSON.stringify(json));// результат запроса
+                console.log(newGroup)//выводит обьект того, что добавлено на сервер
+                newGroup = {}//обнулили буферный обьект для нового преподавателя
+            } catch (error) {
+                console.error('Ошибка:', error); //выдаёт ошибку в консоль
+            }
+
+        }
+
+    }
+
+    async onUpdate(data, item, id, oldData) { //функция обновления данных в таблице, получает от таблицы
+        //console.log(data)                    //data-значение которое меняют item-весь обьект, в котором значение меняют id oldData 
+        //console.log(item)                    //id-параметр из обьекта item чтобы проще производить запрос к api oldData-значение до изменения  
+        //console.log(oldData)
+
+        if (data != oldData) { //узнаём изменилось ли значение функции, если нет, то зачем производить запрос?
+
+            let url = `http://dashboard.kholodov.xyz/api/groups/${id}` //ссылка для запросов, куда подставляется id
+            const token = localStorage.getItem('token')//берем токен и локального хранилищя
+
+            let putItem = {
+                name: item.name,
+                specialties_id: item.specialties_id
+            }
+
+            try {
+                const response = await fetch(url, { //производим запрос
+                    method: 'PUT', // или 'POST'
+                    body: JSON.stringify(putItem), // данные могут быть 'строкой' или {объектом}!
+                    headers: {
+                        'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const json = await response.json();
+                console.log('Результат:', JSON.stringify(json));
+                //console.log(item)
+                this.setState({ openAlert: true, color: 'success', text: 'Изменено' })//при успешном отображении отображаем окно об успешноти
+                item = {}
+            } catch (error) {
+                console.error('Ошибка:', error);//Отображаем ошибку в консоль
+                this.setState({ openAlert: true, color: 'danger', text: 'Произошла ошибка' })//Выводим окно ошибки
+            }
+        } else {
+            console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
+        }
+
+    }
+
+    onCloseAlert = () => {
+        this.setState({ openAlert: false }) // закрыть окно оповещения
+    }
+
+
 
     render() {
         //количество строк на одну страницу
@@ -113,22 +285,42 @@ export default class Group extends Component{
         //вычисляем сколько всего будет страниц исходя из общего количества данных и данных на 1 страницу
         const pageCount = Math.ceil(filtredData.length / pageSize)
 
-        
+
         const displayData = _.chunk(filtredData, pageSize)[this.state.currentPage]
         return (
             //отрисовка таблицы в базовом контейнере bootstrap
             <div className="container">
                 {
+                    this.state.openAlert ?  //компонент вывода предупреждения
+                        <Alert
+                            color={this.state.color} //цвет оповещения
+                            text={this.state.text} // текст в оповещении
+                            onCloseAlert={this.onCloseAlert} // функция как закрыть это окошко
+                        />
+                        : null
+                }
+                {
                     this.state.isLoading
                         ? <Loader /> //пока не получены данные отображается loader иначе отображам таблицу
-                        : <React.Fragment> 
-                            <GroupSearch onSearch={this.searchHandler}/>
+                        : <React.Fragment>
+                            <GroupSearch onSearch={this.searchHandler} />
+
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={this.newGroup}
+                                className="mb-2"
+                            >Добавить <br />группу</Button>
+
+
                             <GroupTable
                                 data={displayData}
                                 onSort={this.onSort}
                                 sort={this.state.sort}
                                 sortField={this.state.sortField}
                                 onRowSelect={this.onRowSelect}
+                                sortArrow={this.state.sortArrow}
+                                onUpdate={this.onUpdate}
                             />
                         </React.Fragment>
 
@@ -157,12 +349,57 @@ export default class Group extends Component{
                             forcePage={this.state.currentPage}
                         /> : null
                 }
+                <Dialog
+                    open={this.state.openModal}
+                    onClose={this.onClose.bind(this)}
+                    aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Добавление новой группы</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Введите данные о новой группе
+          </DialogContentText>
+                        <TextField   //все модули TextFiled это поля ввода имеющие несколько ключевых свойств
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="Номер группы" //описание поля ввода
+                            type="text" //тип вводимой информации
+                            fullWidth={true}
+                            error={!!this.state.errors.name}// true or false, отображать ошибку или нет
+                            helperText={this.state.errors.name} // текст отображаемый при ошибке
+                            onChange={(event) => this.setState({ name: event.target.value.trim() })} //функция которая вызывается при изменении значения
+                        //функция записывает новое значение при  
+                        //каждом изменении в нужную  буферную переменную в state
+                        />
+                        <TextField
+                            margin="dense"
+                            id="specialties_id"
+                            label="ID специальности"
+                            type="text"
+                            fullWidth={true}
+                            error={!!this.state.errors.specialties_id}
+                            helperText={this.state.errors.link_trello}
+                            onChange={(event) => this.setState({ specialties_id: event.target.value.trim() })}
+                        />
 
-                {/* {
-                    this.state.row //отрисовка окна дополнительных данных
-                        ? <DetailRowView person={this.state.row} />
-                        : null
-                } */}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button  //компонент кнопки закрытия модального окна
+                            onClick={this.onClose.bind(this)}
+                            color="primary"
+                            variant="contained"
+                        >
+                            Отмена
+                        </Button>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={this.onAdd.bind(this)}
+                        >
+                            Подтвердить
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         )
     }

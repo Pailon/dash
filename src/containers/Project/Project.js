@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import classes from './Project.module.css'
 import Loader from '../../components/UI/Loader/Loader'
 import _ from 'lodash'
 import ReactPaginate from 'react-paginate';

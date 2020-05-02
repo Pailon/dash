@@ -1,5 +1,5 @@
 import React from 'react'
-import classes from './Project'
+import classes from './Project.module.css'
 //компонент отображения таблицы
 
 var FA = require('react-fontawesome')
@@ -36,7 +36,7 @@ export default props => (
         </thead>
         <tbody>
             {props.data.map(item => (
-                <tr key={item.id + item.specialties_id} onClick={props.onRowSelect.bind(null, item)}>
+                <tr key={item.id + item.specialties_id} onClick={props.onRowSelect.bind(null, item)} spellCheck="false">
                     <td>{item.id}</td>
                     <td
                         className={classes.edit}
