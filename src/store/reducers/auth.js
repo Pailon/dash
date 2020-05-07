@@ -1,4 +1,3 @@
-import { act } from "react-dom/test-utils";
 import {AUTH_SUCCESS, AUTH_LOGOUT} from '../actions/actionsTypes'
 
 const initialstate = {

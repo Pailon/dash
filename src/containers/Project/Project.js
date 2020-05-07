@@ -13,6 +13,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import {link} from "../../Link";
 
 
 export default class Project extends Component {
@@ -58,7 +59,8 @@ export default class Project extends Component {
 
         //в этом методе происходит запрос к серверу по ссылке из параметра url
 
-        let url = 'http://dashboard.kholodov.xyz/api/projects'
+        //let url = 'http://dashboard.kholodov.xyz/api/projects'
+        let url = link + '/projects'
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
         //console.log(token)
         try {

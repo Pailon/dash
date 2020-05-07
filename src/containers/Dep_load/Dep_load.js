@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import Loader from '../../components/UI/Loader/Loader'
 import _ from 'lodash'
 import ReactPaginate from 'react-paginate';
-import Dep_loadSearch from './Dep_loadSearch'
-import Dep_loadTable from './Dep_loadTable'
+import Dep_loadSearch from './Dep_loadSearch.js'
+import Dep_loadTable from './Dep_loadTable.js'
+import {link} from "../../Link";
 
 
 export default class Dep_load extends Component{
+
     state ={
         data: [],
         isLoading: true, //отображать загрузку или нет
@@ -14,14 +16,13 @@ export default class Dep_load extends Component{
         sortField: 'person_id', // параметр для сортировки, person_id - дефолтный
         row: null, // поле для хранения строки для её будущего отображения отдельно
         currentPage: 0, //количество страниц на данный момент
-        search:'' //что искать
+        search:'', //что искать
     }
 
     async componentDidMount() {
-
         //в этом методе происходит запрос к серверу по ссылке из параметра url
-
-        let url = 'http://dashboard.kholodov.xyz/api/dep_load'
+        //let url = 'http://dashboard.kholodov.xyz/api/dep_load' //localhost:3000
+        let url = link + '/dep_load'
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
         //console.log(token)
         try {
@@ -33,11 +34,11 @@ export default class Dep_load extends Component{
                     'Authorization': `Bearer ${token}`
                 }
             })
-             console.log('Я ответ', response)
+            //console.log('Я ответ', response)
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-             console.log('Я дата', data)
+            //console.log('Я дата', data)
             this.setState({ // обновляем state
                 isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка

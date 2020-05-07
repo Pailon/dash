@@ -3,7 +3,6 @@ import classes from './QuizList.module.css'
 import Loader from '../../components/UI/Loader/Loader'
 import Table from '../../components/UI//Table/Table'
 import _ from 'lodash'
-import DetailRowView from '../../components/UI/DetailRowView/DetailRowView'
 import ReactPaginate from 'react-paginate';
 import TableSearch from '../../containers/TableSearch/TableSearch'
 import Button from '@material-ui/core/Button'
@@ -14,6 +13,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Alert from '../../components/UI/Alert/Alert'
+import {link} from "../../Link";
 
 
 //var item = ''
@@ -86,53 +86,32 @@ export default class QuizList extends Component {
 
         //в этом методе происходит запрос к серверу по ссылке из параметра url
 
-        let url = 'http://dashboard.kholodov.xyz/api/teachers'
+        //let url = 'http://dashboard.kholodov.xyz/api/teachers'
+        let url1= link + '/teachers'
+        //console.log(url1)
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
-        console.log(token) //проверяем взяли ли токен
+        //console.log(token) //проверяем взяли ли токен
         try {
 
-            const response = await fetch(url, {
+            const response = await fetch(url1, {
                 method: 'GET', //метот для получения данных
                 headers: {
                     'Content-Type': 'application/json',//заголовки обязателны для получения данных
                     'Authorization': `Bearer ${token}`
                 }
             })
-             console.log('Я ответ', response)
+             //console.log('Я ответ', response)
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я ответ', data)
+            //console.log('Я ответ', data)
             this.setState({ // обновляем state
                 isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
             })
         } catch (e) { // на случай ошибки
             console.log(e)
-        }
-        //вариантивно нужный код, для альтернативного редактирования данных в таблице, не доработан, удалять жалко
-        // var tds = document.querySelectorAll('td')
-        //     for(var i=0; i<tds.length; i++){
-        //         tds[i].addEventListener('click', function func(){
-        //             var input = document.createElement('input')
-        //             input.value = this.innerHTML
-        //             this.innerHTML = ''
-        //             this.appendChild(input)
-        //             var td = this
-        //             input.addEventListener('blur', function(){
-        //                 td.innerHTML = this.value
-        //                 item = this.value
-        //                 td.addEventListener('click', func)
-        //             })
-        //             this.removeEventListener('click', func)
-        //             console.log(item);
-        //         })
-        // }
-        
-
-
-        
-        
+        }       
     }
 
     onSort = (sortField) => { // функция для сортировки данных в таблице
@@ -170,12 +149,9 @@ export default class QuizList extends Component {
     getFiltredData() {
         const { data, search } = this.state
         //фильтрация данных
-
-
         if (!search) {//если нечего фильтровать то отображать все данные
             return data
         }
-
         //иначе получаем поле для фильтра, приводим его к нижнему регистру на всякий случай на будущее, используем 
         //из state поле search и на основе него проводим поиск
         return data.filter(item => {
@@ -188,7 +164,6 @@ export default class QuizList extends Component {
 
     newTeatcher = () => { //открыть модальное окно для добавления преподавателя
         this.setState({openModal:true})
-
     }
 
     onClose = () =>{
@@ -229,23 +204,12 @@ export default class QuizList extends Component {
                 birthday:'',
                 login:'',
                 password:'',
-            }
-            
+            }  
         })
-
     }
 
         async onAdd() {  //Функция добавления нового преподавателя в таблицу и на сервер
             let errors = {}
-
-            // if (!this.state.rank_id) {
-            //     errors.rank_id = 'Это поле не может быть пустым'
-            // }
-            // if (!this.state.degree_id) {
-            //     errors.degree_id = 'Это поле не может быть пустым' 
-            // }
-
-
             //Серия проверок на пустоту полей, если пусто, то мы добавим в state сообщение об ошибке, для будущего отображения
             //Можно кастомизировать ошибку для каждого поля
             if (!this.state.rate) {
@@ -287,8 +251,6 @@ export default class QuizList extends Component {
             if (!this.state.password) {
                 errors.password = 'Это поле не может быть пустым'
             }
-
-
             //Если хотя бы одно из этих полей пустое мы обновляем state и добавляем туда сообщения об ошибках в пустых полях
             //В ином случае, если все поля заполнены мы берем все данные из полей и производим запрос к серверу
             if(/*errors.rank_id || errors.degree_id ||*/ errors.rate
@@ -323,7 +285,6 @@ export default class QuizList extends Component {
                 login:this.state.login.trim(),
                 password:this.state.password.trim()
             }
-
             data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
                 position:'Преподаватель',
                 rank_id:this.state.rank_id,
@@ -345,7 +306,6 @@ export default class QuizList extends Component {
                 login:this.state.login,
                 password:this.state.password
             })
-
             this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
                 name:'',
                 secondName:'',
@@ -379,7 +339,6 @@ export default class QuizList extends Component {
                     login:'',
                     password:'',
                 }
-                
             })
             console.log(this.state.data);// выведем обьект с данными для проверки
             this.setState({openModal:false})//Закрываем модальное окно добавления преподавателя
@@ -403,9 +362,7 @@ export default class QuizList extends Component {
             } catch (error) {
                 console.error('Ошибка:', error); //выдаёт ошибку в консоль
             }
-            
-            }   
-
+            }  
         }
 
     
@@ -444,13 +401,9 @@ export default class QuizList extends Component {
         }
     
     }
-
-
     onCloseAlert = () =>{
         this.setState({openAlert:false}) // закрыть окно оповещения
     }
-
-    
 
     render() {
         //количество строк на одну страницу
@@ -459,10 +412,8 @@ export default class QuizList extends Component {
         //вызываем функцию поиска
         const filtredData = this.getFiltredData()
 
-
         //вычисляем сколько всего будет страниц исходя из общего количества данных и данных на 1 страницу
         const pageCount = Math.ceil(filtredData.length / pageSize)
-
 
         const displayData = _.chunk(filtredData, pageSize)[this.state.currentPage]// 
         return (
@@ -498,7 +449,6 @@ export default class QuizList extends Component {
                                 onRowSelect={this.onRowSelect}
                                 sortArrow={this.state.sortArrow}
                                 onUpdate={this.onUpdate}
-                                itemActive={this.state.itemActive}
                             />
                         </React.Fragment>
 
@@ -554,8 +504,8 @@ export default class QuizList extends Component {
             error={!!this.state.errors.name}// true or false, отображать ошибку или нет
             helperText={this.state.errors.name} // текст отображаемый при ошибке
             onChange={(event)=>this.setState({name :event.target.value.trim()})} //функция которая вызывается при изменении значения
-                                                                          //функция записывает новое значение при  
-                                                                          //каждом изменении в нужную  буферную переменную в state
+                                                                                //функция записывает новое значение при  
+                                                                                //каждом изменении в нужную  буферную переменную в state
           />
         <TextField
             margin="dense"
@@ -610,29 +560,6 @@ export default class QuizList extends Component {
             onChange={(event)=>this.setState({email :event.target.value.trim()})}
             defaultValue='myMail@mail.ru'
           /> 
-          {/* <TextField
-            margin="dense"
-            id="rank_id"
-            label="rank_id преподавателя"
-            type="text"
-            fullWidth = {true}
-            error={!!this.state.errors.rank_id}
-            helperText={this.state.errors.rank_id}
-            onChange={(event)=>this.setState({rank_id :event.target.value})}
-            defaultValue='null'
-          /> */}
-
-        {/* <TextField
-            margin="dense"
-            id="degree_id"
-            label="degree_id преподавателя"
-            type="text"
-            fullWidth = {true}
-            error={!!this.state.errors.degree_id}
-            helperText={this.state.errors.degree_id}
-            onChange={(event)=>this.setState({degree_id :event.target.value})}
-            defaultValue='null'
-          /> */}
 
         <TextField
             margin="dense"

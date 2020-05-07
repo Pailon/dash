@@ -12,6 +12,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Alert from '../../components/UI/Alert/Alert'
+import {link} from "../../Link";
 
 
 export default class Group extends Component {
@@ -49,7 +50,9 @@ export default class Group extends Component {
 
         //в этом методе происходит запрос к серверу по ссылке из параметра url
 
-        let url = 'http://dashboard.kholodov.xyz/api/groups'
+        //let url = 'http://dashboard.kholodov.xyz/api/groups'
+        let url = link + '/groups'
+
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
         //console.log(token)
         try {

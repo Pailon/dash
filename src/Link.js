@@ -1,0 +1,1 @@
+export const link = 'http://dashboard.kholodov.xyz/api/'

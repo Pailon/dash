@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom'
 import Curator from './Curator/Curator.js'
 import Discip from './Discip/Discip'
 import classes from './Teatcher.module.css'
+import {link} from "../../Link";
 
 
 
@@ -19,7 +20,9 @@ export default class Teatcher extends Component{
 
     async componentDidMount(){
 
-        let url = 'http://dashboard.kholodov.xyz/api/teachers'
+        //let url = 'http://dashboard.kholodov.xyz/api/teachers'
+        let url = link + '/teachers'
+
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
         //console.log(token) //проверяем взяли ли токен
         try {

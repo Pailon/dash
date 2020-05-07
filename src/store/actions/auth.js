@@ -1,12 +1,13 @@
 import {AUTH_SUCCESS, AUTH_LOGOUT} from '../actions/actionsTypes'
+import {link} from "../../Link";
 
 export function auth(login, password, isLogin){
     return async dispatch => {
 
-        let url = 'http://dashboard.kholodov.xyz/api/register'
+        let url = link + '/register'
 
         if(isLogin){
-            url = 'http://dashboard.kholodov.xyz/api/users/login'
+            url = link + 'login'
         }
 
         fetch(url, { //http://dashboard.kholodov.xyz/api/

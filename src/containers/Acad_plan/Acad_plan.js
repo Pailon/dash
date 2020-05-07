@@ -4,6 +4,7 @@ import _ from 'lodash'
 import ReactPaginate from 'react-paginate';
 import Acad_planSearch from './Acad_planSearch'
 import Acad_planTable from './Acad_planTable'
+import {link} from "../../Link";
 
 
 export default class Acad_plan extends Component{
@@ -21,7 +22,8 @@ export default class Acad_plan extends Component{
 
         //в этом методе происходит запрос к серверу по ссылке из параметра url
 
-        let url = 'http://dashboard.kholodov.xyz/api/acad_plan'
+        // let url = 'http://dashboard.kholodov.xyz/api/acad_plan'
+        let url = link + '/acad_plan'
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
         //console.log(token)
         try {
