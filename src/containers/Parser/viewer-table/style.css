@@ -1,0 +1,13 @@
+.divTable{
+	display: table;
+	width: 100%;
+}
+
+.divTableBody {
+	display: table-row-group;
+}
+
+.divTableHeader {
+	display: table-row-group;
+	background-color: rgb(195, 230, 207);
+}

@@ -14,6 +14,7 @@ import Specialty from './containers/Specialty/Specialty';
 import Acad_plan from './containers/Acad_plan/Acad_plan';
 import Dep_load from './containers/Dep_load/Dep_load';
 import Project from './containers/Project/Project';
+import { Parser } from './containers/Parser/parser';
 
 
 class App extends Component {
@@ -44,6 +45,7 @@ class App extends Component {
         <Route path="/dep_load" component={Dep_load}/>
         <Route path="/project" component={Project}/>
         <Route path="/specialties" component={Specialty}/>
+        <Route path="/parser" component={Parser}/>
         <Route path="/logout" component={Logout}/>
         <Redirect to={'/'}/>
       </Switch>

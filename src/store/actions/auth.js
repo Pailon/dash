@@ -4,10 +4,10 @@ import {link} from "../../Link";
 export function auth(login, password, isLogin){
     return async dispatch => {
 
-        let url = link + '/register'
+        let url = link + '/users/login'
 
         if(isLogin){
-            url = link + 'login'
+            url = link + '/users/login'
         }
 
         fetch(url, { //http://dashboard.kholodov.xyz/api/

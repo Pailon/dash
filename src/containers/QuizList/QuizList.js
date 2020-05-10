@@ -87,13 +87,13 @@ export default class QuizList extends Component {
         //в этом методе происходит запрос к серверу по ссылке из параметра url
 
         //let url = 'http://dashboard.kholodov.xyz/api/teachers'
-        let url1= link + '/teachers'
+        let url = link + '/teachers'
         //console.log(url1)
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
         //console.log(token) //проверяем взяли ли токен
         try {
 
-            const response = await fetch(url1, {
+            const response = await fetch(url, {
                 method: 'GET', //метот для получения данных
                 headers: {
                     'Content-Type': 'application/json',//заголовки обязателны для получения данных
