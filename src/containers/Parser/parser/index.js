@@ -94,35 +94,51 @@ nameSer(event) {
   this.setState({search_Text_Value: event.target.value});
 }
 
-uploadData(){
+async uploadData(){
+
+
+    const token = localStorage.getItem('token')// взяли токен
+    console.log(token)
 
     var days = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
     var months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
         "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
 
     let myDate = new Date()
-    let today = myDate.getDate() + " " + months[myDate.getMonth()] +
-        " " + (myDate.getFullYear()) + ", " + days[myDate.getDay()];
+    //console.log(myDate);
+    
+    // let today = myDate.getDate() + " " + months[myDate.getMonth()] +
+    //     " " + (myDate.getFullYear()) + ", " + days[myDate.getDay()];
 
-    let nextYear = myDate.getDate() + " " + months[myDate.getMonth()] +
-        " " + (myDate.getFullYear()+1) + ", " + days[myDate.getDay()];
+    let today = Date.now()
+    let day = "2017-09-01 09:00:00"
 
-    let nextModif = myDate.getDate() + " " + months[myDate.getMonth()+5] +
-        " " + (myDate.getFullYear()) + ", " + days[myDate.getDay()+6];
+    // let nextYear = myDate.getDate() + " " + months[myDate.getMonth()] +
+    //     " " + (myDate.getFullYear()+1) + ", " + days[myDate.getDay()];
 
-      let fetchData = {
-          departament_id:1,
-          begin_date:today,
-          end_date:nextYear,
-          modified_date:nextModif,
+    // let nextModif = myDate.getDate() + " " + months[myDate.getMonth()+5] +
+    //     " " + (myDate.getFullYear()) + ", " + days[myDate.getDay()+6];
+
+      let fetchDataAcad = {
+        modified_date: "2017-09-01 09:00:00",
+        specialties_id: 2,
           disciplines:[]
-
       }
+
+      let fetchDataDep = {
+        department_id: 1,
+        begin_date: "2016-09-01T09:00:00",
+        end_date: "2016-09-01T09:00:00",
+        modified_date: "2016-09-01T09:00:00",
+        disciplines:[]
+    }
+
+    let groops = []
+
     //console.log(fetchData)
     if (this.state.data == 0){
       console.log('Не загруженны данные')
     }else{
-      //console.log('Щас посмотрим')
         let sem_number = 1
         if(this.state.data[0].A == 'Расчет часов учебной работы по кафедре Инфокогнитивные технологии'){
             console.log('Нагрузка')
@@ -145,12 +161,14 @@ uploadData(){
                 if(bufData.C != undefined){
                     let b = bufData.C.split(';')
                     num_groups = b.slice(0, -1)
+                    groops.push(num_groups)
                 }
 
-                if (sem || itogo) continue;
+                if (sem || itogo) continue; //TODO Возможно стоит сделать break на момоенте обнаружения Итого
 
 
                 if(!!bufData.A){
+
                     let newData = {
                         name: bufData.A!==undefined ? bufData.A : null,
                         hours_con_project:bufData.H!==undefined ? bufData.H : null,
@@ -170,9 +188,31 @@ uploadData(){
                         groups:num_groups,
                         is_approved:false
                     }
-                    fetchData.disciplines.push(newData)
+                    fetchDataDep.disciplines.push(newData)
                 }
 
+            }
+
+            console.log(fetchDataDep)
+            console.log(groops)
+
+            let url = 'http://dashboard.kholodov.xyz/api/dep_load' //ссылка для запроса к таблице преподаавтелей
+            try {
+                const response = await fetch(url, {
+                method: 'POST', // или 'PUT'
+                body: JSON.stringify(fetchDataDep), // данные могут быть 'строкой' или {объектом}!
+                headers: {
+                    'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                    'Authorization': `Bearer ${token}`
+                }
+                })
+                const res = await response;
+                //console.log('Успех:', JSON.stringify(json));// результат запроса
+                console.log('Ответ:',res);
+                
+                console.log(fetchDataDep)//выводит обьект того, что добавлено на сервер
+            } catch (error) {
+                console.error('Ошибка:', error); //выдаёт ошибку в консоль
             }
         }
 
@@ -190,6 +230,7 @@ uploadData(){
                 let arrayAG =[]
                 let arrayAI =[]
                 let arraySem =[]
+                let forsName
 
                 let myReg1 = /(БЛОК)/ //block
                 let myReg2 = /(Часть|часть)/ //part
@@ -210,12 +251,12 @@ uploadData(){
                     nameModule = bufData.F
                 }
 
-
                 if(bufData.D === undefined){
-                    bufData.D = '-1'
-
+                    if (block===true || part===true || module===true) continue;
+                    forsName = bufData.F
+                    bufData = this.state.data[i-1]
+                    bufData.F = forsName
                 }
-
                 if(bufData.D.length>1){
                     arrayD = bufData.D.split('.')
                 }
@@ -294,20 +335,38 @@ uploadData(){
                     semesters:arraySem,
                     is_optional: false
                 }
-                fetchData.disciplines.push(newData)
+                fetchDataAcad.disciplines.push(newData)
+            }
+            console.log(fetchDataAcad)
+
+            let url = 'http://dashboard.kholodov.xyz/api/acad_plan' //ссылка для запроса к таблице преподаавтелей
+            //const token = localStorage.getItem('token')// взяли токен
+            try {
+                const response = await fetch(url, {
+                method: 'POST', // или 'PUT'
+                body: JSON.stringify(fetchDataAcad), // данные могут быть 'строкой' или {объектом}!
+                headers: {
+                    'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                    'Authorization': `Bearer ${token}`
+                }
+                });
+                const res = await response;
+                console.log('Ответ:', res)// результат запроса
+                console.log(fetchDataAcad)//выводит обьект того, что добавлено на сервер
+            } catch (error) {
+                console.error('Ошибка:', error); //выдаёт ошибку в консоль
             }
 
         }else{
             console.log('differen table')
         }
 
-
-        console.log(fetchData)
-
-
-
     }
-}
+
+
+             
+        }
+
 
 
   render() {
@@ -315,13 +374,13 @@ uploadData(){
     
 
       return (
-      <div style={{'margin-left': '10%'}}>
+      <div style={{marginLeft: '10%'}}>
         <input type="file" id="file" accept={ SheetJSFT } onChange={this.handleChange} />
         {/* <button onClick={(e)=>this.loadClick(e)}>Загрузить с сервера</button> */}
-        <Button style={{'margin-left': '10px'}} color="primary" variant="contained" onClick={this.uploadData}>Загрузить на сервер</Button>
+        <Button style={{marginLeft: '10px'}} color="primary" variant="contained" onClick={this.uploadData}>Загрузить на сервер</Button>
         <br />
         <input type="text" value={this.state.search_Text_Value} onChange ={this.nameSer}  disabled = {(this.state.disabled)? "disabled" : ""} />
-        <Button style={{'margin-left': '10px'}} color="primary" variant="contained" type="button" onClick={this.search}>Поиск</Button>
+        <Button style={{marginLeft: '10px'}} color="primary" variant="contained" type="button" onClick={this.search}>Поиск</Button>
         <ViewerTable data={(this.state.search_Text==='') ? this.state.data : this.state.data_filtered} schema={ this.state.cols } filtered={this.state.search_Text!==""}></ViewerTable>
       </div>
     )

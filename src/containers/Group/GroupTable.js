@@ -26,11 +26,14 @@ export default props => (
                 <th onClick={props.onSort.bind(null, 'sub_unit_name')}>
                     Направление {props.sortField === 'sub_unit_name' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
+                <th onClick={props.onSort.bind(null, 'specialties_id: 2')}>
+                    ID Специальности {props.sortField === 'specialties_id: 2' ? <small><FA name={props.sortArrow} /></small> : null}
+                </th>
             </tr>
         </thead>
         <tbody>
             {props.data.map(item => (
-                <tr key={item.id + item.specialties_id} onClick={props.onRowSelect.bind(null, item)} spellCheck="false">
+                <tr key={Math.random()*100} onClick={props.onRowSelect.bind(null, item)} spellCheck="false">
                     <td
                         className={classes.edit}
                         contentEditable="true"
@@ -91,7 +94,21 @@ export default props => (
                         }}
                         suppressContentEditableWarning={true}
                     >{item.sub_unit_name}</td>
+                    <td
+                        className={classes.edit}
+                        contentEditable="true"
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        onBlur={(event) => {
+                            let oldData = item.specialties_id
+                            item.specialties_id = event.currentTarget.firstChild.data
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
+
+                        }}
+                        suppressContentEditableWarning={true}
+                    >{item.specialties_id}</td>
                 </tr>
+
+
             ))}
         </tbody>
 

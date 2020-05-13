@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from "react-router-dom";
 
 //компонент отображения таблицы
 
@@ -8,43 +9,48 @@ export default props => (
         <thead>
             <tr>
                 <th onClick={props.onSort.bind(null, 'id')}>
-                    ID {props.sortField === 'person_id' ? <small>{props.sort}</small> : null}   
+                    ID {props.sortField === 'id' ? <small>{props.sort}</small> : null}
                 </th>
-                {/* <th onClick={props.onSort.bind(null, 'specialties_id')}>
-                    Specialties_id {props.sortField === 'specialties_id' ? <small>{props.sort}</small> : null}
-                </th> */}
-                <th onClick={props.onSort.bind(null, 'name')}>
-                    Name {props.sortField === 'name' ? <small>{props.sort}</small> : null}
+                <th onClick={props.onSort.bind(null, 'department_name')}>
+                    Наименование {props.sortField === 'department_name' ? <small>{props.sort}</small> : null}
                 </th>
-                <th onClick={props.onSort.bind(null, 'code')}>
-                    Код {props.sortField === 'code' ? <small>{props.sort}</small> : null}
+                <th onClick={props.onSort.bind(null, 'begin_date')}>
+                    Дата начала {props.sortField === 'begin_date' ? <small>{props.sort}</small> : null}
                 </th>
-                <th onClick={props.onSort.bind(null, 'profile')}>
-                    Профиль {props.sortField === 'profile' ? <small>{props.sort}</small> : null}
+                <th onClick={props.onSort.bind(null, 'end_date')}>
+                    Дата окончания {props.sortField === 'end_date' ? <small>{props.sort}</small> : null}
                 </th>
-                <th onClick={props.onSort.bind(null, 'educ_form')}>
-                    Форма обучения {props.sortField === 'educ_form' ? <small>{props.sort}</small> : null}
+                <th onClick={props.onSort.bind(null, 'modified_date')}>
+                    Дата изменения {props.sortField === 'modified_date' ? <small>{props.sort}</small> : null}
                 </th>
-                <th onClick={props.onSort.bind(null, 'educ_programm')}>
-                    Программа обучения {props.sortField === 'educ_programm' ? <small>{props.sort}</small> : null}
+                <th>
+
                 </th>
-                <th onClick={props.onSort.bind(null, 'educ_years')}>
-                    Срок обучения {props.sortField === 'educ_years' ? <small>{props.sort}</small> : null}
-                </th>
-                <th onClick={props.onSort.bind(null, 'year_join')}>
-                    Дата окончания {props.sortField === 'year_join' ? <small>{props.sort}</small> : null}
-                </th>
-                {/* <th onClick={props.onSort.bind(null, 'sub_unit_id')}>
-                    Что то {props.sortField === 'sub_unit_id' ? <small>{props.sort}</small> : null}
-                </th> */}
                 
             </tr>
         </thead>
         <tbody>
             {props.data.map(item => (
-                <tr key={item.id + item.specialties_id} onClick={props.onRowSelect.bind(null, item)}>
+                <tr key={Math.random()*100} onClick={props.onRowSelect.bind(null, item)}>
                     <td>{item.id}</td>
-                    {/* <td>{item.specialties_id}</td> */}
+                    <td>{item.department_name}</td>
+                    <td>{item.begin_date}</td>
+                    <td>{item.end_date}</td>
+                    <td>{item.modified_date}</td>
+                    <td>
+                        <button
+                            type="button"
+                            className="btn btn-link"
+                        >
+                            <Link to={{
+                                pathname: "/dep_load_detail",
+                                propsId: item.id,
+                            }}>
+                                {/* <FA name='external-link-square-alt'/>  */}
+                                Подробнее
+                            </Link>
+                        </button>
+                    </td>
                 </tr>
             ))}
         </tbody>

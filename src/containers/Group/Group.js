@@ -159,14 +159,6 @@ export default class Group extends Component {
     async onAdd() {  //Функция добавления нового преподавателя в таблицу и на сервер
         let errors = {}
 
-        // if (!this.state.rank_id) {
-        //     errors.rank_id = 'Это поле не может быть пустым'
-        // }
-        // if (!this.state.degree_id) {
-        //     errors.degree_id = 'Это поле не может быть пустым' 
-        // }
-
-
         //Серия проверок на пустоту полей, если пусто, то мы добавим в state сообщение об ошибке, для будущего отображения
         //Можно кастомизировать ошибку для каждого поля
         if (!this.state.name) {
@@ -186,7 +178,7 @@ export default class Group extends Component {
         } else {
             let data = this.state.data // клонируем обьект data из state
 
-            let newGroup = {  //Создаём обьект нового преподавателя, чтобы потом отправить на сервер
+            let newGroup = {  //Создаём обьект новой группы, чтобы потом отправить на сервер
                 name: this.state.name,
                 specialties_id: this.state.specialties_id,
             }
@@ -207,7 +199,7 @@ export default class Group extends Component {
             console.log(this.state.data);// выведем обьект с данными для проверки
             this.setState({ openModal: false })//Закрываем модальное окно добавления преподавателя
 
-            let url = 'http://dashboard.kholodov.xyz/api//groups' //ссылка для запроса к таблице преподаавтелей
+            let url = 'http://dashboard.kholodov.xyz/api/groups' //ссылка для запроса к таблице преподаавтелей
             const token = localStorage.getItem('token')// взяли токен
 
             try {

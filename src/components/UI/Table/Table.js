@@ -107,7 +107,15 @@ export default props => (
                         suppressContentEditableWarning={true}
                     >{item.phone}</td>
                     <td>
-                        <button type="button" className="btn btn-link"><Link to={{pathname: "/teatcher", propsItem: item}}>Подробнее</Link></button>
+                        <button 
+                        type="button" 
+                        className="btn btn-link"
+                        >
+                            <Link to={{pathname: "/teatcher", propsItem: item}}> 
+                                {/* <FA name='external-link-square-alt'/>  */}
+                                Подробнее
+                            </Link>
+                        </button>
                     </td>
                 </tr>
             ))}

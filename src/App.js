@@ -15,6 +15,7 @@ import Acad_plan from './containers/Acad_plan/Acad_plan';
 import Dep_load from './containers/Dep_load/Dep_load';
 import Project from './containers/Project/Project';
 import { Parser } from './containers/Parser/parser';
+import Dep_load_detail from "./containers/Dep_load/Dep_load_detail/Dep_load_detail";
 
 
 class App extends Component {
@@ -36,6 +37,7 @@ class App extends Component {
         <Switch>
         {/* <Route path="/" component={Auth}/> */}
         <Route path="/pd" component={Pd}/>
+        <Route path="/dep_load_detail" component={Dep_load_detail}/>
         <Route path="/rpd" component={Rpd}/>
         <Route path="/" exact component={QuizList}/>
         <Route path="/group" component={Group}/>

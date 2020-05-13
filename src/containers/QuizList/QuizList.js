@@ -451,8 +451,6 @@ export default class QuizList extends Component {
                                 onUpdate={this.onUpdate}
                             />
                         </React.Fragment>
-
-
                 }
 
                 {

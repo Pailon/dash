@@ -38,7 +38,7 @@ export default class Dep_load extends Component{
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            //console.log('Я дата', data)
+            console.log('Я дата', data)
             this.setState({ // обновляем state
                 isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
