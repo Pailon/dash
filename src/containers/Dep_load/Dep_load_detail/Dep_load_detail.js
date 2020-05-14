@@ -125,10 +125,7 @@ export default class Dep_load_detail extends Component{
 
 
     render() {
-
-        //console.log('Я в рендере',this.state.data)
         const pageSize = 7
-        //console.log(this.props.location.propsItem)
 
         //вызываем функцию поиска
         const filtredData = this.getFiltredData()

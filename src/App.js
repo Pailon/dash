@@ -16,6 +16,7 @@ import Dep_load from './containers/Dep_load/Dep_load';
 import Project from './containers/Project/Project';
 import { Parser } from './containers/Parser/parser';
 import Dep_load_detail from "./containers/Dep_load/Dep_load_detail/Dep_load_detail";
+import Acad_plan_detail from "./containers/Acad_plan/Acad_plan_detail/Acad_plan_detail";
 
 
 class App extends Component {
@@ -44,6 +45,7 @@ class App extends Component {
         <Route path="/teatcher" component={Teatcher}/>
         <Route path="/specialty" component={Specialty}/>
         <Route path="/acad_plan" component={Acad_plan}/>
+        <Route path="/acad_plan_detail" component={Acad_plan_detail}/>
         <Route path="/dep_load" component={Dep_load}/>
         <Route path="/project" component={Project}/>
         <Route path="/specialties" component={Specialty}/>

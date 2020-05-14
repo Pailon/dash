@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from "react-router-dom";
 
 //компонент отображения таблицы
 
@@ -34,6 +35,9 @@ export default props => (
                 <th onClick={props.onSort.bind(null, 'year_join')}>
                     Дата окончания {props.sortField === 'year_join' ? <small>{props.sort}</small> : null}
                 </th>
+                <th>
+
+                </th>
                 {/* <th onClick={props.onSort.bind(null, 'sub_unit_id')}>
                     Что то {props.sortField === 'sub_unit_id' ? <small>{props.sort}</small> : null}
                 </th> */}
@@ -51,7 +55,20 @@ export default props => (
                     <td>{item.educ_programm}</td>
                     <td>{item.educ_years}</td>
                     <td>{item.year_join}</td>
-                    {/* <td>{item.specialties_id}</td> */}
+                    <td>
+                        <button
+                            type="button"
+                            className="btn btn-link"
+                        >
+                            <Link to={{
+                                pathname: "/acad_plan_detail",
+                                propsId: item.id,
+                            }}>
+                                {/* <FA name='external-link-square-alt'/>  */}
+                                Подробнее
+                            </Link>
+                        </button>
+                    </td>
                 </tr>
             ))}
         </tbody>
