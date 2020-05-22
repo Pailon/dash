@@ -298,8 +298,18 @@ export default class Specialty extends Component {
                 console.log('Ответ:', JSON.stringify(json));// результат запроса
                 console.log(newGroup)//выводит обьект того, что добавлено на сервер
                 newGroup = {}//обнулили буферный обьект для нового преподавателя
+                this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
+                    window.setTimeout(()=>{
+                        this.setState({openAlert:false})
+                    },2000)
+                });
             } catch (error) {
                 console.error('Ошибка:', error); //выдаёт ошибку в консоль
+                this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
+                    window.setTimeout(()=>{
+                        this.setState({openAlert:false})
+                    },2000)
+                });
             }
         }
     }
@@ -337,14 +347,29 @@ export default class Specialty extends Component {
                 const json = await response.json();
                 console.log('Результат:', JSON.stringify(json));
                 console.log(item)
-                this.setState({ openAlert: true, color: 'success', text: 'Изменено' })//при успешном отображении отображаем окно об успешноти
+                //this.setState({ openAlert: true, color: 'success', text: 'Изменено' })//при успешном отображении отображаем окно об успешноти
+                this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
+                    window.setTimeout(()=>{
+                        this.setState({openAlert:false})
+                    },2000)
+                });
                 item = {}
             } catch (error) {
                 console.error('Ошибка:', error);//Отображаем ошибку в консоль
-                this.setState({ openAlert: true, color: 'danger', text: 'Произошла ошибка' })//Выводим окно ошибки
+                //this.setState({ openAlert: true, color: 'danger', text: 'Произошла ошибка' })//Выводим окно ошибки
+                this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
+                    window.setTimeout(()=>{
+                        this.setState({openAlert:false})
+                    },2000)
+                });
             }
         } else {
             console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
+            this.setState({openAlert:true, color:'secondary', text:'Без изменений'},()=>{
+                window.setTimeout(()=>{
+                    this.setState({openAlert:false})
+                },2000)
+            });
         }
 
     }

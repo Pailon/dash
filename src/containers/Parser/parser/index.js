@@ -99,28 +99,14 @@ async uploadData(){
 
     const token = localStorage.getItem('token')// взяли токен
     console.log(token)
+    let nowDate = new Date().toLocaleDateString()
+    let nowTime = new Date().toLocaleTimeString();
+    let now = `${nowDate}T${nowTime}`
 
-    var days = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
-    var months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
-        "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
 
-    let myDate = new Date()
-    //console.log(myDate);
-    
-    // let today = myDate.getDate() + " " + months[myDate.getMonth()] +
-    //     " " + (myDate.getFullYear()) + ", " + days[myDate.getDay()];
-
-    let today = Date.now()
-    let day = "2017-09-01 09:00:00"
-
-    // let nextYear = myDate.getDate() + " " + months[myDate.getMonth()] +
-    //     " " + (myDate.getFullYear()+1) + ", " + days[myDate.getDay()];
-
-    // let nextModif = myDate.getDate() + " " + months[myDate.getMonth()+5] +
-    //     " " + (myDate.getFullYear()) + ", " + days[myDate.getDay()+6];
 
       let fetchDataAcad = {
-        modified_date: "2017-09-01 09:00:00",
+        modified_date: now,
         specialties_id: 2,
           disciplines:[]
       }
@@ -129,7 +115,7 @@ async uploadData(){
         department_id: 1,
         begin_date: "2016-09-01T09:00:00",
         end_date: "2016-09-01T09:00:00",
-        modified_date: "2016-09-01T09:00:00",
+        modified_date: now,
         disciplines:[]
     }
 
@@ -162,6 +148,8 @@ async uploadData(){
                     let b = bufData.C.split(';')
                     num_groups = b.slice(0, -1)
                     groops.push(num_groups)
+
+
                 }
 
                 if (sem || itogo) continue; //TODO Возможно стоит сделать break на момоенте обнаружения Итого
@@ -185,7 +173,7 @@ async uploadData(){
                         hours_ruk_mag:bufData.Y!==undefined ? bufData.Y : null,
                         hours_ruk_asperant:bufData.Z!== undefined ? bufData.Z : null,
                         semester_num:sem_number,
-                        groups:num_groups,
+                        groups:groops,
                         is_approved:false
                     }
                     fetchDataDep.disciplines.push(newData)
@@ -268,7 +256,9 @@ async uploadData(){
                     arrayAG.push(bufData.AG)
                 }
                 if(String(bufData.AG).length > 1){
+                    console.log(bufData.AG,'bufData.AG')
                     arrayAG.push(String(bufData.AG).split('.'))
+                    console.log('arrayAG',arrayAG)
                 }
 
                 if(bufData.AI===undefined){

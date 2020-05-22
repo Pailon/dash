@@ -109,7 +109,6 @@ export default class Acad_plan_detail extends Component{
 
 
     render() {
-        console.log('Шалом')
         const pageSize = 7
 
         //вызываем функцию поиска
@@ -118,7 +117,6 @@ export default class Acad_plan_detail extends Component{
         //вычисляем сколько всего будет страниц исходя из общего количества данных и данных на 1 страницу
         const pageCount = Math.ceil(filtredData.length / pageSize)
 
-        console.log('Data', this.state.data)
         const displayData = _.chunk(filtredData, pageSize)[this.state.currentPage]
         return(
             <div className="container">

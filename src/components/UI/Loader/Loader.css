@@ -33,9 +33,7 @@
     transform: rotate(360deg);
   }
 }
-
 .loader-wrap{
-
   display: flex;
   justify-content: center;
   padding-top: 100px;
