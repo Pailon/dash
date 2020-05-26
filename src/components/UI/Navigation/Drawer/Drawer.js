@@ -49,7 +49,7 @@ class Drawer extends Component {
         ]
 
         if(this.props.isAuthenticated){
-            //links.push({to: '/dashboard', label:'Дашборд', exact:false})
+            links.push({to: '/dashboard', label:'Дашборд', exact:false})
             links.push({to: '/quizlist', label:'Преподаватели', exact:false})
             //links.push({to: '/rpd', label:'РПД', exact:false})
             links.push({to: '/project', label:'Проектная деятельность', exact:false})

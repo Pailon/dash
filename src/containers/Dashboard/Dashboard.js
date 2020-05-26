@@ -143,7 +143,9 @@ export default class Dashboard extends Component{
         //console.log(choiseAcad)
         //console.log(choiseDep)
 
-        let url1 = link + `/acad_plan/${choiseAcad.id}`
+        // let url1 = link + `/acad_plan/${choiseAcad.id}`
+        let url1 = link + `/acad_plan/102`
+
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
         try {
             const response = await fetch(url1, {
@@ -165,7 +167,7 @@ export default class Dashboard extends Component{
 
 
         // let url2 = link + `/dep_load/${choiseDep.id}`
-        let url2 = link + `/dep_load/107`
+        let url2 = link + `/dep_load/119`
 
         try {
             const response = await fetch(url2, {
@@ -201,26 +203,49 @@ export default class Dashboard extends Component{
         //         }
         //     })
         // }
-        console.log(this.state.Dep_data_choise)
-        console.log(this.state.Acad_data_choise)
-        // for(let i=0; i<this.state.Dep_data_choise.dep_load.disciplines.length; i++){
-        //     this.state.Acad_data_choise.acad_plan.disciplines.map((item)=>{
-        //         if(this.state.Dep_data_choise.dep_load.disciplines[i].name === item.name){
-        //             let countGroup = 0
-        //             for(let j=0; j<this.state.Dep_data_choise.dep_load.groups.length; j++){
-        //                 countGroup= countGroup+ this.state.Dep_data_choise.dep_load.groups.count
-        //             }
-        //             if(countGroup > 12){
-        //                 let xl = Math.cell(countGroup/12)
-        //                 let xs = Math.cell(countGroup/15)
-        //             }
-        //
-        //             let idealModel = {
-        //
-        //             }
-        //         }
-        //     })
-        // }
+        console.log('dep',this.state.Dep_data_choise)
+        console.log('acad',this.state.Acad_data_choise)
+        for(let i=0; i<this.state.Dep_data_choise.dep_load.disciplines.length; i++){
+            this.state.Acad_data_choise.acad_plan.disciplines.map((item)=>{
+                if(this.state.Dep_data_choise.dep_load.disciplines[i].name === item.name){
+                    let countGroup = 0
+                    //for(let j=0; j<this.state.Dep_data_choise.dep_load.disciplines[i].groups.length; j++){
+                        //countGroup= countGroup+ this.state.Dep_data_choise.dep_load.disciplines[i].groups.count
+                        this.state.Dep_data_choise.dep_load.disciplines[i].groups.map(item =>{
+                            countGroup += item.count
+                        })
+                    //}
+                    console.log('Сумма всех студентов',countGroup)
+                    let xl = 1
+                    let xs = 1
+                    if(countGroup > 12){
+                         xl = Math.ceil(countGroup/12)
+                         xs = Math.ceil(countGroup/15)
+                        console.log(`${xl} : ${xs}`)
+                    }
+
+                    let idealModel = {
+                        i_hours_lec:item.i_hours_lec,
+                        i_hours_lab:item.hours_lab*xl,
+                        i_hours_sem:item.hours_sem*xs,
+                    }
+
+                    if (idealModel.i_hours_lab !== this.state.Dep_data_choise.dep_load.disciplines[i].hours_lab){
+                        console.log('Ошибка лабы')
+                        console.log(idealModel.i_hours_lab)
+                        console.log(this.state.Dep_data_choise.dep_load.disciplines[i].hours_lab)
+                    }
+
+                    if (idealModel.i_hours_sem !== this.state.Dep_data_choise.dep_load.disciplines[i].hours_sem){
+                        console.log('Ошибка семенары')
+                        console.log(idealModel.i_hours_sem)
+                        console.log(this.state.Dep_data_choise.dep_load.disciplines[i].hours_sem)
+                    }
+
+                    console.log(idealModel)
+                }
+            })
+        }
 
     }
 

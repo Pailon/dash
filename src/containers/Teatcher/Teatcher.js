@@ -7,6 +7,7 @@ import Curator from './Curator/Curator.js'
 import Discip from './Discip/Discip'
 import classes from './Teatcher.module.css'
 import {link} from "../../Link";
+import Uploader from "../../components/Uploader/Uploader";
 
 
 
@@ -58,7 +59,11 @@ export default class Teatcher extends Component{
                     <button type="button" className="btn btn-link"><Link to='/'>Назад</Link> </button>
                     
                         <TeatcherInfo
-                        person ={this.props.location.propsItem}
+                            person ={this.props.location.propsItem}
+                        />
+
+                        <Uploader
+                            item ={this.props.location.propsItem}
                         />
 
                         <div className={classes.discip}><Discip/></div>

@@ -99,15 +99,22 @@ async uploadData(){
 
     const token = localStorage.getItem('token')// взяли токен
     console.log(token)
-    let nowDate = new Date().toLocaleDateString()
+    //getHours(), getMinutes(), getSeconds(), getMilliseconds()
+    //getFullYear() getMonth() getDate()
+    //let nowDate = new Date().toLocaleDateString()
     let nowTime = new Date().toLocaleTimeString();
-    let now = `${nowDate}T${nowTime}`
+    let nowFullYear = new Date().getFullYear()
+    let nowMonth = new Date().getMonth()
+    let nowDateD = new Date().getDate()
+    let nowDate = `${nowFullYear}-${nowMonth}-${nowDateD}`
+    let now = `${nowDate} ${nowTime}`
+    console.log(now)
 
 
 
       let fetchDataAcad = {
         modified_date: now,
-        specialties_id: 2,
+        specialties_id: 100,
           disciplines:[]
       }
 
@@ -137,7 +144,7 @@ async uploadData(){
                 let myReg4 = /(Итого)/
                 let itogo = myReg4.test(bufData.A)
 
-                let num_groups
+                let num_groups = []
 
                 if(sem){
                     let a = bufData.A.split(' ')
@@ -173,10 +180,11 @@ async uploadData(){
                         hours_ruk_mag:bufData.Y!==undefined ? bufData.Y : null,
                         hours_ruk_asperant:bufData.Z!== undefined ? bufData.Z : null,
                         semester_num:sem_number,
-                        groups:groops,
+                        groups:num_groups,
                         is_approved:false
                     }
                     fetchDataDep.disciplines.push(newData)
+                    groops = []
                 }
 
             }

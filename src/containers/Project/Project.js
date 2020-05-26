@@ -461,22 +461,23 @@ export default class Project extends Component {
                             margin="dense"
                             id="begin_date"
                             label="Дата начала проекта"
-                            type="text"
+                            type="date"
                             fullWidth={true}
                             error={!!this.state.errors.begin_date}
                             helperText={this.state.errors.begin_date}
-                            onChange={(event) => this.setState({ begin_date: event.target.value.trim() })}
+                            onChange={(event) => this.setState({ begin_date: event.target.value })}
+                            defaultValue='2020-05-01'
                         />
                         <TextField
                             margin="dense"
                             id="end_date"
                             label="Дата окончания проекта"
-                            type="text"
+                            type="date"
                             fullWidth={true}
                             error={!!this.state.errors.end_date}
                             helperText={this.state.errors.end_date}
-                            onChange={(event) => this.setState({ end_date: event.target.value.trim() })}
-                            defaultValue='05-03-2020'
+                            onChange={(event) => this.setState({ end_date: event.target.value })}
+                            defaultValue='2020-05-01'
                         />
                         <TextField
                             margin="dense"

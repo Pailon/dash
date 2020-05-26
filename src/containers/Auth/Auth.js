@@ -18,8 +18,8 @@ class Auth extends Component {
             email:{
                 value:'',
                 type:'text',
-                label:'Email',
-                errorMessage:'Введите корректный email',
+                label:'Логин',
+                errorMessage:'Введите корректный логин',
                 valid: false,
                 touched: false,
                 validation:{

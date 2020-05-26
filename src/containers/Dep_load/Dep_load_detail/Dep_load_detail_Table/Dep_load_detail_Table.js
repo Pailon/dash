@@ -67,7 +67,7 @@ export default props => (
                 <tr key={Math.random()*100} onClick={props.onRowSelect.bind(null, item)}>
                     {/*<td>{item.dep_load_id}</td>*/}
                     <td>{item.name}</td>
-                    <td>{item.groups!== null? item.groups.map(it =>(it.name)):<p>---</p>}</td>
+                    <td>{item.groups!== null? item.groups.map(it =>(`${it.name} `)):<p>---</p>}</td>
                     <td>{item.hours_con_project!==null ? item.hours_con_project : <p>---</p>}</td>
                     <td>{item.hours_lec!==null ? item.hours_lec : <p>---</p>}</td>
                     <td>{item.hours_sem!==null ? item.hours_sem : <p>---</p>}</td>
@@ -81,7 +81,7 @@ export default props => (
                     <td>{item.hours_ruk_vkr!==null ? item.hours_ruk_vkr : <p>---</p>}</td>
                     <td>{item.hours_ruk_mag!==null ? item.hours_ruk_mag : <p>---</p>}</td>
                     <td>{item.hours_ruk_aspirant!==null ? item.hours_ruk_aspirant : <p>---</p>}</td>
-                    <td>{item.is_approved!==null ? item.is_approved : <p>---</p>}</td>
+                    <td>{item.is_approved!==null ? (item.is_approved==true? 'Подтверждено': 'Не подтверждено') : (<p>---</p>)}</td>
 
                 </tr>
             ))}

@@ -12,6 +12,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Alert from '../../components/UI/Alert/Alert'
+import MenuItem from '@material-ui/core/MenuItem';
 import {link} from "../../Link";
 
 
@@ -25,6 +26,7 @@ export default class Group extends Component {
     
     state = {
         data: [],
+        dataSpec:[],
         isLoading: true, //отображать загрузку или нет
         sort: 'asc',  //desc сортировка - asc - это по возрастанию, desc - по убыванию
         sortField: 'person_id', // параметр для сортировки, person_id - дефолтный
@@ -64,11 +66,11 @@ export default class Group extends Component {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            console.log('Я ответ', response)
+            //console.log('Я ответ', response)
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я дата', data)
+            console.log('Я дата group', data)
             this.setState({ // обновляем state
                 isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -79,7 +81,50 @@ export default class Group extends Component {
 
         }
 
+        let url2 = link + '/specialties'
+        try {
 
+            const response = await fetch(url2, {
+                method: 'GET', //метот для получения данных
+                headers: {
+                    'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            //console.log('Я ответ', response)
+
+
+            const dataSpec = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
+            console.log('Я дата spec', dataSpec)
+            for(let i = 0; i<this.state.data.length; i++) {
+                this.state.data[i].spec = dataSpec
+            }
+            //this.state.data.spec = dataSpec
+            console.log(this.state.data)
+            this.setState({ // обновляем state
+                isLoading: false,
+                dataSpec //: _.orderBy(dataSpec, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
+            })
+
+        } catch (e) { // на случай ошибки
+            console.log(e)
+
+        }
+
+
+    }
+
+    renderOptions(){
+        return this.state.dataSpec.map((item)=>{
+            return(
+                <MenuItem
+                    key={item.name}
+                    value={item.id}
+                >
+                    {item.name}
+                </MenuItem>
+            )
+        })
     }
 
     onSort = (sortField) => { // функция для сортировки данных в таблице
@@ -394,13 +439,19 @@ export default class Group extends Component {
                         <TextField
                             margin="dense"
                             id="specialties_id"
-                            label="ID специальности"
+                            label="Специальность"
                             type="text"
                             fullWidth={true}
                             error={!!this.state.errors.specialties_id}
                             helperText={this.state.errors.link_trello}
-                            onChange={(event) => this.setState({ specialties_id: event.target.value.trim() })}
-                        />
+                            onChange={(event) => {
+                                console.log(event.target.value)
+                                this.setState({ specialties_id: event.target.value })
+                            }}
+                            select
+                        >
+                            {this.renderOptions()}
+                        </TextField>
 
                     </DialogContent>
                     <DialogActions>

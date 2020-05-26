@@ -21,30 +21,30 @@ export default props => (
                     Код {props.sortField === 'specialties_code' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'specialties_name')}>
-                    Наименование программы {props.sortField === 'specialties_name' ? <small><FA name={props.sortArrow} /></small> : null}
+                    Наименование специальности {props.sortField === 'specialties_name' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'sub_unit_name')}>
                     Направление {props.sortField === 'sub_unit_name' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
-                <th onClick={props.onSort.bind(null, 'specialties_id: 2')}>
-                    ID Специальности {props.sortField === 'specialties_id: 2' ? <small><FA name={props.sortArrow} /></small> : null}
-                </th>
+                {/*<th onClick={props.onSort.bind(null, 'specialties_id')}>*/}
+                {/*    ID Специальности {props.sortField === 'specialties_id' ? <small><FA name={props.sortArrow} /></small> : null}*/}
+                {/*</th>*/}
             </tr>
         </thead>
         <tbody>
             {props.data.map(item => (
-                <tr key={Math.random()*100} onClick={props.onRowSelect.bind(null, item)} spellCheck="false">
+                <tr key={item.id} onClick={props.onRowSelect.bind(null, item)} spellCheck="false">
                     <td
                         className={classes.edit}
-                        contentEditable="true"
-                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
-                        onBlur={(event) => {
-                            let oldData = item.id
-                            item.id = event.currentTarget.firstChild.data
-                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
-
-                        }}
-                        suppressContentEditableWarning={true}
+                        // contentEditable="true"
+                        // onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        // onBlur={(event) => {
+                        //     let oldData = item.id
+                        //     item.id = event.currentTarget.firstChild.data
+                        //     props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
+                        //
+                        // }}
+                        // suppressContentEditableWarning={true}
                     >{item.id}</td>
                     <td
                         className={classes.edit}
@@ -60,52 +60,53 @@ export default props => (
                     >{item.name}</td>
                     <td
                         className={classes.edit}
-                        contentEditable="true"
-                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
-                        onBlur={(event) => {
-                            let oldData = item.specialties_code
-                            item.specialties_code = event.currentTarget.firstChild.data
-                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
-
-                        }}
-                        suppressContentEditableWarning={true}
+                        // contentEditable="true"
+                        // onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        // onBlur={(event) => {
+                        //     let oldData = item.specialties_code
+                        //     item.specialties_code = event.currentTarget.firstChild.data
+                        //     props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
+                        //
+                        // }}
+                        // suppressContentEditableWarning={true}
                     >{item.specialties_code}</td>
                     <td
                         className={classes.edit}
-                        contentEditable="true"
-                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
-                        onBlur={(event) => {
-                            let oldData = item.specialties_name
-                            item.specialties_name = event.currentTarget.firstChild.data
-                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
-
-                        }}
-                        suppressContentEditableWarning={true}
+                        // contentEditable="true"
+                        // onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        // onBlur={(event) => {
+                        //     let oldData = item.specialties_name
+                        //     item.specialties_name = event.currentTarget.firstChild.data
+                        //     props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
+                        //
+                        // }}
+                        // suppressContentEditableWarning={true}
                     >{item.specialties_name}</td>
                     <td
                         className={classes.edit}
-                        contentEditable="true"
-                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
-                        onBlur={(event) => {
-                            let oldData = item.sub_unit_name
-                            item.sub_unit_name = event.currentTarget.firstChild.data
-                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
-
-                        }}
-                        suppressContentEditableWarning={true}
+                        // contentEditable="true"
+                        // onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        // onBlur={(event) => {
+                        //     let oldData = item.sub_unit_name
+                        //     item.sub_unit_name = event.currentTarget.firstChild.data
+                        //     props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
+                        //
+                        // }}
+                        // suppressContentEditableWarning={true}
                     >{item.sub_unit_name}</td>
-                    <td
-                        className={classes.edit}
-                        contentEditable="true"
-                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
-                        onBlur={(event) => {
-                            let oldData = item.specialties_id
-                            item.specialties_id = event.currentTarget.firstChild.data
-                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
+                    {/*<td*/}
+                    {/*    className={classes.edit}*/}
+                    {/*    contentEditable="true"*/}
+                    {/*    onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}*/}
+                    {/*    onBlur={(event) => {*/}
+                    {/*        let oldData = item.specialties_id*/}
+                    {/*        item.specialties_id = event.currentTarget.firstChild.data*/}
+                    {/*        props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)*/}
 
-                        }}
-                        suppressContentEditableWarning={true}
-                    >{item.specialties_id}</td>
+                    {/*    }}*/}
+                    {/*    suppressContentEditableWarning={true}*/}
+                    {/*>{item.specialties_name}</td>*/}
+                    {/*{console.log(item)}*/}
                 </tr>
 
 

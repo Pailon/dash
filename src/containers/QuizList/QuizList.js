@@ -15,9 +15,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Alert from '../../components/UI/Alert/Alert'
 import {link} from "../../Link";
 
-
-//var item = ''
-
 export default class QuizList extends Component {
 
 
@@ -285,62 +282,7 @@ export default class QuizList extends Component {
                 login:this.state.login.trim(),
                 password:this.state.password.trim()
             }
-            data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
-                position:'Преподаватель',
-                rank_id:this.state.rank_id,
-                degree_id:this.state.degree_id,
-                rate:this.state.rate,
-                hourse_worked:this.state.hourse_worked,
-                rinc:this.state.rinc,
-                web_of_science:this.state.web_of_science,
-                scopus:this.state.scopus,
-                name:this.state.name,
-                surname:this.state.surname,
-                patronymic:this.state.patronymic,
-                birthday:this.state.birthday,
-                phone:this.state.phone,
-                email:this.state.email,
-                status:2,
-                role:4,
-                sub_unit_id:1,
-                login:this.state.login,
-                password:this.state.password
-            })
-            this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
-                name:'',
-                secondName:'',
-                patronymic:'',
-                email:'',
-                phone:'',
-                rank_id:'',
-                degree_id:'',
-                rate:'',
-                hourse_worked:'',
-                rinc:'',
-                web_of_science:'',
-                scopus:'',
-                birthday:'',
-                login:'',
-                password:'',
-                errors:{
-                    name:'',
-                    surname:'',
-                    patronymic:'',
-                    email:'',
-                    phone:'',
-                    rank_id:'',
-                    degree_id:'',
-                    rate:'',
-                    hourse_worked:'',
-                    rinc:'',
-                    web_of_science:'',
-                    scopus:'',
-                    birthday:'',
-                    login:'',
-                    password:'',
-                }
-            })
-            console.log(this.state.data);// выведем обьект с данными для проверки
+            //console.log(this.state.data);// выведем обьект с данными для проверки
             this.setState({openModal:false})//Закрываем модальное окно добавления преподавателя
 
             let url = 'http://dashboard.kholodov.xyz/api/teachers' //ссылка для запроса к таблице преподаавтелей
@@ -359,6 +301,65 @@ export default class QuizList extends Component {
                 console.log('Успех:', JSON.stringify(json));// результат запроса
                 console.log(newTeatcher)//выводит обьект того, что добавлено на сервер
                 newTeatcher = {}//обнулили буферный обьект для нового преподавателя
+
+                data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
+                    position:'Преподаватель',
+                    rank_id:this.state.rank_id,
+                    degree_id:this.state.degree_id,
+                    rate:this.state.rate,
+                    hourse_worked:this.state.hourse_worked,
+                    rinc:this.state.rinc,
+                    web_of_science:this.state.web_of_science,
+                    scopus:this.state.scopus,
+                    name:this.state.name,
+                    surname:this.state.surname,
+                    patronymic:this.state.patronymic,
+                    birthday:this.state.birthday,
+                    phone:this.state.phone,
+                    email:this.state.email,
+                    status:2,
+                    role:4,
+                    sub_unit_id:1,
+                    login:this.state.login,
+                    password:this.state.password,
+                    id:json.id
+                })
+                this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
+                    name:'',
+                    secondName:'',
+                    patronymic:'',
+                    email:'',
+                    phone:'',
+                    rank_id:'',
+                    degree_id:'',
+                    rate:'',
+                    hourse_worked:'',
+                    rinc:'',
+                    web_of_science:'',
+                    scopus:'',
+                    birthday:'',
+                    login:'',
+                    password:'',
+                    errors:{
+                        name:'',
+                        surname:'',
+                        patronymic:'',
+                        email:'',
+                        phone:'',
+                        rank_id:'',
+                        degree_id:'',
+                        rate:'',
+                        hourse_worked:'',
+                        rinc:'',
+                        web_of_science:'',
+                        scopus:'',
+                        birthday:'',
+                        login:'',
+                        password:'',
+                    }
+                })
+
+
                 this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
                     window.setTimeout(()=>{
                         this.setState({openAlert:false})

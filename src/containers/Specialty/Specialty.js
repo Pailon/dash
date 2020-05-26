@@ -13,6 +13,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {link} from "../../Link";
+import MenuItem from '@material-ui/core/MenuItem';
+
 
 
 export default class Specialty extends Component {
@@ -250,11 +252,11 @@ export default class Specialty extends Component {
                 code: this.state.code,
                 name: this.state.name,
                 profile: this.state.profile,
-                educ_form: this.state.educ_form,
-                educ_programm: this.state.educ_programm,
+                educ_form: this.state.educ_form,// очная
+                educ_programm: this.state.educ_programm, //1 или 2 бакалавр или магистр соответственно
                 educ_years: this.state.educ_years,
-                year_join: this.state.year_join,
-                sub_unit_id: this.state.sub_unit_id,
+                year_join: this.state.year_join,//Год набора timestamp
+                sub_unit_id: this.state.sub_unit_id, //подразделение САПР ВЕБ КИС
             })
 
             this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
@@ -282,7 +284,7 @@ export default class Specialty extends Component {
             console.log('После добавления', this.state.data);// выведем обьект с данными для проверки
             this.setState({ openModal: false })//Закрываем модальное окно добавления преподавателя
 
-            let url = 'http://dashboard.kholodov.xyz/api/projects' //ссылка для запроса к таблице преподаавтелей
+            let url = 'http://dashboard.kholodov.xyz/api/specialties' //ссылка для запроса к таблице преподаавтелей
             const token = localStorage.getItem('token')// взяли токен
 
             try {
@@ -482,7 +484,7 @@ export default class Specialty extends Component {
                             margin="dense"
                             id="cone"
                             label="Введите код специальности"
-                            type="text"
+                            type="number"
                             fullWidth={true}
                             error={!!this.state.errors.code}
                             helperText={this.state.errors.code}
@@ -507,8 +509,13 @@ export default class Specialty extends Component {
                             error={!!this.state.errors.educ_form}
                             helperText={this.state.errors.educ_form}
                             onChange={(event) => this.setState({ educ_form: event.target.value.trim() })}
-                            defaultValue='05-03-2020'
-                        />
+                            defaultValue='Очная'
+                            select
+                        >
+                            <MenuItem value="Очная">Очная</MenuItem>
+                            <MenuItem value="Заочная">Заочная</MenuItem>
+                            <MenuItem value="Очно-заочная">Очно-заочная</MenuItem>
+                        </TextField>
                         <TextField
                             margin="dense"
                             id="educ_programm"
@@ -517,9 +524,18 @@ export default class Specialty extends Component {
                             fullWidth={true}
                             error={!!this.state.errors.educ_programm}
                             helperText={this.state.errors.educ_programm}
-                            onChange={(event) => this.setState({ educ_programm: event.target.value.trim() })}
+                            onChange={(event) => {
+                                console.log(event.target.value)
+                                this.setState({ educ_programm: event.target.value })
+
+                            }}
                             defaultValue=''
-                        />
+                            select
+                        >
+                            <MenuItem value="1">Бакалавр</MenuItem>
+                            <MenuItem value="2">Магистр</MenuItem>
+                        </TextField>
+
                         <TextField
                             margin="dense"
                             id="educ_years"
@@ -534,13 +550,17 @@ export default class Specialty extends Component {
                         <TextField
                             margin="dense"
                             id="year_join"
-                            label="Что то про года"
-                            type="text"
+                            label="Год поступления"
+                            type="date"
                             fullWidth={true}
                             error={!!this.state.errors.year_join}
                             helperText={this.state.errors.year_join}
-                            onChange={(event) => this.setState({ year_join: event.target.value.trim() })}
-                            defaultValue=''
+                            onChange={(event) => {
+                                this.setState({ year_join: event.target.value })
+                                //console.log(event.target.value)
+
+                            }}
+                            defaultValue="2017-05-24"
                         />
                         <TextField
                             margin="dense"
