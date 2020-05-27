@@ -15,6 +15,8 @@ export default class Teatcher extends Component{
 
     state = {
         data:[],
+        dataProj:[],
+        projTeactcher:[],
         isLoading:true,
         row:null,
     }
@@ -39,19 +41,55 @@ export default class Teatcher extends Component{
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            //console.log('Я ответ', data)
+            //console.log('Я ответ data', data)
             this.setState({ // обновляем state
                 isLoading: false,
                 // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
+                data
+            })
+        } catch (e) { // на случай ошибки
+            console.log(e)
+        }
+
+        let url2 = link + '/projects'
+
+
+        try {
+
+            const response = await fetch(url2, {
+                method: 'GET', //метот для получения данных
+                headers: {
+                    'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            // console.log('Я ответ', response)
+            const dataProj = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
+            //console.log('Я ответ', dataProj)
+            this.setState({ // обновляем state
+                isLoading: false,
+                // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
+                dataProj
             })
         } catch (e) { // на случай ошибки
             console.log(e)
         }
     }
 
+    filterProj(){
+        this.state.dataProj.map((item)=>{
+            if(item.teacher_id === this.props.location.propsItem.id){
+                this.state.projTeactcher.push(item)
+            }
+        })
+        console.log('Project',this.state.projTeactcher)
+    }
+
 
 
     render(){
+        console.log('dataProj',this.state.dataProj)
+        console.log('data',this.state.data)
         if (!this.props.location.propsItem) return <Redirect to="/" />;
         //console.log(this.props.location.propsItem)
         return(
@@ -65,9 +103,16 @@ export default class Teatcher extends Component{
                         <Uploader
                             item ={this.props.location.propsItem}
                         />
-
-                        <div className={classes.discip}><Discip/></div>
-                        <div className={classes.curator}><Curator/></div>
+                    {        this.filterProj()
+                    }
+                        {/*<div className={classes.discip}>*/}
+                        {/*    <Discip/>*/}
+                        {/*</div>*/}
+                        <div className={classes.curator}>
+                            <Curator
+                                project={this.state.projTeactcher}
+                            />
+                        </div>
 
                 </div>
         )
