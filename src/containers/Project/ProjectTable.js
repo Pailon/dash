@@ -31,6 +31,9 @@ export default props => (
                 <th onClick={props.onSort.bind(null, 'description')}>
                     Описание {props.sortField === 'description' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
+                <th onClick={props.onSort.bind(null, 'teatcher_id')}>
+                    Куратор {props.sortField === 'teatcher_id' ? <small><FA name={props.sortArrow} /></small> : null}
+                </th>
 
             </tr>
         </thead>
@@ -56,7 +59,7 @@ export default props => (
                         contentEditable="true"
                         onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
                         onBlur={(event) => {
-                            let oldData = item.surname
+                            let oldData = item.students_count
                             item.students_count = event.currentTarget.firstChild.data
                             props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
 
@@ -68,7 +71,7 @@ export default props => (
                         contentEditable="true"
                         onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
                         onBlur={(event) => {
-                            let oldData = item.surname
+                            let oldData = item.link_trello
                             item.link_trello = event.currentTarget.firstChild.data
                             props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
 
@@ -80,7 +83,7 @@ export default props => (
                         contentEditable="true"
                         onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
                         onBlur={(event) => {
-                            let oldData = item.patronymic
+                            let oldData = item.begin_date
                             item.begin_date = event.currentTarget.firstChild.data
                             props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
 
@@ -92,7 +95,7 @@ export default props => (
                         contentEditable="true"
                         onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
                         onBlur={(event) => {
-                            let oldData = item.patronymic
+                            let oldData = item.end_date
                             item.end_date = event.currentTarget.firstChild.data
                             props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
 
@@ -104,13 +107,25 @@ export default props => (
                         contentEditable="true"
                         onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
                         onBlur={(event) => {
-                            let oldData = item.patronymic
+                            let oldData = item.description
                             item.description = event.currentTarget.firstChild.data
                             props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
 
                         }}
                         suppressContentEditableWarning={true}
                     >{item.description}</td>
+                    <td
+                         className={classes.edit}
+                        // contentEditable="true"
+                        // onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        // onBlur={(event) => {
+                        //     let oldData = item.teacher_id
+                        //     item.teacher_id = event.currentTarget.firstChild.data
+                        //     props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
+                        //
+                        // }}
+                        // suppressContentEditableWarning={true}
+                    >{item.teatch !== undefined ?item.teatch.surname :'---'}</td>
                 </tr>
             ))}
         </tbody>

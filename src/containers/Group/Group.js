@@ -283,7 +283,7 @@ export default class Group extends Component {
         //console.log(item)                    //id-параметр из обьекта item чтобы проще производить запрос к api oldData-значение до изменения  
         //console.log(oldData)
 
-        if (data != oldData) { //узнаём изменилось ли значение функции, если нет, то зачем производить запрос?
+        if (data !== oldData) { //узнаём изменилось ли значение функции, если нет, то зачем производить запрос?
 
             let url = `http://dashboard.kholodov.xyz/api/groups/${id}` //ссылка для запросов, куда подставляется id
             const token = localStorage.getItem('token')//берем токен и локального хранилищя

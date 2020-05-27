@@ -25,6 +25,7 @@ export default class Project extends Component {
 
     state = {
         data: [],
+        dataTeatch:[],
         isLoading: true, //отображать загрузку или нет
         sort: 'asc',  //desc сортировка - asc - это по возрастанию, desc - по убыванию
         sortField: 'person_id', // параметр для сортировки, person_id - дефолтный
@@ -61,6 +62,7 @@ export default class Project extends Component {
 
         //let url = 'http://dashboard.kholodov.xyz/api/projects'
         let url = link + '/projects'
+        let url2 = link + '/teachers'
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
         //console.log(token)
         try {
@@ -76,7 +78,7 @@ export default class Project extends Component {
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            //console.log('Я дата', data)
+            console.log('Я дата proj', data)
             this.setState({ // обновляем state
                 isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -84,7 +86,46 @@ export default class Project extends Component {
 
         } catch (e) { // на случай ошибки
             console.log(e)
+        }
 
+
+
+        //const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
+        //console.log(token) //проверяем взяли ли токен
+        try {
+
+            const response = await fetch(url2, {
+                method: 'GET', //метот для получения данных
+                headers: {
+                    'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            // console.log('Я ответ', response)
+
+
+            const dataTeatch = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
+            console.log('Я ответ dataTeatch', dataTeatch)
+
+            for(let i = 0; i<this.state.data.length; i++) {
+                dataTeatch.map(el=>{
+                    if(+el.id === +this.state.data[i].teacher_id){
+                        this.state.data[i].teatch = el
+                        //console.log('Присвоил')
+                    }
+                    //console.log('In map', el)
+                })
+                //this.state.data[i].teatch = dataTeatch
+            }
+            console.log('Хаю хай',this.state.data)
+
+            this.setState({ // обновляем state
+                isLoading: false,
+                // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
+                dataTeatch
+            })
+        } catch (e) { // на случай ошибки
+            console.log(e)
         }
 
 
@@ -287,7 +328,7 @@ export default class Project extends Component {
         //console.log(item)                    //id-параметр из обьекта item чтобы проще производить запрос к api oldData-значение до изменения  
         //console.log(oldData)
 
-        if (data != oldData) { //узнаём изменилось ли значение функции, если нет, то зачем производить запрос?
+        if (data !== oldData) { //узнаём изменилось ли значение функции, если нет, то зачем производить запрос?
 
             let url = `http://dashboard.kholodov.xyz/api/projects/${id}` //ссылка для запросов, куда подставляется id
             const token = localStorage.getItem('token')//берем токен и локального хранилищя
@@ -390,6 +431,7 @@ export default class Project extends Component {
 
                             <ProjectTable
                                 data={displayData}
+                                dataTeach={this.state.dataTeatch}
                                 onSort={this.onSort}
                                 sort={this.state.sort}
                                 sortField={this.state.sortField}
