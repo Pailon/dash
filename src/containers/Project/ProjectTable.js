@@ -19,9 +19,6 @@ export default props => (
                 <th onClick={props.onSort.bind(null, 'students_count')}>
                     Количество студентов {props.sortField === 'students_count' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
-                <th onClick={props.onSort.bind(null, 'link_trello')}>
-                    Trello {props.sortField === 'link_trello' ? <small><FA name={props.sortArrow} /></small> : null}
-                </th>
                 <th onClick={props.onSort.bind(null, 'begin_date')}>
                     Дата начала {props.sortField === 'begin_date' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
@@ -33,6 +30,9 @@ export default props => (
                 </th>
                 <th onClick={props.onSort.bind(null, 'teatcher_id')}>
                     Куратор {props.sortField === 'teatcher_id' ? <small><FA name={props.sortArrow} /></small> : null}
+                </th>
+                <th onClick={props.onSort.bind(null, 'link_trello')}>
+                    Trello {props.sortField === 'link_trello' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
 
             </tr>
@@ -66,18 +66,6 @@ export default props => (
                         }}
                         suppressContentEditableWarning={true}
                     >{item.students_count}</td>
-                    <td
-                        className={classes.edit}
-                        contentEditable="true"
-                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
-                        onBlur={(event) => {
-                            let oldData = item.link_trello
-                            item.link_trello = event.currentTarget.firstChild.data
-                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
-
-                        }}
-                        suppressContentEditableWarning={true}
-                    >{item.link_trello}</td>
                     <td
                         className={classes.edit}
                         contentEditable="true"
@@ -126,6 +114,19 @@ export default props => (
                         // }}
                         // suppressContentEditableWarning={true}
                     >{item.teatch !== undefined ?item.teatch.surname :'---'}</td>
+
+                    <td
+                        className={classes.edit}
+                        contentEditable="true"
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                        onBlur={(event) => {
+                            let oldData = item.link_trello
+                            item.link_trello = event.currentTarget.firstChild.data
+                            props.onUpdate(event.currentTarget.firstChild.data, item, item.id, oldData)
+
+                        }}
+                        suppressContentEditableWarning={true}
+                    >{item.link_trello}</td>
                 </tr>
             ))}
         </tbody>

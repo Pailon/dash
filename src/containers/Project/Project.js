@@ -14,6 +14,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {link} from "../../Link";
+import MenuItem from "@material-ui/core/MenuItem";
 
 
 export default class Project extends Component {
@@ -45,6 +46,7 @@ export default class Project extends Component {
         begin_date: '',
         end_date: '',
         description: '',
+        teacher_id:'',
 
         errors: {
             name: '',
@@ -53,6 +55,7 @@ export default class Project extends Component {
             begin_date: '',
             end_date: '',
             description: '',
+            teacher_id:'',
         }
     }
 
@@ -79,6 +82,13 @@ export default class Project extends Component {
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             console.log('Я дата proj', data)
+            for(let x=0; x<data.length; x++){
+                let newBeginDate = data[x].begin_date.split('T')
+                let newEndDate = data[x].end_date.split('T')
+                data[x].begin_date = newBeginDate[0]
+                data[x].end_date = newEndDate[0]
+                console.log(data[x].begin_date)
+            }
             this.setState({ // обновляем state
                 isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -102,7 +112,6 @@ export default class Project extends Component {
                 }
             })
             // console.log('Я ответ', response)
-
 
             const dataTeatch = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             console.log('Я ответ dataTeatch', dataTeatch)
@@ -222,7 +231,7 @@ export default class Project extends Component {
             errors.name = 'Это поле не может быть пустым'
         }
         // if (!this.state.students_count) {
-        //     errors.students_count = 'Это поле не может быть пустым'
+        //     errors.students_count = 'Это поле не может быть пустым' teacher_id:'',
         // }
         if (!this.state.link_trello) {
             errors.link_trello = 'Это поле не может быть пустым'
@@ -235,6 +244,9 @@ export default class Project extends Component {
         }
         if (!this.state.description) {
             errors.description = 'Это поле не может быть пустым'
+        }
+        if (!this.state.teacher_id) {
+            errors.teacher_id = 'Это поле не может быть пустым'
         }
 
 
@@ -255,7 +267,7 @@ export default class Project extends Component {
                 end_date: this.state.end_date,
                 description: this.state.description,
                 sub_unit_id: 1,
-                teacher_id: 4
+                teacher_id: this.state.teacher_id
             }
 
             data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
@@ -265,7 +277,7 @@ export default class Project extends Component {
                 end_date: this.state.end_date,
                 description: this.state.description,
                 sub_unit_id: 1,
-                teacher_id: 4
+                teacher_id: this.state.teacher_id
             })
 
             this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
@@ -275,6 +287,7 @@ export default class Project extends Component {
                 begin_date: '',
                 end_date: '',
                 description: '',
+                teacher_id:'',
 
                 errors: {
                     name: '',
@@ -283,6 +296,7 @@ export default class Project extends Component {
                     begin_date: '',
                     end_date: '',
                     description: '',
+                    teacher_id:'',
                 }
 
             })
@@ -338,7 +352,8 @@ export default class Project extends Component {
                 link_trello: item.link_trello,
                 begin_date: item.begin_date,
                 end_date: item.end_date,
-                description: item.description
+                description: item.description,
+                teacher_id:item.teacher_id,
             }
 
             try {
@@ -384,12 +399,24 @@ export default class Project extends Component {
         this.setState({ openAlert: false }) // закрыть окно оповещения
     }
 
-
+    renderOptions(){
+        return this.state.dataTeatch.map((item)=>{
+            return(
+                <MenuItem
+                    key={item.name}
+                    value={item.id}
+                >
+                    {item.surname}
+                </MenuItem>
+            )
+        })
+    }
 
 
 
 
     render() {
+
         //количество строк на одну страницу
         const pageSize = 10
 
@@ -523,6 +550,20 @@ export default class Project extends Component {
                         />
                         <TextField
                             margin="dense"
+                            id="teacher_id"
+                            label="Куратор проекта"
+                            type="text"
+                            fullWidth={true}
+                            error={!!this.state.errors.teacher_id}
+                            helperText={this.state.errors.teacher_id}
+                            onChange={(event) => this.setState({ teacher_id: event.target.value })}
+                            defaultValue=''
+                            select
+                        >
+                            {this.renderOptions()}
+                        </TextField>
+                        <TextField
+                            margin="dense"
                             id="description"
                             label="Описание проекта"
                             type="text"
@@ -532,7 +573,6 @@ export default class Project extends Component {
                             onChange={(event) => this.setState({ description: event.target.value.trim() })}
                             defaultValue='Бла бла бла'
                         />
-            
                     </DialogContent>
                     <DialogActions>
                         <Button  //компонент кнопки закрытия модального окна

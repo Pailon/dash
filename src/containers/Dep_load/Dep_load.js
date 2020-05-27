@@ -39,6 +39,15 @@ export default class Dep_load extends Component{
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             console.log('Я дата', data)
+            for(let x=0; x<data.length; x++){
+                let newBeginDate = data[x].begin_date.split('T')
+                let newEndDate = data[x].end_date.split('T')
+                let newModifDate = data[x].modified_date.split('T')
+                data[x].begin_date = newBeginDate[0]
+                data[x].end_date = newEndDate[0]
+                data[x].modified_date = newModifDate[0]
+                console.log(data[x].begin_date)
+            }
             this.setState({ // обновляем state
                 isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка

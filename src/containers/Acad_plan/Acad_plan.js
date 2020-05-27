@@ -74,6 +74,11 @@ export default class Acad_plan extends Component{
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
              console.log('Я дата', data)
+            for(let x=0; x<data.length; x++){
+                let newYear_join = data[x].year_join.split('T')
+                data[x].year_join = newYear_join[0]
+                console.log(data[x].year_join)
+            }
             this.setState({ // обновляем state
                 isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
