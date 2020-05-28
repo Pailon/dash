@@ -71,7 +71,7 @@ class Parser extends Component {
       }
 
 
-      let url4 = link + '/department'
+      let url4 = link + '/Department'
       //const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
       //console.log(token)
       try {

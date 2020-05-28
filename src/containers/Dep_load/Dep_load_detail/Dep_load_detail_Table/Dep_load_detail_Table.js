@@ -8,7 +8,7 @@ export default props => (
     // таблица в стиле bootstrap 
     <table className="table table-sm table-hover">
         <thead>
-            <tr>
+            <tr style={{textAlign:'center'}}>
                 {/*<th onClick={props.onSort.bind(null, 'dep_load_id')}>*/}
                 {/*    ID {props.sortField === 'dep_load_id' ? <small>{props.sort}</small> : null}*/}
                 {/*</th>*/}

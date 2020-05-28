@@ -18,6 +18,7 @@ import { Parser } from './containers/Parser/parser';
 import Dep_load_detail from "./containers/Dep_load/Dep_load_detail/Dep_load_detail";
 import Acad_plan_detail from "./containers/Acad_plan/Acad_plan_detail/Acad_plan_detail";
 import Dashboard from "./containers/Dashboard/Dashboard";
+import Department from "./containers/Department/Department";
 
 
 class App extends Component {
@@ -51,6 +52,7 @@ class App extends Component {
         <Route path="/project" component={Project}/>
         <Route path="/specialties" component={Specialty}/>
         <Route path="/dashboard" component={Dashboard}/>
+        <Route path="/department" component={Department}/>
         <Route path="/parser" component={Parser}/>
         <Route path="/logout" component={Logout}/>
         <Redirect to={'/'}/>
