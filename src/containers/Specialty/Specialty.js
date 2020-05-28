@@ -86,7 +86,6 @@ export default class Specialty extends Component {
             for(let x=0; x<data.length; x++){
                 let newYear_join = data[x].year_join.split('T')
                 data[x].year_join = newYear_join[0]
-                console.log(data[x].year_join)
             }
             this.setState({ // обновляем state
                 isLoading: false,
@@ -205,29 +204,32 @@ export default class Specialty extends Component {
 
         //Серия проверок на пустоту полей, если пусто, то мы добавим в state сообщение об ошибке, для будущего отображения
         //Можно кастомизировать ошибку для каждого поля
-        if (!this.state.code) {
+        if (!this.state.name) {
             errors.name = 'Это поле не может быть пустым'
         }
-        if (!this.state.name) {
+        if (!this.state.code) {
+            errors.code = 'Это поле не может быть пустым'
+        }
+        if (!this.state.students_count) {
             errors.students_count = 'Это поле не может быть пустым'
         }
         if (!this.state.profile) {
-            errors.link_trello = 'Это поле не может быть пустым'
+            errors.profile = 'Это поле не может быть пустым'
         }
         if (!this.state.educ_form) {
-            errors.begin_date = 'Это поле не может быть пустым'
+            errors.educ_form = 'Это поле не может быть пустым'
         }
         if (!this.state.educ_programm) {
-            errors.end_date = 'Это поле не может быть пустым'
+            errors.educ_programm = 'Это поле не может быть пустым'
         }
         if (!this.state.educ_years) {
-            errors.description = 'Это поле не может быть пустым'
+            errors.educ_years = 'Это поле не может быть пустым'
         }
         if (!this.state.year_join) {
-            errors.description = 'Это поле не может быть пустым'
+            errors.year_join = 'Это поле не может быть пустым'
         }
         if (!this.state.sub_unit_id) {
-            errors.description = 'Это поле не может быть пустым'
+            errors.sub_unit_id = 'Это поле не может быть пустым'
         }
 
 
@@ -237,7 +239,7 @@ export default class Specialty extends Component {
             || errors.educ_form || errors.educ_programm || errors.educ_years
             || errors.year_join || errors.sub_unit_id) {
             this.setState({ errors }) //добавление ошибок в state
-            console.log('Я из ошибки', this.state.data);//для проверки выводим в консоль - временно
+            console.log('Я из ошибки', this.state);//для проверки выводим в консоль - временно
             return
         } else {
             let data = this.state.data // клонируем обьект data из state
@@ -305,7 +307,7 @@ export default class Specialty extends Component {
                 console.log('Ответ:', JSON.stringify(json));// результат запроса
                 console.log(newGroup)//выводит обьект того, что добавлено на сервер
                 newGroup = {}//обнулили буферный обьект для нового преподавателя
-                this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
+                this.setState({openAlert:true, color:'success', text:`${json.message!==undefined?json.message:'Успешно'}`},()=>{
                     window.setTimeout(()=>{
                         this.setState({openAlert:false})
                     },2000)
@@ -463,7 +465,7 @@ export default class Specialty extends Component {
                         /> : null
                 }
 
-<Dialog
+                <Dialog
                     open={this.state.openModal}
                     onClose={this.onClose.bind(this)}
                     aria-labelledby="form-dialog-title">
@@ -489,7 +491,7 @@ export default class Specialty extends Component {
                             margin="dense"
                             id="cone"
                             label="Введите код специальности"
-                            type="number"
+                            type="text"
                             fullWidth={true}
                             error={!!this.state.errors.code}
                             helperText={this.state.errors.code}
@@ -513,13 +515,13 @@ export default class Specialty extends Component {
                             fullWidth={true}
                             error={!!this.state.errors.educ_form}
                             helperText={this.state.errors.educ_form}
-                            onChange={(event) => this.setState({ educ_form: event.target.value.trim() })}
-                            defaultValue='Очная'
+                            onChange={(event) => this.setState({ educ_form: event.target.value })}
+                            defaultValue='Выберете форму обучения'
                             select
                         >
-                            <MenuItem value="Очная">Очная</MenuItem>
-                            <MenuItem value="Заочная">Заочная</MenuItem>
-                            <MenuItem value="Очно-заочная">Очно-заочная</MenuItem>
+                            <MenuItem key={Math.random()*100} value="Очная">Очная</MenuItem>
+                            <MenuItem key={Math.random()*100} value="Заочная">Заочная</MenuItem>
+                            <MenuItem key={Math.random()*100} value="Очно-заочная">Очно-заочная</MenuItem>
                         </TextField>
                         <TextField
                             margin="dense"
@@ -530,15 +532,15 @@ export default class Specialty extends Component {
                             error={!!this.state.errors.educ_programm}
                             helperText={this.state.errors.educ_programm}
                             onChange={(event) => {
-                                console.log(event.target.value)
+                                //console.log(event.target.value)
                                 this.setState({ educ_programm: event.target.value })
 
                             }}
                             defaultValue=''
                             select
                         >
-                            <MenuItem value="1">Бакалавр</MenuItem>
-                            <MenuItem value="2">Магистр</MenuItem>
+                            <MenuItem key={Math.random()*100} value="1">Бакалавр</MenuItem>
+                            <MenuItem key={Math.random()*100} value="2">Магистр</MenuItem>
                         </TextField>
 
                         <TextField
@@ -570,14 +572,20 @@ export default class Specialty extends Component {
                         <TextField
                             margin="dense"
                             id="sub_unit_id"
-                            label="Sub_unit_id"
+                            label="САПР ВЕБ или КИС"
                             type="text"
                             fullWidth={true}
                             error={!!this.state.errors.sub_unit_id}
                             helperText={this.state.errors.sub_unit_id}
                             onChange={(event) => this.setState({ sub_unit_id: event.target.value.trim() })}
                             defaultValue=''
-                        />
+                            select
+                        >
+                            <MenuItem key={Math.random()*100} value="1">САПР</MenuItem>
+                            <MenuItem key={Math.random()*100} value="2">ВЕБ</MenuItem>
+                            <MenuItem key={Math.random()*100} value="3">КИС</MenuItem>
+
+                        </TextField>
             
                     </DialogContent>
                     <DialogActions>

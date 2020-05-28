@@ -87,7 +87,6 @@ export default class Project extends Component {
                 let newEndDate = data[x].end_date.split('T')
                 data[x].begin_date = newBeginDate[0]
                 data[x].end_date = newEndDate[0]
-                console.log(data[x].begin_date)
             }
             this.setState({ // обновляем state
                 isLoading: false,

@@ -6,10 +6,11 @@ import {connect} from 'react-redux'
 import {auth} from '../../store/actions/auth'
 
 
-// function validateEmail(email) {
+function validateEmail(email) {
 //     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 //     return re.test(String(email).toLowerCase());
-// }
+    return email.length > 4
+}
 
 class Auth extends Component {
 
@@ -36,12 +37,10 @@ class Auth extends Component {
                 touched: false,
                 validation:{
                     required:true,
-                    minLength: 6
+                    minLength: 4
                 }  
             }
         },
-
-        token:''
     }
 
     
@@ -125,26 +124,26 @@ class Auth extends Component {
 
     }
     validateControl(value, validation){
-        // if(!validation){
-        //     return true
-        // }
+        if(!validation){
+            return true
+        }
 
-        // let isValid = true
+        let isValid = true
 
-        // if (validation.required){
-        //     isValid = value.trim() !=='' && isValid
-        // }
+        if (validation.required){
+            isValid = value.trim() !=='' && isValid
+        }
 
-        // if (validation.email){
-        //     isValid = validateEmail(value) && isValid
-        // }
+        if (validation.email){
+            isValid = validateEmail(value) && isValid
+        }
 
-        // if (validation.minLength){
-        //     isValid = value.length >= validation.minLength && isValid
-        // }
+        if (validation.minLength){
+            isValid = value.length >= validation.minLength && isValid
+        }
 
-        // return isValid
-        return true;
+         return isValid
+        //return true;
     }
 
     onChangeHandler= (event, controlName) =>{
@@ -205,12 +204,12 @@ class Auth extends Component {
                             Войти
                         </Button>
 
-                        <Button
-                            type='primary'
-                            onClick={this.registerHandler}
-                        >
-                            Зарегистрироваться
-                        </Button>
+                        {/*<Button*/}
+                        {/*    type='primary'*/}
+                        {/*    onClick={this.registerHandler}*/}
+                        {/*>*/}
+                        {/*    Зарегистрироваться*/}
+                        {/*</Button>*/}
 
                     </form>
                 </div>

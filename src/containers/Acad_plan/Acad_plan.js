@@ -77,7 +77,6 @@ export default class Acad_plan extends Component{
             for(let x=0; x<data.length; x++){
                 let newYear_join = data[x].year_join.split('T')
                 data[x].year_join = newYear_join[0]
-                console.log(data[x].year_join)
             }
             this.setState({ // обновляем state
                 isLoading: false,

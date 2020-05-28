@@ -44,7 +44,7 @@ export default props => (
         </thead>
         <tbody>
             {props.data.map(item => (
-                <tr key={item.id + item.specialties_id} onClick={props.onRowSelect.bind(null, item)} spellCheck="false">
+                <tr key={item.id + Math.random()*100} onClick={props.onRowSelect.bind(null, item)} spellCheck="false">
                     <td>{item.id}</td>
                     <td
                         className={classes.edit}

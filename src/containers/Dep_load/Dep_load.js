@@ -46,7 +46,6 @@ export default class Dep_load extends Component{
                 data[x].begin_date = newBeginDate[0]
                 data[x].end_date = newEndDate[0]
                 data[x].modified_date = newModifDate[0]
-                console.log(data[x].begin_date)
             }
             this.setState({ // обновляем state
                 isLoading: false,

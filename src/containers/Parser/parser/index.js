@@ -4,18 +4,36 @@ import { make_cols, SheetJSFT } from './utils'; // Доп. функции для
 import { ViewerTable } from '../viewer-table/index'; // Компонент для отображения данных
 import './style.css';
 import { Button } from '@material-ui/core';
- 
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
+import {link} from "../../../Link";
+import DialogContent from "@material-ui/core/DialogContent";
+
 class Parser extends Component {
   constructor(props) {
     super(props);
     this.state = {
+        dataSpec:[],
+        dataDep:[],
+        dataDepar:[],
+        option_id:1,
+        id:'',
+        depart_id:'',
+        spec_id:'',
+        begin_date:'',
+        end_date:'',
       file: {},
       data: [],
       data_filtered: [],
       cols: [],
       search_Text: '',
       search_Text_Value: '',
-      disabled: true //включено ли поле для поиска
+      disabled: true, //включено ли поле для поиска,
+        errors:{
+            spec_id:'',
+            id:'',
+        }
+
     }
     this.uploadData = this.uploadData.bind(this)
     this.handleFile = this.handleFile.bind(this);
@@ -25,7 +43,88 @@ class Parser extends Component {
     this.url="http://localhost:4000/shrek/";
   }
 
-  /* Обработчик input поля для файла */
+
+  async componentDidMount() {
+      //в этом методе происходит запрос к серверу по ссылке из параметра url
+      // let url = 'http://dashboard.kholodov.xyz/api/acad_plan'
+      let url1 = link + '/specialties'
+      const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
+      //console.log(token)
+      try {
+          const response = await fetch(url1, {
+              method: 'GET', //метод для получения данных
+              headers: {
+                  'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                  'Authorization': `Bearer ${token}`
+              }
+          })
+          //console.log('Я ответ', response)
+          const dataSpec = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
+          console.log('Я дата dataSpec', dataSpec)
+          this.setState({ // обновляем state
+              isLoading: false,
+              //dataAcad: _.orderBy(dadataAcadta, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
+              dataSpec
+          })
+      } catch (e) { // на случай ошибки
+          console.log(e)
+      }
+
+
+      let url4 = link + '/department'
+      //const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
+      //console.log(token)
+      try {
+          const response = await fetch(url4, {
+              method: 'GET', //метот для получения данных
+              headers: {
+                  'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                  'Authorization': `Bearer ${token}`
+              }
+          })
+          //console.log('Я ответ', response)
+          const dataDepar = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
+          console.log('Я дата Depar', dataDepar)
+
+          this.setState({ // обновляем state
+              isLoading: false,
+              //data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
+              dataDepar
+          })
+
+      } catch (e) { // на случай ошибки
+          console.log(e)
+
+      }
+  }
+
+    renderOptionsSpec(){
+        return this.state.dataSpec.map((item)=>{
+            return(
+                <MenuItem
+                    key={item.name}
+                    value={item.id}
+                >
+                    {item.name}
+                </MenuItem>
+            )
+        })
+    }
+
+    renderOptionsDepar(){
+        return this.state.dataDepar.map((item)=>{
+            return(
+                <MenuItem
+                    key={item.name}
+                    value={item.id}
+                >
+                    {item.name}
+                </MenuItem>
+            )
+        })
+    }
+
+    /* Обработчик input поля для файла */
   handleChange(e) {
     const files = e.target.files;
     if (files && files[0]) this.setState({ file: files[0] }, () => { this.handleFile() });
@@ -107,21 +206,21 @@ async uploadData(){
     let nowMonth = new Date().getMonth()
     let nowDateD = new Date().getDate()
     let nowDate = `${nowFullYear}-${nowMonth}-${nowDateD}`
-    let now = `${nowDate} ${nowTime}`
+    let now = `${nowDate}T${nowTime}`
     console.log(now)
 
 
 
       let fetchDataAcad = {
         modified_date: now,
-        specialties_id: 100,
+        specialties_id: this.state.spec_id,
           disciplines:[]
       }
 
       let fetchDataDep = {
-        department_id: 1,
-        begin_date: "2016-09-01T09:00:00",
-        end_date: "2016-09-01T09:00:00",
+        department_id: this.state.depart_id,
+        begin_date: this.state.begin_date,
+        end_date: this.state.end_date,
         modified_date: now,
         disciplines:[]
     }
@@ -129,11 +228,11 @@ async uploadData(){
     let groops = []
 
     //console.log(fetchData)
-    if (this.state.data == 0){
-      console.log('Не загруженны данные')
+    if (this.state.data === 0){
+      console.log('Не загружены данные')
     }else{
         let sem_number = 1
-        if(this.state.data[0].A == 'Расчет часов учебной работы по кафедре Инфокогнитивные технологии'){
+        if(this.state.data[0].A === 'Расчет часов учебной работы по кафедре Инфокогнитивные технологии'){
             console.log('Нагрузка')
             for(let i=4; i<this.state.data.length; i++){
                 let bufData = this.state.data[i]
@@ -151,7 +250,7 @@ async uploadData(){
                     sem_number = +a[a.length - 1]
                 }
 
-                if(bufData.C != undefined){
+                if(bufData.C !== undefined){
                     let b = bufData.C.split(';')
                     num_groups = b.slice(0, -1)
                     groops.push(num_groups)
@@ -159,7 +258,9 @@ async uploadData(){
 
                 }
 
-                if (sem || itogo) continue; //TODO Возможно стоит сделать break на момоенте обнаружения Итого
+                if (sem || itogo) continue;
+
+                if(itogo) break
 
 
                 if(!!bufData.A){
@@ -206,7 +307,36 @@ async uploadData(){
                 //console.log('Успех:', JSON.stringify(json));// результат запроса
                 console.log('Ответ:',res);
                 
-                console.log(fetchDataDep)//выводит обьект того, что добавлено на сервер
+                console.log(fetchDataDep)//выводит объект того, что добавлено на сервер
+
+
+                const resJson = await res.json()
+                console.log('resJson:',resJson)
+                const newData = new FormData(document.forms.inputForm)
+                newData.append('dep_load_id', resJson.id)
+
+
+                let url3 = `http://dashboard.kholodov.xyz/api/uploads/dep_load` //ссылка для запроса к таблице преподаавтелей
+                const token1 = localStorage.getItem('token')// взяли токен
+
+                try {
+                    const response = await fetch(url3, {
+                        method: 'POST', // или 'PUT'
+                        body: newData, // данные могут быть 'строкой' или {объектом}!
+                        headers: {
+                            // 'Content-Type': 'multipart/form-data;boundary="boundary"',//заголовки обязателны для получения данных
+                            'Authorization': `Bearer ${token1}`
+                        }
+                    });
+                    const json = await response.json();
+
+                    console.log('Ответ:', JSON.stringify(json))
+                } catch (error) {
+                    console.error('Ошибка:', error); //выдаёт ошибку в консоль
+                }
+
+
+
             } catch (error) {
                 console.error('Ошибка:', error); //выдаёт ошибку в консоль
             }
@@ -351,6 +481,31 @@ async uploadData(){
                 const res = await response;
                 console.log('Ответ:', res)// результат запроса
                 console.log(fetchDataAcad)//выводит обьект того, что добавлено на сервер
+
+                const resJson = await res.json()
+                console.log('resJson:',resJson)
+
+                const newData = new FormData(document.forms.inputForm)
+                newData.append('acad_plan_id', resJson.id)
+
+                let url3 = `http://dashboard.kholodov.xyz/api/uploads/acad_plan` //ссылка для запроса к таблице преподаавтелей
+                const token1 = localStorage.getItem('token')// взяли токен
+
+                try {
+                    const response = await fetch(url3, {
+                        method: 'POST', // или 'PUT'
+                        body: newData, // данные могут быть 'строкой' или {объектом}!
+                        headers: {
+                            // 'Content-Type': 'multipart/form-data;boundary="boundary"',//заголовки обязателны для получения данных
+                            'Authorization': `Bearer ${token1}`
+                        }
+                    });
+                    const json = await response.json();
+
+                    console.log('Ответ:', JSON.stringify(json))
+                } catch (error) {
+                    console.error('Ошибка:', error); //выдаёт ошибку в консоль
+                }
             } catch (error) {
                 console.error('Ошибка:', error); //выдаёт ошибку в консоль
             }
@@ -358,11 +513,7 @@ async uploadData(){
         }else{
             console.log('differen table')
         }
-
     }
-
-
-             
         }
 
 
@@ -373,9 +524,106 @@ async uploadData(){
 
       return (
       <div style={{marginLeft: '10%'}}>
-        <input type="file" id="file" accept={ SheetJSFT } onChange={this.handleChange} />
+          <form name='inputForm' >
+            <input type="file" id="file" name='file' accept={ SheetJSFT } onChange={this.handleChange} />
+          </form>
+          <div style={{height:'150px', width:'500px', marginLeft:'40%'}}>
+              <TextField
+                  margin="dense"
+                  id="option_id"
+                  label="Выберете Специальность или Департамент"
+                  type="text"
+                  fullWidth={true}
+                  error={!!this.state.errors.option_id}
+                  helperText={this.state.errors.option_id}
+                  onChange={(event) => this.setState({ option_id: event.target.value })}
+                  defaultValue= '1'
+                  select
+              >
+                  <MenuItem key={Math.random()*100} value="1">Специальность</MenuItem>
+                  <MenuItem key={Math.random()*100} value="2">Департамент</MenuItem>
+
+              </TextField>
+              {this.state.option_id == 1?
+                  <TextField
+                      margin="dense"
+                      id="spec_id"
+                      label="Выберете Специальность"
+                      type="text"
+                      fullWidth={true}
+                      error={!!this.state.errors.spec_id}
+                      helperText={this.state.errors.spec_id}
+                      onChange={(event) => {
+                          console.log(event.target.value)
+                          this.setState({ spec_id: event.target.value })
+                      }}
+                      defaultValue=''
+                      select
+                  >
+                      {this.renderOptionsSpec()}
+
+                  </TextField>
+                  :
+                  null
+              }
+              {this.state.option_id == 2?
+                  <React.Fragment>
+                  <TextField
+                      margin="dense"
+                      id="depart_id"
+                      label="Выберете департамент"
+                      type="text"
+                      fullWidth={true}
+                      error={!!this.state.errors.id}
+                      helperText={this.state.errors.id}
+                      onChange={(event) => {
+                          console.log(event.target.value)
+                          this.setState({ depart_id: event.target.value })
+                      }}
+                      defaultValue=''
+                      select
+                  >
+                      {this.renderOptionsDepar()}
+
+                  </TextField>
+
+                  <TextField
+                      margin="dense"
+                      id="year_join"
+                      label="Год начала действия"
+                      type="date"
+                      fullWidth={true}
+                      error={!!this.state.errors.begin_date}
+                      helperText={this.state.errors.begin_date}
+                      onChange={(event) => {
+                          this.setState({ begin_date: event.target.value })
+                          //console.log(event.target.value)
+
+                      }}
+                      defaultValue="2017-05-24"
+                  />
+                  <TextField
+                  margin="dense"
+                  id="year_join"
+                  label="Год окончания действия"
+                  type="date"
+                  fullWidth={true}
+                  error={!!this.state.errors.end_date}
+                  helperText={this.state.errors.end_date}
+                  onChange={(event) => {
+                  this.setState({ end_date: event.target.value })
+                  //console.log(event.target.value)
+
+              }}
+                  defaultValue="2017-05-24"
+                  />
+                  </React.Fragment>
+                  :
+                    null
+              }
+          </div>
         {/* <button onClick={(e)=>this.loadClick(e)}>Загрузить с сервера</button> */}
-        <Button style={{marginLeft: '10px'}} color="primary" variant="contained" onClick={this.uploadData}>Загрузить на сервер</Button>
+        <Button style={{marginBottom: '5px'}} color="primary" variant="contained" onClick={this.uploadData}>Загрузить на сервер</Button>
         <br />
         <input type="text" value={this.state.search_Text_Value} onChange ={this.nameSer}  disabled = {(this.state.disabled)? "disabled" : ""} />
         <Button style={{marginLeft: '10px'}} color="primary" variant="contained" type="button" onClick={this.search}>Поиск</Button>

@@ -588,7 +588,7 @@ export default class QuizList extends Component {
         <TextField
             margin="dense"
             id="rate"
-            label="rate преподавателя"
+            label="Ставка преподавателя"
             type="text"
             fullWidth = {true}
             error={!!this.state.errors.rate}
@@ -599,8 +599,8 @@ export default class QuizList extends Component {
         <TextField
             margin="dense"
             id="hourse_worked"
-            label="hourse_worked преподавателя"
-            type="hourse_worked"
+            label="Количество рабочих часов преподавателя"
+            type="text"
             fullWidth = {true}
             error={!!this.state.errors.hourse_worked}
             helperText={this.state.errors.hourse_worked}
@@ -610,7 +610,7 @@ export default class QuizList extends Component {
         <TextField
             margin="dense"
             id="rinc"
-            label="rinc преподавателя"
+            label="Rinc преподавателя"
             type="text"
             fullWidth = {true}
             error={!!this.state.errors.rinc}
@@ -621,7 +621,7 @@ export default class QuizList extends Component {
         <TextField
             margin="dense"
             id="web_of_science"
-            label="web_of_science преподавателя"
+            label="Web of science преподавателя"
             type="text"
             fullWidth = {true}
             error={!!this.state.errors.web_of_science}
@@ -632,7 +632,7 @@ export default class QuizList extends Component {
         <TextField
             margin="dense"
             id="scopus"
-            label="scopus преподавателя"
+            label="Scopus преподавателя"
             type="text"
             fullWidth = {true}
             error={!!this.state.errors.scopus}
@@ -653,7 +653,7 @@ export default class QuizList extends Component {
         <TextField
             margin="dense"
             id="password"
-            label="Password преподавателя"
+            label="Пароль преподавателя"
             type="text"
             fullWidth = {true}
             error={!!this.state.errors.password}
