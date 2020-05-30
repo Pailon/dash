@@ -114,7 +114,7 @@ export default class Upload extends React.Component {
                            onChange={(e)=>this._handleImageChange(e)} />
                     <button className="submitButton"
                             type="submit"
-                            onClick={(e)=>this._handleSubmit(e)}>Загрузить индив. план</button>
+                            onClick={(e)=>this._handleSubmit(e)}>Загрузить файл</button>
                 </form>
             </div>
         )

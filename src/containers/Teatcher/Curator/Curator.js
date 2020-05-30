@@ -1,8 +1,5 @@
 import React from 'react'
 
-let array = ['Лодка', 'Машина', 'Таймер', 'Кран']
-
-
 export default ({project}) => {
     return (
         <div className='container m-5 bg-light'>

@@ -531,7 +531,7 @@ async uploadData(){
               <TextField
                   margin="dense"
                   id="option_id"
-                  label="Выберете Специальность или Департамент"
+                  label="Выберете Учебный план или Нагрузку"
                   type="text"
                   fullWidth={true}
                   error={!!this.state.errors.option_id}
@@ -540,8 +540,8 @@ async uploadData(){
                   defaultValue= '1'
                   select
               >
-                  <MenuItem key={Math.random()*100} value="1">Специальность</MenuItem>
-                  <MenuItem key={Math.random()*100} value="2">Департамент</MenuItem>
+                  <MenuItem key={Math.random()*100} value="1">Учебный план</MenuItem>
+                  <MenuItem key={Math.random()*100} value="2">Кафедра</MenuItem>
 
               </TextField>
               {this.state.option_id == 1?
@@ -571,7 +571,7 @@ async uploadData(){
                   <TextField
                       margin="dense"
                       id="depart_id"
-                      label="Выберете департамент"
+                      label="Выберете кафедру"
                       type="text"
                       fullWidth={true}
                       error={!!this.state.errors.id}

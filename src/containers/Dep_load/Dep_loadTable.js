@@ -12,7 +12,7 @@ export default props => (
                     ID {props.sortField === 'id' ? <small>{props.sort}</small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'department_name')}>
-                    Наименование департамента {props.sortField === 'department_name' ? <small>{props.sort}</small> : null}
+                    Наименование кафедры {props.sortField === 'department_name' ? <small>{props.sort}</small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'begin_date')}>
                     Дата начала {props.sortField === 'begin_date' ? <small>{props.sort}</small> : null}

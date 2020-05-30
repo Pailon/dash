@@ -19,6 +19,9 @@ import Dep_load_detail from "./containers/Dep_load/Dep_load_detail/Dep_load_deta
 import Acad_plan_detail from "./containers/Acad_plan/Acad_plan_detail/Acad_plan_detail";
 import Dashboard from "./containers/Dashboard/Dashboard";
 import Department from "./containers/Department/Department";
+import Students from "./containers/Students/Students";
+import ErrorsCol from "./containers/ErrorsCol/ErrorsCol";
+import FailProject from "./containers/FailProject/FailProject";
 
 
 class App extends Component {
@@ -53,6 +56,9 @@ class App extends Component {
         <Route path="/specialties" component={Specialty}/>
         <Route path="/dashboard" component={Dashboard}/>
         <Route path="/department" component={Department}/>
+        <Route path="/errors_col" component={ErrorsCol}/>
+        <Route path="/fail_project" component={FailProject}/>
+        <Route path="/students" component={Students}/>
         <Route path="/parser" component={Parser}/>
         <Route path="/logout" component={Logout}/>
         <Redirect to={'/'}/>
