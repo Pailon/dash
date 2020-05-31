@@ -143,7 +143,6 @@ export default props => (
                                 pathname: "/acad_plan_detail",
                                 propsId: item.id,
                             }}>
-                                {/* <FA name='external-link-square-alt'/>  */}
                                 Подробнее
                             </Link>
                         </button>

@@ -9,9 +9,16 @@ import _ from "lodash";
 import Loader from "../../../components/UI/Loader/Loader";
 import Button from "@material-ui/core/Button";
 import ReactPaginate from "react-paginate";
+import { saveAs } from 'file-saver';
+
 
 
 export default class Dep_load_detail extends Component{
+
+    constructor(props) { //конструктор этого класса
+        super(props);
+        this.loadingFile = this.loadingFile.bind(this)
+    }
 
     state ={
         data: [],
@@ -22,6 +29,7 @@ export default class Dep_load_detail extends Component{
         row: null, // поле для хранения строки для её будущего отображения отдельно
         currentPage: 0, //количество страниц на данный момент
         search:'', //что искать
+        DepFile:[],
     }
 
     async componentDidMount() {
@@ -42,18 +50,43 @@ export default class Dep_load_detail extends Component{
             //console.log('Я ответ', response)
 
 
-            const data1 = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            const data = data1.dep_load.disciplines
+            const full_data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
+            const data = full_data.dep_load.disciplines
             console.log('Я дата', data)
             //const disciplines = data.disciplines
             //console.log(disciplines)
             this.setState({ // обновляем state
                 isLoading: false,
-                data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
+                data: _.orderBy(data, this.state.sortField, this.state.sort),//первичная сортировка данных, для порядка
                 //data: data,
                 //data: _.orderBy(data.disciplines, this.state.sortField, this.state.sort)
+                full_data
             })
 
+        } catch (e) { // на случай ошибки
+            console.log(e)
+        }
+
+        console.log(this.state.full_data.dep_load.id)
+        let url3 = link + `/dep_load/${this.state.full_data.dep_load.id}/files`
+
+        try {
+
+            const response = await fetch(url3, {
+                method: 'GET', //метот для получения данных
+                headers: {
+                    'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            // console.log('Я ответ', response)
+            const DepFile = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
+            console.log('Я ответ DepFile', DepFile)
+            this.setState({ // обновляем state
+                isLoading: false,
+                // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
+                DepFile,
+            })
         } catch (e) { // на случай ошибки
             console.log(e)
         }
@@ -122,6 +155,37 @@ export default class Dep_load_detail extends Component{
         })
     }
 
+    loadingFile(){
+        //event.preventDefault()
+        console.log(this.props.location.propsId)
+
+        let url = link + `/uploads/dep_load/${this.state.DepFile[0].id}`
+
+        const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
+        //console.log(token) //проверяем взяли ли токен
+        try {
+            fetch(url, {
+                method: 'GET', //метот для получения данных
+                headers: {
+                    //'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then(res => {
+                console.log(res);
+                return res.blob();
+            })
+                .then(blob => {
+                    saveAs(blob, `${this.state.DepFile[0].name}`)
+                })
+
+
+        } catch (e) { // на случай ошибки
+            console.log(e)
+        }
+
+
+    }
+
 
 
     render() {
@@ -142,12 +206,12 @@ export default class Dep_load_detail extends Component{
                             ? <Loader /> //пока не получены данные отображается loader иначе отображам таблицу
                             : <React.Fragment>
                                 <Dep_load_detail_Search onSearch={this.searchHandler} />
-                                {/*<Button*/}
-                                {/*    color="primary"*/}
-                                {/*    variant="contained"*/}
-                                {/*    onClick={this.newTeatcher}*/}
-                                {/*    className="mb-2"*/}
-                                {/*>Добавить <br/>преподавателя</Button>*/}
+                                <Button
+                                    color="primary"
+                                    variant="contained"
+                                    onClick={this.loadingFile}
+                                    className="mb-2"
+                                >Скачать <br/>xml версию</Button>
                                 <div className='table-responsive'>
                                     <Dep_load_detail_Table
                                         //data={this.state.data.dep_load}

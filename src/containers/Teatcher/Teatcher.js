@@ -87,7 +87,6 @@ export default class Teatcher extends Component{
 
         let url2 = link + '/projects'
 
-
         try {
 
             const response = await fetch(url2, {
@@ -104,11 +103,11 @@ export default class Teatcher extends Component{
                 isLoading: false,
                 // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
                 dataProj,
-                url
             })
         } catch (e) { // на случай ошибки
             console.log(e)
         }
+
     }
 
     filterProj(){
@@ -117,7 +116,6 @@ export default class Teatcher extends Component{
                 this.state.projTeactcher.push(item)
             }
         })
-        //console.log('Project',this.state.projTeactcher)
     }
 
 
@@ -161,15 +159,10 @@ export default class Teatcher extends Component{
 
 
     render(){
-        //console.log('dataProj',this.state.dataProj)
-        //console.log('data',this.state.data)
         if (!this.props.location.propsItem) return <Redirect to="/" />;
-        //console.log(this.props.location.propsItem)
         return(
                 <div className='container mt-5'>
-                    {        this.filterProj()
-                    }
-
+                    {this.filterProj()}
                     <div className='row'>
                         <button type="button" className="btn btn-link"><Link to='/'>Назад</Link> </button>
                     </div>

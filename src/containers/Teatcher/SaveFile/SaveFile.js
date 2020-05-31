@@ -9,13 +9,13 @@ export default (props)=>{
     <ul key={Math.random()*100}>
         {props.data.map(item=>{
                 return(
-                            <li
-                                key={item.id}
-                                style={{marginBottom: '10px'}}
-                                onClick={(event)=>{
-                                    props.loadingFile(event, item)
-                                }}
-                            >{item.name}</li>
+                <li
+                    key={item.id}
+                    style={{marginBottom: '10px'}}
+                    onClick={(event)=>{
+                        props.loadingFile(event, item)
+                    }}
+                >{item.name}</li>
                 )
             })
         }
