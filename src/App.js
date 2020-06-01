@@ -22,6 +22,8 @@ import Department from "./containers/Department/Department";
 import Students from "./containers/Students/Students";
 import ErrorsCol from "./containers/ErrorsCol/ErrorsCol";
 import FailProject from "./containers/FailProject/FailProject";
+import Dep_load_RPD from "./containers/Dep_load/Dep_load_RPD/Dep_load_RPD";
+import Project_detail from "./containers/Project/Project_detail/Project_detail";
 
 
 class App extends Component {
@@ -44,7 +46,8 @@ class App extends Component {
         {/* <Route path="/" component={Auth}/> */}
         <Route path="/pd" component={Pd}/>
         <Route path="/dep_load_detail" component={Dep_load_detail}/>
-        <Route path="/rpd" component={Rpd}/>
+        <Route path="/dep_load_rpd" component={Dep_load_RPD}/>
+        <Route path="/project_detail" component={Project_detail}/>
         <Route path="/" exact component={QuizList}/>
         <Route path="/group" component={Group}/>
         <Route path="/teatcher" component={Teatcher}/>

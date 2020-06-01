@@ -60,6 +60,9 @@ export default props => (
                 <th onClick={props.onSort.bind(null, 'is_approved')}>
                     Подтверждено {props.sortField === 'is_approved' ? <small>{props.sort}</small> : null}
                 </th>
+                <th>
+
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -82,7 +85,13 @@ export default props => (
                     <td>{item.hours_ruk_mag!==null ? item.hours_ruk_mag : <p>---</p>}</td>
                     <td>{item.hours_ruk_aspirant!==null ? item.hours_ruk_aspirant : <p>---</p>}</td>
                     <td>{item.is_approved!==null ? (item.is_approved==true? 'Подтверждено': 'Не подтверждено') : (<p>---</p>)}</td>
-
+                    <Link to={{
+                        pathname: "/dep_load_rpd",
+                        data: item,
+                    }}>
+                        {/* <FA name='external-link-square-alt'/>  */}
+                        Подробнее
+                    </Link>
                 </tr>
             ))}
         </tbody>

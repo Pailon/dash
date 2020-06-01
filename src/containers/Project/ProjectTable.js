@@ -1,5 +1,6 @@
 import React from 'react'
 import classes from './Project.module.css'
+import {Link} from "react-router-dom";
 //компонент отображения таблицы
 
 var FA = require('react-fontawesome')
@@ -33,6 +34,9 @@ export default props => (
                 </th>
                 <th onClick={props.onSort.bind(null, 'link_trello')}>
                     Trello {props.sortField === 'link_trello' ? <small><FA name={props.sortArrow} /></small> : null}
+                </th>
+                <th>
+
                 </th>
 
             </tr>
@@ -127,6 +131,16 @@ export default props => (
                         }}
                         suppressContentEditableWarning={true}
                     >{item.link_trello}</td>
+
+                    <td>
+                        <Link to={{
+                            pathname: "/project_detail",
+                            data: item,
+                        }}>
+                            {/* <FA name='external-link-square-alt'/>  */}
+                            Подробнее
+                        </Link>
+                    </td>
                 </tr>
             ))}
         </tbody>

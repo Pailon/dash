@@ -144,15 +144,6 @@ export default class Dashboard extends Component{
         const {dataProject} = this.state
 
         dataProject.map(item=>{
-            // let end = item.end_date.split('-')
-            // let now = this.state.date.split('-')
-            // if(end[0] === now[0]){
-            //     if(end[1] === now[1]){
-            //         if((end[2]-now[2])>0){
-            //             this.state.preFailProject.push(item)
-            //         }
-            //     }
-            // }
             if(item.end_date < this.state.date){
                 this.state.failProject.push(item)
             }
@@ -374,6 +365,7 @@ export default class Dashboard extends Component{
 
 
     render(){
+        this.state.failProject = []
         this.testingProject()
         return(
             <div>

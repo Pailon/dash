@@ -426,13 +426,13 @@ export default class Group extends Component {
                         <TextField   //все модули TextFiled это поля ввода имеющие несколько ключевых свойств
                             autoFocus
                             margin="dense"
-                            id="name"
+                            id="name_group"
                             label="Номер группы" //описание поля ввода
                             type="text" //тип вводимой информации
                             fullWidth={true}
                             error={!!this.state.errors.name}// true or false, отображать ошибку или нет
                             helperText={this.state.errors.name} // текст отображаемый при ошибке
-                            onChange={(event) => this.setState({ name: event.target.value.trim() })} //функция которая вызывается при изменении значения
+                            onChange={(event) => this.setState({ name: event.target.value.trim()})} //функция которая вызывается при изменении значения
                         //функция записывает новое значение при  
                         //каждом изменении в нужную  буферную переменную в state
                         />
