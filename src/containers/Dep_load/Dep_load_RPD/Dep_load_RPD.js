@@ -64,7 +64,7 @@ export default class Depa_load_RPD extends Component{
    async choiseTeatcher(){
 
         const {teatcher_id, data} = this.state
-        let url = link + '/teachers'
+        let url = link + '/dep_load/discipline/teacher'
         //console.log(url1)
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
         //console.log(token) //проверяем взяли ли токен
@@ -77,7 +77,7 @@ export default class Depa_load_RPD extends Component{
 
             const response = await fetch(url, {
                 method: 'POST', //метот для получения данных
-                body:fetchData,
+                body:JSON.stringify(fetchData),
                 headers: {
                     'Content-Type': 'application/json',//заголовки обязателны для получения данных
                     'Authorization': `Bearer ${token}`

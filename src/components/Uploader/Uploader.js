@@ -1,6 +1,7 @@
 import React from "react";
 import './Uploader.css'
 import Alert from "../UI/Alert/Alert";
+import {link} from "../../Link";
 
 
 export default class Upload extends React.Component {
@@ -10,13 +11,10 @@ export default class Upload extends React.Component {
         };
     }
 
-    componentDidMount() {
-        //console.log(this.props.item)
-    }
-
     async _handleSubmit(e) {
         e.preventDefault();
         console.log('handle uploading-', this.state.file);
+        console.log(this.props)
 
         let newData = new FormData(document.forms.inputForm)
 
@@ -26,8 +24,15 @@ export default class Upload extends React.Component {
 
         // const FormData={file: data}
 
+        let url
 
-        let url = `http://dashboard.kholodov.xyz/api/uploads/ind_plan` //ссылка для запроса к таблице преподаавтелей
+        if(this.props.link === true){
+            url = link + `/uploads/rpd`
+            newData.append(`discipline_id`, this.props.discipline);
+        }else{
+            url = link + `/uploads/ind_plan`
+        }
+        //url = `http://dashboard.kholodov.xyz/api/uploads/ind_plan` //ссылка для запроса к таблице преподаавтелей
         const token = localStorage.getItem('token')// взяли токен
 
         try {
@@ -114,7 +119,10 @@ export default class Upload extends React.Component {
                            onChange={(e)=>this._handleImageChange(e)} />
                     <button className="submitButton"
                             type="submit"
-                            onClick={(e)=>this._handleSubmit(e)}>Загрузить файл</button>
+                            onClick={(e)=>{
+                                this._handleSubmit(e)
+                            }}>Загрузить файл</button>
+
                 </form>
             </div>
         )
