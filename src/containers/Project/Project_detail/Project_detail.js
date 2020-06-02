@@ -8,6 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import DialogContent from "@material-ui/core/DialogContent";
 import MenuItem from "@material-ui/core/MenuItem";
 import Alert from "../../../components/UI/Alert/Alert";
+import {Link} from "react-router-dom";
 
 export default class Project_detail extends Component{
 
@@ -83,6 +84,8 @@ export default class Project_detail extends Component{
        } catch (e) { // на случай ошибки
            console.log(e)
        }
+
+
 
 
     }
@@ -213,6 +216,7 @@ export default class Project_detail extends Component{
     render() {
         return(
             <div className="container mt-5">
+                <button type="button" className="btn btn-link"><Link to='/project'>Назад</Link> </button>
                 {
                     this.state.openAlert ?  //компонент вывода предупреждения
                         <Alert

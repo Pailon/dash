@@ -13,7 +13,8 @@ export default (props)=>{
                     key={item.id}
                     style={{marginBottom: '10px'}}
                     onClick={(event)=>{
-                        props.loadingFile(event, item)
+                        let link = 'ind_plan'
+                        props.loadingFile(event, item, link)
                     }}
                 >{item.name}</li>
                 )

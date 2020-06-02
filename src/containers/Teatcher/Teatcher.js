@@ -32,6 +32,7 @@ export default class Teatcher extends Component{
         dataFiles:[],
         dataFile:[],
         dataRPD:[],
+        dataRPD_files:[],
         isLoading:true,
         row:null,
         checked:false,
@@ -139,6 +140,29 @@ export default class Teatcher extends Component{
             console.log(e)
         }
 
+        let url4 = link + `/dep_load/discipline/teacher/${this.props.location.propsItem.id}/files`
+
+        try {
+
+            const response = await fetch(url4, {
+                method: 'GET', //метот для получения данных
+                headers: {
+                    'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            // console.log('Я ответ', response)
+            const dataRPD_files = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
+            console.log('Я ответ dataRPD', dataRPD_files)
+            this.setState({ // обновляем state
+                //isLoading: false,
+                // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
+                dataRPD_files,
+            })
+        } catch (e) { // на случай ошибки
+            console.log(e)
+        }
+
     }
 
     filterProj(){
@@ -150,13 +174,13 @@ export default class Teatcher extends Component{
     }
 
 
-   async loadingFile(event,item){
+   async loadingFile(event,item, link){
         event.preventDefault()
         console.log(item)
 
        let url
 
-       url = link + `/uploads/ind_plan/${item.id}`
+       url = link + `/uploads/${link}/${item.id}`
 
        const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
        //console.log(token) //проверяем взяли ли токен
@@ -200,6 +224,24 @@ export default class Teatcher extends Component{
                 </MenuItem>
             )
         })
+    }
+
+    renderListRpd(){
+        return this.state.dataRPD_files.map((item)=>{
+            return(
+                <li
+                    key={item.name}
+                    //value={item.id}
+                    onClick={(event)=>{
+                        let link = 'rpd'
+                        this.loadingFile(event, item, link)
+                    }}
+                >
+                    {`${item.name}`}
+                </li>
+            )
+        })
+
     }
 
 
@@ -278,6 +320,11 @@ export default class Teatcher extends Component{
                                 loadingFile={this.loadingFile}
                                 className='mt-5'
                             />
+                            <h4>РПД преподавателя</h4>
+                            <ul>
+                                {this.renderListRpd()}
+                            </ul>
+
 
                         </div>
                         <div className='col-1 ml-5'>
