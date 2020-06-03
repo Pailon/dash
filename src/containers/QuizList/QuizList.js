@@ -302,28 +302,28 @@ export default class QuizList extends Component {
                 console.log(newTeatcher)//выводит обьект того, что добавлено на сервер
                 newTeatcher = {}//обнулили буферный обьект для нового преподавателя
 
-                data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
-                    position:'Преподаватель',
-                    rank_id:this.state.rank_id,
-                    degree_id:this.state.degree_id,
-                    rate:this.state.rate,
-                    hourse_worked:this.state.hourse_worked,
-                    rinc:this.state.rinc,
-                    web_of_science:this.state.web_of_science,
-                    scopus:this.state.scopus,
-                    name:this.state.name,
-                    surname:this.state.surname,
-                    patronymic:this.state.patronymic,
-                    birthday:this.state.birthday,
-                    phone:this.state.phone,
-                    email:this.state.email,
-                    status:2,
-                    role:4,
-                    sub_unit_id:1,
-                    login:this.state.login,
-                    password:this.state.password,
-                    id:json.id
-                })
+                // data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
+                //     position:'Преподаватель',
+                //     rank_id:this.state.rank_id,
+                //     degree_id:this.state.degree_id,
+                //     rate:this.state.rate,
+                //     hourse_worked:this.state.hourse_worked,
+                //     rinc:this.state.rinc,
+                //     web_of_science:this.state.web_of_science,
+                //     scopus:this.state.scopus,
+                //     name:this.state.name,
+                //     surname:this.state.surname,
+                //     patronymic:this.state.patronymic,
+                //     birthday:this.state.birthday,
+                //     phone:this.state.phone,
+                //     email:this.state.email,
+                //     status:2,
+                //     role:4,
+                //     sub_unit_id:1,
+                //     login:this.state.login,
+                //     password:this.state.password,
+                //     id:json.id
+                // })
                 this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
                     name:'',
                     secondName:'',
@@ -360,11 +360,19 @@ export default class QuizList extends Component {
                 })
 
 
+                if(response.status === 400){
+                    this.setState({openAlert:true, color:'danger', text:`${json.message}`},()=>{
+                        window.setTimeout(()=>{
+                            this.setState({openAlert:false})
+                        },2000)
+                    });
+                }
                 this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
                     window.setTimeout(()=>{
                         this.setState({openAlert:false})
                     },2000)
                 });
+                this.componentDidMount()
             } catch (error) {
                 console.error('Ошибка:', error); //выдаёт ошибку в консоль
                 this.setState({openAlert:true, color:'danger', text:'Произошла ошибка'},()=>{
@@ -555,12 +563,12 @@ export default class QuizList extends Component {
             margin="dense"
             id="birthday"
             label="День рождение преподавателя"
-            type="text"
+            type="date"
             fullWidth = {true}
             error={!!this.state.errors.birthday}
             helperText={this.state.errors.birthday}
             onChange={(event)=>this.setState({birthday :event.target.value.trim()})}
-            defaultValue='05-03-2020'
+            defaultValue='2020-03-05'
           />
         <TextField
             margin="dense"

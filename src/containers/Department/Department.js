@@ -22,6 +22,7 @@ export default class Department extends Component {
     constructor(props){ //конструктор этого класса
         super(props);
         this.onUpdate = this.onUpdate.bind(this)
+        this.delete = this.delete.bind(this)
     }
 
     state = {
@@ -221,9 +222,9 @@ export default class Department extends Component {
                 name: this.state.name,
             }
 
-            data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
-                name: this.state.name,
-            })
+            // data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
+            //     name: this.state.name,
+            // })
 
             this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
                 name: '',
@@ -255,6 +256,7 @@ export default class Department extends Component {
                         this.setState({openAlert:false})
                     },2000)
                 });
+                this.componentDidMount()
             } catch (error) {
                 console.error('Ошибка:', error); //выдаёт ошибку в консоль
                 this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
@@ -325,6 +327,41 @@ export default class Department extends Component {
         this.setState({ openAlert: false }) // закрыть окно оповещения
     }
 
+    async delete(id){
+        let data = this.state.data
+
+       let url = link + `/department/${id}`
+        const token = localStorage.getItem('token')// взяли токен
+
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE', // или 'PUT'
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            console.log(response)
+            if(response.status === 204){
+                this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
+                    window.setTimeout(()=>{
+                        this.setState({openAlert:false})
+                    },2000)
+                });
+                this.componentDidMount()
+
+
+            }
+        } catch (error) {
+            console.error('Ошибка:', error); //выдаёт ошибку в консоль
+            this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
+                window.setTimeout(()=>{
+                    this.setState({openAlert:false})
+                },2000)
+            });
+        }
+    }
+
 
 
     render() {
@@ -375,6 +412,7 @@ export default class Department extends Component {
                                 onRowSelect={this.onRowSelect}
                                 sortArrow={this.state.sortArrow}
                                 onUpdate={this.onUpdate}
+                                delete={this.delete}
                             />
                         </React.Fragment>
 

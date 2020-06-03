@@ -1,5 +1,6 @@
 import React from 'react'
 import classes from './Department.module.css'
+import DeleteIcon from '@material-ui/icons/Delete';
 
 //компонент отображения таблицы
 
@@ -10,16 +11,16 @@ export default props => (
     // таблица в стиле bootstrap
     <table className="table">
         <thead>
-        <tr style={{textAlign:'center'}}>
+        <tr style={{textAlign: 'center'}}>
             <th onClick={props.onSort.bind(null, 'id')}>
-                ID {props.sortField === 'id' ? <small><FA name={props.sortArrow} /></small> : null}
+                ID {props.sortField === 'id' ? <small><FA name={props.sortArrow}/></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'name')}>
-                Наименование кафедры {props.sortField === 'name' ? <small><FA name={props.sortArrow} /></small> : null}
+                Наименование кафедры {props.sortField === 'name' ? <small><FA name={props.sortArrow}/></small> : null}
             </th>
-            {/*<th onClick={props.onSort.bind(null, 'specialties_code')}>*/}
-            {/*    Код {props.sortField === 'specialties_code' ? <small><FA name={props.sortArrow} /></small> : null}*/}
-            {/*</th>*/}
+            <th onClick={props.onSort.bind(null, 'specialties_code')}>
+
+            </th>
             {/*<th onClick={props.onSort.bind(null, 'specialties_name')}>*/}
             {/*    Наименование специальности {props.sortField === 'specialties_name' ? <small><FA name={props.sortArrow} /></small> : null}*/}
             {/*</th>*/}
@@ -33,7 +34,7 @@ export default props => (
         </thead>
         <tbody>
         {props.data.map(item => (
-            <tr key={item.id} onClick={props.onRowSelect.bind(null, item)} spellCheck="false" >
+            <tr key={item.id} onClick={props.onRowSelect.bind(null, item)} spellCheck="false">
                 <td
                     className={classes.edit}
                     // contentEditable="true"
@@ -49,7 +50,9 @@ export default props => (
                 <td
                     className={classes.edit}
                     contentEditable="true"
-                    onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                    onKeyPress={(e) => {
+                        e.key === 'Enter' && e.preventDefault();
+                    }}
                     onBlur={(event) => {
                         let oldData = item.name
                         item.name = event.currentTarget.firstChild.data
@@ -58,6 +61,14 @@ export default props => (
                     }}
                     suppressContentEditableWarning={true}
                 >{item.name}</td>
+                <td>
+                    <DeleteIcon
+                        className={classes.deleteIcon}
+                        onClick={(event)=>{
+                            props.delete(item.id)
+                        }}
+                    />
+                </td>
                 {/*<td*/}
                 {/*    className={classes.edit}*/}
                 {/*    // contentEditable="true"*/}
@@ -114,4 +125,4 @@ export default props => (
         </tbody>
 
     </table>
-)
+);

@@ -334,15 +334,15 @@ export default class Students extends Component {
                 group_id:this.state.group_id,
             }
 
-            data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
-                name: this.state.name,
-                surname: this.state.surname,
-                patronymic:this.state.patronymic,
-                birthday:this.state.birthday,
-                phone:this.state.phone,
-                email:this.state.email,
-                group_id:this.state.group_id,
-            })
+            // data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
+            //     name: this.state.name,
+            //     surname: this.state.surname,
+            //     patronymic:this.state.patronymic,
+            //     birthday:this.state.birthday,
+            //     phone:this.state.phone,
+            //     email:this.state.email,
+            //     group_id:this.state.group_id,
+            // })
 
             this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
                 name: '',
@@ -387,6 +387,7 @@ export default class Students extends Component {
                         this.setState({openAlert:false})
                     },2000)
                 });
+                this.componentDidMount()
             } catch (error) {
                 console.error('Ошибка:', error); //выдаёт ошибку в консоль
                 this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
@@ -439,6 +440,7 @@ export default class Students extends Component {
                         this.setState({openAlert:false})
                     },2000)
                 });
+                this.componentDidMount()
                 item = {}
             } catch (error) {
                 console.error('Ошибка:', error);//Отображаем ошибку в консоль

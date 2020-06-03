@@ -145,16 +145,6 @@ export default class Specialty extends Component {
 
         //иначе получаем поле для фильтра, приводим его к нижнему регистру на всякий случай на будущее, используем 
         //из state поле search и на основе него проводим поиск
-        {/* 
-                    code
-                    name
-                    sub_unit_name
-                    profile
-                    educ_form
-                    educ_programm
-                    educ_years
-                    year_join
-                    sub_unit_id */}
         return data.filter(item => {
             return item['id'].toLowerCase().includes(search.toLowerCase())
                 || item['code'].toLowerCase().includes(search.toLowerCase())
@@ -255,16 +245,16 @@ export default class Specialty extends Component {
                 sub_unit_id: this.state.sub_unit_id,
             }
 
-            data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
-                code: this.state.code,
-                name: this.state.name,
-                profile: this.state.profile,
-                educ_form: this.state.educ_form,// очная
-                educ_programm: this.state.educ_programm, //1 или 2 бакалавр или магистр соответственно
-                educ_years: this.state.educ_years,
-                year_join: this.state.year_join,//Год набора timestamp
-                sub_unit_id: this.state.sub_unit_id, //подразделение САПР ВЕБ КИС
-            })
+            // data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
+            //     code: this.state.code,
+            //     name: this.state.name,
+            //     profile: this.state.profile,
+            //     educ_form: this.state.educ_form,// очная
+            //     educ_programm: this.state.educ_programm, //1 или 2 бакалавр или магистр соответственно
+            //     educ_years: this.state.educ_years,
+            //     year_join: this.state.year_join,//Год набора timestamp
+            //     sub_unit_id: this.state.sub_unit_id, //подразделение САПР ВЕБ КИС
+            // })
 
             this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
                 code: '',
@@ -312,6 +302,7 @@ export default class Specialty extends Component {
                         this.setState({openAlert:false})
                     },2000)
                 });
+                this.componentDidMount()
             } catch (error) {
                 console.error('Ошибка:', error); //выдаёт ошибку в консоль
                 this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{

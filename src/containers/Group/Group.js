@@ -228,10 +228,10 @@ export default class Group extends Component {
                 specialties_id: this.state.specialties_id,
             }
 
-            data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
-                name: this.state.name,
-                specialties_id: this.state.specialties_id,
-            })
+            // data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
+            //     name: this.state.name,
+            //     specialties_id: this.state.specialties_id,
+            // })
 
             this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
                 name: '',
@@ -265,6 +265,7 @@ export default class Group extends Component {
                         this.setState({openAlert:false})
                     },2000)
                 });
+                this.componentDidMount()
             } catch (error) {
                 console.error('Ошибка:', error); //выдаёт ошибку в консоль
                 this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{

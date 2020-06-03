@@ -125,7 +125,6 @@ export default class Project extends Component {
                 })
                 //this.state.data[i].teatch = dataTeatch
             }
-            console.log('Хаю хай',this.state.data)
 
             this.setState({ // обновляем state
                 isLoading: false,
@@ -269,15 +268,15 @@ export default class Project extends Component {
                 teacher_id: this.state.teacher_id
             }
 
-            data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
-                name: this.state.name,
-                link_trello: this.state.link_trello,
-                begin_date: this.state.begin_date,
-                end_date: this.state.end_date,
-                description: this.state.description,
-                sub_unit_id: 1,
-                teacher_id: this.state.teacher_id
-            })
+            // data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
+            //     name: this.state.name,
+            //     link_trello: this.state.link_trello,
+            //     begin_date: this.state.begin_date,
+            //     end_date: this.state.end_date,
+            //     description: this.state.description,
+            //     sub_unit_id: 1,
+            //     teacher_id: this.state.teacher_id
+            // })
 
             this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
                 name: '',
@@ -323,6 +322,7 @@ export default class Project extends Component {
                         this.setState({openAlert:false})
                     },2000)
                 });
+                this.componentDidMount()
             } catch (error) {
                 console.error('Ошибка:', error); //выдаёт ошибку в консоль
                 this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
