@@ -15,6 +15,12 @@ import Switch from "@material-ui/core/Switch";
 import TextField from "@material-ui/core/TextField";
 import DialogContent from "@material-ui/core/DialogContent";
 import MenuItem from "@material-ui/core/MenuItem";
+import Button from "@material-ui/core/Button";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Dialog from "@material-ui/core/Dialog";
+import Alert from "../../components/UI/Alert/Alert";
 
 
 
@@ -23,6 +29,8 @@ export default class Teatcher extends Component{
     constructor(props) { //конструктор этого класса
         super(props);
         this.loadingFile = this.loadingFile.bind(this)
+        this.isApprov = this.isApprov.bind(this)
+        this.openModal = this.openModal.bind(this)
     }
 
     state = {
@@ -37,6 +45,10 @@ export default class Teatcher extends Component{
         row:null,
         checked:false,
         discipline_id:'',
+        openModal:false,
+        newPassword:'',
+        openAlert: false,//видно ли окно оповещения
+
     }
 
     async componentDidMount(){
@@ -244,6 +256,151 @@ export default class Teatcher extends Component{
 
     }
 
+   async isApprov(data, item, id){
+        //функция обновления данных в таблице, получает от таблицы
+        console.log(data)                    //data-значение которое меняют item-весь обьект, в котором значение меняют id oldData
+        //console.log(item)                    //id-параметр из обьекта item чтобы проще производить запрос к api oldData-значение до изменения
+        //console.log(oldData)
+
+        //if (data !== oldData) { //узнаём изменилось ли значение функции, если нет, то зачем производить запрос?
+
+            //let url = `http://dashboard.kholodov.xyz/api/groups/${id}` //ссылка для запросов, куда подставляется id
+            let url = link + `/dep_load/discipline/${id}`
+            const token = localStorage.getItem('token')//берем токен и локального хранилищя
+
+            // let putItem = {
+            //     id:id,
+            //     acad_discipline_id:null,
+            //     name: item.name,
+            //     hours_con_project: item.hours_con_project,
+            //     hours_lec: item.hours_lec,
+            //     hours_sem: item.hours_sem,
+            //     hours_lab: item.hours_lab,
+            //     hours_con_exam: item.hours_con_exam,
+            //     hours_zachet: item.hours_zachet,
+            //     hours_exam: item.hours_exam,
+            //     hours_kurs_project: item.hours_kurs_project,
+            //     hours_gek: item.hours_gek,
+            //     hours_ruk_prakt: item.hours_ruk_prakt,
+            //     hours_ruk_vkr: item.hours_ruk_vkr,
+            //     hours_ruk_mag: item.hours_ruk_mag,
+            //     hours_ruk_aspirant: item.hours_ruk_aspirant,
+            //     semester_num: item.semester_num,
+            //     //groups: item.groups,
+            //     is_approved: data
+            // }
+       let putItem = item
+       putItem.is_approved = data
+       console.log(putItem)
+
+            try {
+                const response = await fetch(url, { //производим запрос
+                    method: 'PUT', // или 'POST'
+                    body: JSON.stringify(putItem), // данные могут быть 'строкой' или {объектом}!
+                    headers: {
+                        'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const json = await response.json();
+                console.log('Результат:', JSON.stringify(json));
+                //console.log(item)
+                //this.setState({ openAlert: true, color: 'success', text: 'Изменено' })//при успешном отображении отображаем окно об успешноти
+                this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
+                    window.setTimeout(()=>{
+                        this.setState({openAlert:false})
+                    },2000)
+                });
+                item = {}
+            } catch (error) {
+                console.error('Ошибка:', error);//Отображаем ошибку в консоль
+                //this.setState({ openAlert: true, color: 'danger', text: 'Произошла ошибка' })//Выводим окно ошибки
+                this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
+                    window.setTimeout(()=>{
+                        this.setState({openAlert:false})
+                    },2000)
+                });
+            }
+        // } else {
+        //     console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
+        //     this.setState({openAlert:true, color:'secondary', text:'Без изменений'},()=>{
+        //         window.setTimeout(()=>{
+        //             this.setState({openAlert:false})
+        //         },2000)
+        //     });
+        // }
+    }
+
+    onClose = () => {
+        //функция зарытия модального окна без завершения добавления преподавателя
+        //обнуления буферных данных, и закрытие самого окна
+        this.setState({
+            openModal: false,
+            newPassword: '',
+            errors: {
+                newPassword: '',
+            }
+        })
+    }
+
+    openModal(){
+        this.setState({openModal:true})
+    }
+
+    async resetPassword(){
+    let errors = {}
+        if (!this.state.newPassword) {
+            errors.newPassword = 'Это поле не может быть пустым'
+        }
+
+        if (errors.newPassword) {
+            this.setState({ errors }) //добавление ошибок в state
+            console.log('Error');//для проверки выводим в консоль - временно
+            return
+        } else {
+
+            let newPassword = {
+                password: this.state.newPassword
+            }
+            this.setState({newPassword:'',openModal: false})
+
+            let url = link + `/teachers/${this.props.location.propsItem.id}/password`
+            const token = localStorage.getItem('token')// взяли токен
+
+            try {
+                const response = await fetch(url, {
+                    method: 'PUT', // или 'POST'
+                    body: JSON.stringify(newPassword), // данные могут быть 'строкой' или {объектом}!
+                    headers: {
+                        'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const json = await response.json();
+                console.log('Успех:', JSON.stringify(json));// результат запроса
+                console.log(newPassword)//выводит обьект того, что добавлено на сервер
+                newPassword = {}//обнулили буферный обьект для нового преподавателя
+                this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
+                    window.setTimeout(()=>{
+                        this.setState({openAlert:false})
+                    },2000)
+                });
+            } catch (error) {
+                console.error('Ошибка:', error); //выдаёт ошибку в консоль
+                this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
+                    window.setTimeout(()=>{
+                        this.setState({openAlert:false})
+                    },2000)
+                });
+            }
+
+        }
+
+    }
+
+    onCloseAlert = () => {
+        this.setState({ openAlert: false }) // закрыть окно оповещения
+    }
 
 
     render(){
@@ -251,6 +408,15 @@ export default class Teatcher extends Component{
         this.state.projTeactcher = []
         return(
                 <div className='container mt-5'>
+                    {
+                        this.state.openAlert ?  //компонент вывода предупреждения
+                            <Alert
+                                color={this.state.color} //цвет оповещения
+                                text={this.state.text} // текст в оповещении
+                                onCloseAlert={this.onCloseAlert} // функция как закрыть это окошко
+                            />
+                            : null
+                    }
                     {
                         this.filterProj()
                     }
@@ -262,6 +428,12 @@ export default class Teatcher extends Component{
                             <TeatcherInfo
                                 person ={this.props.location.propsItem}
                             />
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={this.openModal}
+                                className="mb-2"
+                            >Изменить пароль</Button>
                             <Curator
                                 project={this.state.projTeactcher}
                             />
@@ -304,8 +476,8 @@ export default class Teatcher extends Component{
                                     label="Выберете дисциплину для загрузки РПД"
                                     type="text"
                                     fullWidth={true}
-                                    //error={!!this.state.errors.group_id}
-                                    //helperText={this.state.errors.group_id}
+                                    //error={!!this.state.errors.newPassword}
+                                    //helperText={this.state.errors.newPassword}
                                     onChange={(event) => {
                                         console.log(event.target.value)
                                         this.setState({ discipline_id: event.target.value })
@@ -318,6 +490,7 @@ export default class Teatcher extends Component{
                             <RPD
                                 data={this.state.dataRPD}
                                 loadingFile={this.loadingFile}
+                                isApprov={this.isApprov}
                                 className='mt-5'
                             />
                             <h4>РПД преподавателя</h4>
@@ -334,18 +507,46 @@ export default class Teatcher extends Component{
                             />
                         </div>
                     </div>
-                    {/*<div className='row'>*/}
-                    {/*    <div className='col-2 ml-5'>*/}
-                    {/*        /!*<div className={classes.discip}>*!/*/}
-                    {/*        /!*    <Discip/>*!/*/}
-                    {/*        /!*</div>*!/*/}
-                    {/*        <div className={classes.curator}>*/}
-                    {/*            <Curator*/}
-                    {/*                project={this.state.projTeactcher}*/}
-                    {/*            />*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+                    <Dialog
+                        open={this.state.openModal}
+                        onClose={this.onClose.bind(this)}
+                        aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title">Добавление нового студента</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Введите данные о новом студенте
+                            </DialogContentText>
+                            <TextField   //все модули TextFiled это поля ввода имеющие несколько ключевых свойств
+                                autoFocus
+                                margin="dense"
+                                id="newPassword"
+                                label="Новый пароль" //описание поля ввода
+                                type="text" //тип вводимой информации
+                                fullWidth={true}
+                                //error={!!this.state.errors.name}// true or false, отображать ошибку или нет
+                                //helperText={this.state.errors.name} // текст отображаемый при ошибке
+                                onChange={(event) => this.setState({ newPassword: event.target.value.trim() })} //функция которая вызывается при изменении значения
+                                //функция записывает новое значение при
+                                //каждом изменении в нужную  буферную переменную в state
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button  //компонент кнопки закрытия модального окна
+                                onClick={this.onClose.bind(this)}
+                                color="primary"
+                                variant="contained"
+                            >
+                                Отмена
+                            </Button>
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={this.resetPassword.bind(this)}
+                            >
+                                Подтвердить
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
 
                 </div>
         )
