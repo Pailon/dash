@@ -12,10 +12,11 @@ export default (props)=>{
                         <li
                             key={item.id + Math.random()*100}
                             style={{marginBottom: '10px'}}
-                            onClick={(event)=>{
-                                props.isApprov(!item.is_approved, item, item.id)
-                            }}
-                        >{item.name} {item.is_approved?'Подтверждено':'Не подтверждено'}</li>
+                            // onClick={(event)=>{
+                            //     props.isApprov(!item.is_approved, item, item.id)
+                            // }}
+                        /*>{item.name} {item.is_approved?'Подтверждено':'Не подтверждено'}</li>*/
+                            >{item.name}</li>
                     )
                 })
                 }

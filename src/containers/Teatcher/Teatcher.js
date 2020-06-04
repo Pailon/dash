@@ -218,6 +218,7 @@ export default class Teatcher extends Component{
                // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
 
            })
+           this.componentDidMount()
        } catch (e) { // на случай ошибки
            console.log(e)
        }
@@ -253,7 +254,6 @@ export default class Teatcher extends Component{
                 </li>
             )
         })
-
     }
 
    async isApprov(data, item, id){
@@ -267,31 +267,9 @@ export default class Teatcher extends Component{
             //let url = `http://dashboard.kholodov.xyz/api/groups/${id}` //ссылка для запросов, куда подставляется id
             let url = link + `/dep_load/discipline/${id}`
             const token = localStorage.getItem('token')//берем токен и локального хранилищя
-
-            // let putItem = {
-            //     id:id,
-            //     acad_discipline_id:null,
-            //     name: item.name,
-            //     hours_con_project: item.hours_con_project,
-            //     hours_lec: item.hours_lec,
-            //     hours_sem: item.hours_sem,
-            //     hours_lab: item.hours_lab,
-            //     hours_con_exam: item.hours_con_exam,
-            //     hours_zachet: item.hours_zachet,
-            //     hours_exam: item.hours_exam,
-            //     hours_kurs_project: item.hours_kurs_project,
-            //     hours_gek: item.hours_gek,
-            //     hours_ruk_prakt: item.hours_ruk_prakt,
-            //     hours_ruk_vkr: item.hours_ruk_vkr,
-            //     hours_ruk_mag: item.hours_ruk_mag,
-            //     hours_ruk_aspirant: item.hours_ruk_aspirant,
-            //     semester_num: item.semester_num,
-            //     //groups: item.groups,
-            //     is_approved: data
-            // }
-       let putItem = item
-       putItem.is_approved = data
-       console.log(putItem)
+            let putItem = item
+            putItem.is_approved = data
+            console.log(putItem)
 
             try {
                 const response = await fetch(url, { //производим запрос
@@ -376,9 +354,9 @@ export default class Teatcher extends Component{
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                const json = await response.json();
-                console.log('Успех:', JSON.stringify(json));// результат запроса
-                console.log(newPassword)//выводит обьект того, что добавлено на сервер
+                //const json = await response.json();
+                //console.log('Успех:', JSON.stringify(json));// результат запроса
+                //console.log(newPassword)//выводит обьект того, что добавлено на сервер
                 newPassword = {}//обнулили буферный обьект для нового преподавателя
                 this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
                     window.setTimeout(()=>{
@@ -387,11 +365,11 @@ export default class Teatcher extends Component{
                 });
             } catch (error) {
                 console.error('Ошибка:', error); //выдаёт ошибку в консоль
-                this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
-                    window.setTimeout(()=>{
-                        this.setState({openAlert:false})
-                    },2000)
-                });
+                // this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
+                //     window.setTimeout(()=>{
+                //         this.setState({openAlert:false})
+                //     },2000)
+                // });
             }
 
         }

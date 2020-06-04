@@ -114,41 +114,54 @@ export default class Project_detail extends Component{
     }
 
     renderOpionsGroup(){
-        return this.state.dataGroup.map((item)=>{
-            return(
-                <MenuItem
-                    key={item.name}
-                    value={item.id}
-                >
-                    {item.name}
-                </MenuItem>
-            )
-        })
+        if(this.state.dataGroup) {
+            return this.state.dataGroup.map((item) => {
+                return (
+                    <MenuItem
+                        key={item.name}
+                        value={item.id}
+                    >
+                        {item.name}
+                    </MenuItem>
+                )
+            })
+        }else{
+            this.state.dataGroup=''
+        }
     }
 
     renderOpionsStudents(){
-        return this.state.dataStudents.map((item)=>{
-            return(
-                <MenuItem
-                    key={item.name}
-                    value={item.id}
-                >
-                    {`${item.id} ${item.name} ${item.surname}`}
-                </MenuItem>
-            )
-        })
+        if(this.state.dataStudents) {
+            return this.state.dataStudents.map((item) => {
+                return (
+                    <MenuItem
+                        key={item.name}
+                        value={item.id}
+                    >
+                        {`${item.id} ${item.name} ${item.surname}`}
+                    </MenuItem>
+                )
+            })
+        }else{
+            this.state.dataStudents=''
+        }
     }
 
     renderListStudents(){
-        return this.state.dataProj.students.map((item)=>{
-            return(
-                <li
-                key={item.student_id}
-                >
-                    {`${item.name} ${item.surname} ${item.student_id}`}
-                </li>
-            )
-        })
+        if(this.state.dataProj.students){
+            return this.state.dataProj.students.map((item)=>{
+                return(
+                    <li
+                        key={item.student_id}
+                    >
+                        {`${item.name} ${item.surname} ${item.student_id}`}
+                    </li>
+                )
+            })
+        }else{
+            this.state.dataProj.students = 'Студенты отсудствуют'
+        }
+
     }
    async postStudent(){
 
