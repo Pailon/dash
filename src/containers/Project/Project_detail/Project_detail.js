@@ -126,12 +126,13 @@ export default class Project_detail extends Component{
                 )
             })
         }else{
-            this.state.dataGroup=''
+            return 'Отсудствуют'
         }
     }
 
     renderOpionsStudents(){
-        if(this.state.dataStudents) {
+        console.log(this.state.dataStudents)
+        if(!this.state.dataStudents.message || this.state.dataStudents.length>1) {
             return this.state.dataStudents.map((item) => {
                 return (
                     <MenuItem
@@ -143,12 +144,25 @@ export default class Project_detail extends Component{
                 )
             })
         }else{
-            this.state.dataStudents=''
+            return (
+                <MenuItem
+                    key='1233'
+                >
+                    Отсудствуют
+                </MenuItem>
+            )
         }
     }
 
     renderListStudents(){
-        if(this.state.dataProj.students){
+
+        if(this.state.dataProj.students === null){
+            this.state.dataProj.students = {
+                1:''
+            }
+        }
+
+        if(this.state.dataProj.students.length > 1){
             return this.state.dataProj.students.map((item)=>{
                 return(
                     <li
@@ -158,8 +172,16 @@ export default class Project_detail extends Component{
                     </li>
                 )
             })
-        }else{
-            this.state.dataProj.students = 'Студенты отсудствуют'
+        }else if(this.state.dataProj.students.length === 1){
+            return(
+                <li
+                    key={this.state.dataProj.students[0].student_id}
+                >
+                    {`${this.state.dataProj.students[0].name} ${this.state.dataProj.students[0].surname} ${this.state.dataProj.students[0].student_id}`}
+                </li>
+            )
+        } else{
+            return 'Студенты отсудствуют'
         }
 
     }
@@ -167,11 +189,21 @@ export default class Project_detail extends Component{
 
         let result = false
 
-        for(let i=0; i<this.state.dataProj.students.length; i++){
-            if(this.state.dataProj.students[i].student_id === this.state.student){
-                result = true
-            }
-        }
+       if(this.state.dataProj.students === null){
+           this.state.dataProj.students = {
+               1:' '
+           }
+       }
+
+
+       if(this.state.dataProj.students.length>0){
+           for(let i=0; i<this.state.dataProj.students.length; i++){
+               if(this.state.dataProj.students[i].student_id === this.state.student){
+                   result = true
+               }
+           }
+       }
+
 
         if(!result){
             let studentPost = {
@@ -216,7 +248,6 @@ export default class Project_detail extends Component{
                 },2000)
             });
         }
-
 
     }
 

@@ -24,6 +24,7 @@ import ErrorsCol from "./containers/ErrorsCol/ErrorsCol";
 import FailProject from "./containers/FailProject/FailProject";
 import Dep_load_RPD from "./containers/Dep_load/Dep_load_RPD/Dep_load_RPD";
 import Project_detail from "./containers/Project/Project_detail/Project_detail";
+import TestDash from "./containers/Dashboard/TestDash/TestDash";
 
 
 class App extends Component {
@@ -48,6 +49,7 @@ class App extends Component {
         <Route path="/dep_load_detail" component={Dep_load_detail}/>
         <Route path="/dep_load_rpd" component={Dep_load_RPD}/>
         <Route path="/project_detail" component={Project_detail}/>
+        <Route path="/test_dash" component={TestDash}/>
         <Route path="/" exact component={QuizList}/>
         <Route path="/group" component={Group}/>
         <Route path="/teatcher" component={Teatcher}/>

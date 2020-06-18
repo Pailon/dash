@@ -14,8 +14,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Alert from '../../components/UI/Alert/Alert'
 import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
-import InputMask from 'react-input-mask'
-import MaskedInput from 'react-text-mask';
 import {link} from "../../Link";
 
 

@@ -4,40 +4,53 @@ import Button from '@material-ui/core/Button';
 import classes from './Dashboard.module.css'
 import {link} from "../../Link";
 import {Link} from "react-router-dom";
+import {Pie} from 'react-chartjs-2';
+import Moment from 'react-moment';
 import _ from "lodash";
+
 
 export default class Dashboard extends Component{
 
+
     constructor(props) {
         super(props);
-        this.state={
-            button_active:false,
-            Acad_data:[],
-            Dep_data:[],
-            dataProject:[],
-            choiseAcad:'',
-            choiseDep:'',
+
+        this.data1 = {
+        };
+
+        this.state= {
+            button_active: false,
+            Acad_data: [],
+            Dep_data: [],
+            dataProject: [],
+            choiseAcad: '',
+            choiseDep: '',
             choise: '',
-            result_choise:'',
-            Acad_data_choise:'',
-            Dep_data_choise:'',
-            errorAcad:[],
-            errorsLab:0,
-            errorsSem:0,
-            notData:0,
-            errorCol_Acad:[],
-            errorCol_Dep:[],
-            sendData:[],
+            result_choise: '',
+            Acad_data_choise: '',
+            Dep_data_choise: '',
+            errorAcad: [],
+            errorsLab: 0,
+            errorsSem: 0,
+            notData: 0,
+            errorCol_Acad: [],
+            errorCol_Dep: [],
+            sendData: [],
+            dataTeatcher: [],
             date: '',
-            failProject:[],
-            preFailProject:[],
+            failProject: [],
+            failProject_count: [],
+            dataProjectGraf: [],
+            filesTeatcherSum: [],
+            failTeatcher:0,
+            failTeatcherGraf:[],
         }
+
         this.handleChange = this.handleChange.bind(this);
         this.search = this.search.bind(this)
         this.comparison = this.comparison.bind(this)
+
     }
-
-
 
     async componentDidMount() {
 
@@ -132,11 +145,105 @@ export default class Dashboard extends Component{
                 dataProject //_.orderBy(Dep_data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
             })
 
+            dataProject.map(item =>{
+                if(item.students_count == 0){
+                    this.state.failProject_count.push(item)
+                }
+            })
+
+            this.setState({
+                dataProjectGraf:{
+                    labels: [
+                        'Просроченных проектов',
+                        'Рабочих проектов',
+                        'Проектов без студентов'
+                    ],
+                    datasets: [{
+                        data: [this.state.dataProject.length - this.state.failProject.length, this.state.failProject.length, this.state.failProject_count.length],
+                        backgroundColor: [
+                            '#FF6384',
+                            '#ADFF2F',
+                            '#faff5c'
+                        ],
+                        hoverBackgroundColor: [
+                            '#FF6384',
+                            '#ADFF2F',
+                            '#faff5c'
+                        ]
+                    }]}
+            })
+
         } catch (e) { // на случай ошибки
             console.log(e)
 
         }
 
+
+        let url4 = link + `/teachers`
+        try {
+            const response = await fetch(url4, {
+                method: 'GET', //метод для получения данных
+                headers: {
+                    'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            const dataTeatcher = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
+            console.log('Я дата dataTeatcher', dataTeatcher)
+            this.setState({ // обновляем state
+                isLoading: false,
+                dataTeatcher //_.orderBy(Acad_data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
+            })
+
+        } catch (e) { // на случай ошибки
+            console.log(e)
+        }
+
+        for(let q=0; q<this.state.dataTeatcher.length; q++){
+            let url5 = link + `/teachers/${this.state.dataTeatcher[q].id}/files`
+            try {
+                const response = await fetch(url5, {
+                    method: 'GET', //метод для получения данных
+                    headers: {
+                        'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const item = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
+                console.log('Я дата filesTeatcher', item)
+                this.state.filesTeatcherSum.push(item)
+
+            } catch (e) { // на случай ошибки
+                console.log(e)
+            }
+        }
+        console.log('filesTeatcherSum',this.state.filesTeatcherSum)
+
+        this.state.filesTeatcherSum.map(item=>{
+            if(item.length === 0){
+                this.state.failTeatcher++
+            }
+        })
+
+
+        this.setState({
+            failTeatcherGraf:{
+                labels: [
+                    'Преподааватели БЕЗ инд. плана',
+                    'Преподааватели С инд. планом',
+                ],
+                datasets: [{
+                    data: [this.state.filesTeatcherSum.length - this.state.failTeatcher, this.state.failTeatcher],
+                    backgroundColor: [
+                        '#FF6384',
+                        '#ADFF2F',
+                    ],
+                    hoverBackgroundColor: [
+                        '#FF6384',
+                        '#ADFF2F',
+                    ]
+                }]}
+        })
 
     }
 
@@ -146,6 +253,22 @@ export default class Dashboard extends Component{
         dataProject.map(item=>{
             if(item.end_date < this.state.date){
                 this.state.failProject.push(item)
+            }
+        })
+
+        dataProject.map(item =>{
+            if(item.students_count == 0){
+                this.state.failProject_count.push(item)
+            }
+        })
+    }
+
+    testingTeatcher(){
+        const {filesTeatcherSum} = this.state
+
+        filesTeatcherSum.map(item=>{
+            if(item === []){
+                this.state.failTeatcher++
             }
         })
     }
@@ -364,135 +487,93 @@ export default class Dashboard extends Component{
 
 
 
+
+
+
     render(){
         this.state.failProject = []
         this.testingProject()
-        return(
-            <div>
-                <div className='container' style={{height: '300px', width:'500px'}}>
-                    <div className='row'>
-                        <div className='col'>
-                            <TextField
-                                margin="dense"
-                                id="acad"
-                                label="Acad"
-                                type="text"
-                                fullWidth={true}
-                                //error={!!this.state.errors.Acad_data_choise}
-                                //helperText={this.state.errors.Acad_data_choise}
-                                onChange={(event) => {
-                                    console.log(event.target.value)
-                                    this.setState({ choiseAcad: event.target.value })
-                                }}
-                                select
-                            >
-                                {this.renderOptionsAcad()}
-                            </TextField>
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col'>
-                            <TextField
-                                margin="dense"
-                                id="dep"
-                                label="Dep"
-                                type="text"
-                                fullWidth={true}
-                                //error={!!this.state.errors.Acad_data_choise}
-                                //helperText={this.state.errors.Acad_data_choise}
-                                onChange={(event) => {
-                                    console.log(event.target.value)
-                                    this.setState({ choiseDep: event.target.value })
-                                }}
-                                select
-                            >
-                                {this.renderOptionsDep()}
-                            </TextField>
-                        </div>
-                    </div>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={this.comparison}
-                    >
-                        Сравнить
+        //this.testingTeatcher()
+        const date = new Date();
+        return (
+
+            <div className="container">
+                <div className="row">
+                    <div className="col-4" style={{ height: '300px', width: '300px'}}>
+                        <TextField
+                            margin="dense"
+                            id="acad"
+                            label="Acad"
+                            type="text"
+                            fullWidth={true}
+                            //error={!!this.state.errors.Acad_data_choise}
+                            //helperText={this.state.errors.Acad_data_choise}
+                            onChange={(event) => {
+                                console.log(event.target.value)
+                                this.setState({choiseAcad: event.target.value})
+                            }}
+                            select
+                        >
+                            {this.renderOptionsAcad()}
+                        </TextField>
+
+                        <TextField
+                            margin="dense"
+                            id="dep"
+                            label="Dep"
+                            type="text"
+                            fullWidth={true}
+                            //error={!!this.state.errors.Acad_data_choise}
+                            //helperText={this.state.errors.Acad_data_choise}
+                            onChange={(event) => {
+                                console.log(event.target.value)
+                                this.setState({choiseDep: event.target.value})
+                            }}
+                            select
+                        >
+                            {this.renderOptionsDep()}
+                        </TextField>
+
+                     <Button
+                         variant="contained"
+                         color="primary"
+                         onClick={this.comparison}
+                     >
+                         Сравнить
                     </Button>
-                </div>
-
-
-                <div className='container'>
-                    <div className="row">
-                        <div className="col-6" style={{border:'1px solid', padding:'5px'}}>
-                            <div className='row' style={{padding:'5px'}}>
+                    </div>
+                    <div className="col-4" style={{height: '300px', width: '300px'}}>
+                        <div className="col-6" style={{border: '1px solid', padding: '5px'}}>
+                            <div className='row' style={{padding: '5px'}}>
                                 <div className="col">
                                     <h4>Результат сравнения</h4>
                                 </div>
                             </div>
-                            <div className="row" style={{padding:'5px'}}>
+                            <div className="row" style={{padding: '5px'}}>
                                 <div className="col">
                                     <h5>Без совпадения:{this.state.notData} </h5>
                                 </div>
                             </div>
-                            <div className="row" style={{padding:'5px'}}>
+                            <div className="row" style={{padding: '5px'}}>
                                 <div className="col">
                                     <h5>Ошибок в лаб. работах:{this.state.errorsLab} </h5>
                                 </div>
                             </div>
-                            <div className="row" style={{padding:'5px'}}>
+                            <div className="row" style={{padding: '5px'}}>
                                 <div className="col">
                                     <h5>Ошибок в семенарах:{this.state.errorsSem} </h5>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col">
-                                    {(this.state.errorsLab || this.state.errorsSem)?
-                                    <button
-                                        type="button"
-                                        className="btn btn-link"
-                                    >
-                                        <Link to={{
-                                            pathname: "/errors_col",
-                                            data: this.state.sendData,
-                                        }}>
-                                            {/* <FA name='external-link-square-alt'/>  */}
-                                            Подробнее
-                                        </Link>
-                                    </button>
-                                    : null}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-6" style={{border:'1px solid'}}>
-                            <div className='row' style={{padding:'5px'}}>
-                                <div className="col">
-                                    <h4>Проектная деятельность</h4>
-                                </div>
-                            </div>
-                            <div className="row" style={{padding:'5px'}}>
-                                <div className="col">
-                                    <h5>Активных проектов:{this.state.dataProject.length} </h5>
-                                </div>
-                            </div>
-                            {/*<div className="row" style={{padding:'5px'}}>*/}
-                            {/*    <div className="col">*/}
-                            {/*        <h5>Подходят к концу: {this.state.preFailProject.length}</h5>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
-                            <div className="row" style={{padding:'5px'}}>
-                                <div className="col">
-                                    <h5>Просроченные проекты: {this.state.failProject.length}</h5>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col">
-                                    {(this.state.failProject)?
+                                    {(this.state.errorsLab || this.state.errorsSem) ?
                                         <button
                                             type="button"
                                             className="btn btn-link"
                                         >
                                             <Link to={{
-                                                pathname: "/fail_project",
-                                                data: this.state.failProject,
+                                                pathname: "/errors_col",
+                                                data: this.state.sendData,
                                             }}>
                                                 {/* <FA name='external-link-square-alt'/>  */}
                                                 Подробнее
@@ -503,11 +584,41 @@ export default class Dashboard extends Component{
                             </div>
                         </div>
                     </div>
-
-
+                    <div className="col-4" style={{height: '300px', width: '300px'}}>
+                        <div className='row' style={{padding: '5px'}}>
+                            <div className="col">
+                                <h4>Проектная деятельность</h4>
+                            </div>
+                        </div>
+                        <div className="row" style={{padding: '5px'}}>
+                            <div className="col">
+                                <h5>Активных проектов:{this.state.dataProject.length} </h5>
+                            </div>
+                        </div>
+                        <div className="row" style={{padding: '5px'}}>
+                            <div className="col">
+                                <h5>Просроченные проекты: {this.state.failProject.length}</h5>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div className="row">
+                    <div className="col-4" style={{height: '500px', width: '500px'}}>
+                         <h5>Статистика проектов</h5>
+                         <Pie data={this.state.dataProjectGraf} width={730} height={550} />
+                    </div>
+                    <div className="col-4" style={{height: '500px', width: '500px'}}>
+                         <h5>Статистика сдачи Индив. планов</h5>
+                         <Pie data={this.state.failTeatcherGraf} width={730} height={550} />
+                    </div>
+                    <div className="col-4" style={{height: '500px', width: '500px'}}>
 
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col" style={{height: '123px'}}>7</div>
+                </div>
             </div>
-    )
+        );
     }
 }
