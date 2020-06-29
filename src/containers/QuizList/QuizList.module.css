@@ -13,6 +13,11 @@
     text-align: center;
 }
 
+th {
+    font-size: 130%;
+    font-weight: bold
+}
+
 /* table {
 font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
 font-size: 14px;

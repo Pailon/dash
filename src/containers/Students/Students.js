@@ -72,12 +72,12 @@ export default class Students extends Component {
 
         //let url = 'http://dashboard.kholodov.xyz/api/groups'
         let url
-        if(this.state.checked === true){
-            url = link + `/students/group/${this.state.f_group_id}`
-        }else{
-            url = link + `/students/specialty/${this.state.specialty_id}`
-        }
-        //url = link + `/students/group/${this.state.f_group_id}`
+        // if(this.state.checked === true){
+        //     url = link + `/students/group/${this.state.f_group_id}`
+        // }else{
+        //     url = link + `/students/specialty/${this.state.specialty_id}`
+        // }
+        url = link + `/students`
 
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
         //console.log(token)
@@ -501,84 +501,84 @@ export default class Students extends Component {
                                 <div className='row'>
                                     <div className='col-1'>
                                         <Button
-                                            color="primary"
+                                            //color="primary"
+                                            style={{backgroundColor:'#007cff', color:'white'}}
+                                            size="small"
                                             variant="contained"
                                             onClick={this.newStudents}
                                             className="mb-2"
                                         >Добавить <br />студента</Button>
                                     </div>
                                     <React.Fragment>
-                                    <div className='col-1 ml-5'>
-                                        <p>По специальности</p>
-                                    </div>
-                                    <div className='col-1'>
-                                        <Switch
-                                            defaultChecked
-                                            checked={this.state.checked}
-                                            color="default"
-                                            inputProps={{ 'aria-label': 'checkbox with default color' }}
-                                            onChange={(event) => {
-                                                console.log(event.target.checked)
-                                                this.setState({ checked: event.target.checked })
-                                            }}
-                                        />
-                                    </div>
-                                    <div className='col-1'>
-                                    <p>По группе</p>
-                                    </div>
+                                    {/*<div className='col-1 ml-5'>*/}
+                                    {/*    <p>По специальности</p>*/}
+                                    {/*</div>*/}
+                                    {/*<div className='col-1'>*/}
+                                    {/*    <Switch*/}
+                                    {/*        defaultChecked*/}
+                                    {/*        checked={this.state.checked}*/}
+                                    {/*        color="default"*/}
+                                    {/*        inputProps={{ 'aria-label': 'checkbox with default color' }}*/}
+                                    {/*        onChange={(event) => {*/}
+                                    {/*            console.log(event.target.checked)*/}
+                                    {/*            this.setState({ checked: event.target.checked })*/}
+                                    {/*        }}*/}
+                                    {/*    />*/}
+                                    {/*</div>*/}
+                                    {/*<div className='col-1'>*/}
+                                    {/*<p>По группе</p>*/}
+                                    {/*</div>*/}
                                     </React.Fragment>
-                                    <div className='col-2'>
-                                        {
-                                            this.state.checked===true
-                                            ?<TextField
-                                                    margin="dense"
-                                                    id="group_id"
-                                                    label="Группа"
-                                                    type="text"
-                                                    fullWidth={true}
-                                                    error={!!this.state.errors.f_group_id}
-                                                    helperText={this.state.errors.f_group_id}
-                                                    onChange={(event) => {
-                                                        console.log(event.target.value)
-                                                        this.setState({ f_group_id: event.target.value })
-                                                    }}
-                                                    select
-                                                >
-                                                    {this.renderOptionsGroup()}
-                                                </TextField>
-                                                :<TextField
-                                                    margin="dense"
-                                                    id="specialty_id"
-                                                    label="Специальность"
-                                                    type="text"
-                                                    fullWidth={true}
-                                                    error={!!this.state.errors.specialty_id}
-                                                    helperText={this.state.errors.specialty_id}
-                                                    onChange={(event) => {
-                                                        console.log(event.target.value)
-                                                        this.setState({ specialty_id: event.target.value })
-                                                    }}
-                                                    select
-                                                >
-                                                    {this.renderOptionsSpec()}
-                                                </TextField>
+                                    {/*<div className='col-2'>*/}
+                                    {/*    {*/}
+                                    {/*        this.state.checked===true*/}
+                                    {/*        ?<TextField*/}
+                                    {/*                margin="dense"*/}
+                                    {/*                id="group_id"*/}
+                                    {/*                label="Группа"*/}
+                                    {/*                type="text"*/}
+                                    {/*                fullWidth={true}*/}
+                                    {/*                error={!!this.state.errors.f_group_id}*/}
+                                    {/*                helperText={this.state.errors.f_group_id}*/}
+                                    {/*                onChange={(event) => {*/}
+                                    {/*                    console.log(event.target.value)*/}
+                                    {/*                    this.setState({ f_group_id: event.target.value })*/}
+                                    {/*                }}*/}
+                                    {/*                select*/}
+                                    {/*            >*/}
+                                    {/*                {this.renderOptionsGroup()}*/}
+                                    {/*            </TextField>*/}
+                                    {/*            :<TextField*/}
+                                    {/*                margin="dense"*/}
+                                    {/*                id="specialty_id"*/}
+                                    {/*                label="Специальность"*/}
+                                    {/*                type="text"*/}
+                                    {/*                fullWidth={true}*/}
+                                    {/*                error={!!this.state.errors.specialty_id}*/}
+                                    {/*                helperText={this.state.errors.specialty_id}*/}
+                                    {/*                onChange={(event) => {*/}
+                                    {/*                    console.log(event.target.value)*/}
+                                    {/*                    this.setState({ specialty_id: event.target.value })*/}
+                                    {/*                }}*/}
+                                    {/*                select*/}
+                                    {/*            >*/}
+                                    {/*                {this.renderOptionsSpec()}*/}
+                                    {/*            </TextField>*/}
 
-                                        }
+                                    {/*    }*/}
 
-                                    </div>
-                                    <div className='col-1'>
-                                        <Button
-                                            color="primary"
-                                            variant="contained"
-                                            onClick={()=>{this.componentDidMount()}}
-                                            className="mb-2"
-                                        >
-                                            Показать
-                                        </Button>
-                                    </div>
+                                    {/*</div>*/}
+                                    {/*<div className='col-1'>*/}
+                                    {/*    <Button*/}
+                                    {/*        color="primary"*/}
+                                    {/*        variant="contained"*/}
+                                    {/*        onClick={()=>{this.componentDidMount()}}*/}
+                                    {/*        className="mb-2"*/}
+                                    {/*    >*/}
+                                    {/*        Показать*/}
+                                    {/*    </Button>*/}
+                                    {/*</div>*/}
                                 </div>
-
-
                             </div>
 
 
@@ -730,13 +730,17 @@ export default class Students extends Component {
                     <DialogActions>
                         <Button  //компонент кнопки закрытия модального окна
                             onClick={this.onClose.bind(this)}
-                            color="primary"
+                            //color="primary"
+                            style={{backgroundColor:'#007cff', color:'white'}}
+                            size="small"
                             variant="contained"
                         >
                             Отмена
                         </Button>
                         <Button
-                            color="primary"
+                            //color="primary"
+                            style={{backgroundColor:'#007cff', color:'white'}}
+                            size="small"
                             variant="contained"
                             onClick={this.onAdd.bind(this)}
                         >

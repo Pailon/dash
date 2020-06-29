@@ -81,7 +81,7 @@ export default class Teatcher extends Component{
             console.log(e)
         }
 
-        let url1 = link + `/teachers/${this.props.location.propsItem.id}/files`
+        let url1 = link + `/teachers/${this.props.location.propsItem.id}/files_ind_plan`
 
         try {
 
@@ -129,7 +129,8 @@ export default class Teatcher extends Component{
             console.log(e)
         }
 
-        let url3 = link + `/dep_load/discipline/teacher/${this.props.location.propsItem.id}`
+        //let url3 = link + `/dep_load/discipline/teacher/${this.props.location.propsItem.id}`
+        let url3 = link + `/teachers/${this.props.location.propsItem.id}/disciplines`
 
         try {
 
@@ -152,7 +153,8 @@ export default class Teatcher extends Component{
             console.log(e)
         }
 
-        let url4 = link + `/dep_load/discipline/teacher/${this.props.location.propsItem.id}/files`
+        //let url4 = link + `/dep_load/discipline/teacher/${this.props.location.propsItem.id}/files`
+        let url4 = link + `/teachers/${this.props.location.propsItem.id }/files_rpd`
 
         try {
 
@@ -244,6 +246,10 @@ export default class Teatcher extends Component{
             return(
                 <li
                     key={item.name}
+                    className={classes.list_a}
+                    style={{
+                        cursor:'pointer'
+                    }}
                     //value={item.id}
                     onClick={(event)=>{
                         let link = 'rpd'
@@ -407,7 +413,9 @@ export default class Teatcher extends Component{
                                 person ={this.props.location.propsItem}
                             />
                             <Button
-                                color="primary"
+                                //color="primary"
+                                style={{backgroundColor:'#007cff', color:'white'}}
+                                size="small"
                                 variant="contained"
                                 onClick={this.openModal}
                                 className="mb-2"
@@ -489,17 +497,17 @@ export default class Teatcher extends Component{
                         open={this.state.openModal}
                         onClose={this.onClose.bind(this)}
                         aria-labelledby="form-dialog-title">
-                        <DialogTitle id="form-dialog-title">Добавление нового студента</DialogTitle>
+                        <DialogTitle id="form-dialog-title">Изменение пароля преподавателя</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
-                                Введите данные о новом студенте
+                                Введите новый пароль
                             </DialogContentText>
                             <TextField   //все модули TextFiled это поля ввода имеющие несколько ключевых свойств
                                 autoFocus
                                 margin="dense"
                                 id="newPassword"
                                 label="Новый пароль" //описание поля ввода
-                                type="text" //тип вводимой информации
+                                type="password" //тип вводимой информации
                                 fullWidth={true}
                                 //error={!!this.state.errors.name}// true or false, отображать ошибку или нет
                                 //helperText={this.state.errors.name} // текст отображаемый при ошибке
@@ -511,13 +519,17 @@ export default class Teatcher extends Component{
                         <DialogActions>
                             <Button  //компонент кнопки закрытия модального окна
                                 onClick={this.onClose.bind(this)}
-                                color="primary"
+                                //color="primary"
+                                style={{backgroundColor:'#007cff', color:'white'}}
+                                size="small"
                                 variant="contained"
                             >
                                 Отмена
                             </Button>
                             <Button
-                                color="primary"
+                                //color="primary"
+                                style={{backgroundColor:'#007cff', color:'white'}}
+                                size="small"
                                 variant="contained"
                                 onClick={this.resetPassword.bind(this)}
                             >

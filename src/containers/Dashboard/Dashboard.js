@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import classes from './Dashboard.module.css'
 import {link} from "../../Link";
 import {Link} from "react-router-dom";
-import {Pie} from 'react-chartjs-2';
+import {Pie, Bar} from 'react-chartjs-2';
 import Moment from 'react-moment';
 import _ from "lodash";
 
@@ -44,6 +44,10 @@ export default class Dashboard extends Component{
             filesTeatcherSum: [],
             failTeatcher:0,
             failTeatcherGraf:[],
+            teatcherSAPR:0,
+            teatcherWEB:0,
+            teatcherKIS:0,
+            teatcherGraf:{},
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -62,7 +66,7 @@ export default class Dashboard extends Component{
         let now = `${nowDate}T${nowTime}`
         console.log(nowDate)
         console.log(now)
-        this.setState({date:nowDate})
+        this.setState({date: nowDate})
 
         //в этом методе происходит запрос к серверу по ссылке из параметра url
 
@@ -79,7 +83,7 @@ export default class Dashboard extends Component{
             })
             const Acad_data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             console.log('Я дата ACAD', Acad_data)
-            for(let x=0; x<Acad_data.length; x++){
+            for (let x = 0; x < Acad_data.length; x++) {
                 let newYear_join = Acad_data[x].year_join.split('T')
                 Acad_data[x].year_join = newYear_join[0]
             }
@@ -104,7 +108,7 @@ export default class Dashboard extends Component{
             })
             const Dep_data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             console.log('Я дата DEP', Dep_data)
-            for(let x=0; x<Dep_data.length; x++){
+            for (let x = 0; x < Dep_data.length; x++) {
                 let newBeginDate = Dep_data[x].begin_date.split('T')
                 let newEndDate = Dep_data[x].end_date.split('T')
                 let newModifDate = Dep_data[x].modified_date.split('T')
@@ -134,7 +138,7 @@ export default class Dashboard extends Component{
             })
             const dataProject = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             console.log('Я дата dataProject', dataProject)
-            for(let x=0; x<dataProject.length; x++){
+            for (let x = 0; x < dataProject.length; x++) {
                 let newBeginDate = dataProject[x].begin_date.split('T')
                 let newEndDate = dataProject[x].end_date.split('T')
                 dataProject[x].begin_date = newBeginDate[0]
@@ -145,14 +149,14 @@ export default class Dashboard extends Component{
                 dataProject //_.orderBy(Dep_data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
             })
 
-            dataProject.map(item =>{
-                if(item.students_count == 0){
+            dataProject.map(item => {
+                if (item.students_count == 0) {
                     this.state.failProject_count.push(item)
                 }
             })
 
             this.setState({
-                dataProjectGraf:{
+                dataProjectGraf: {
                     labels: [
                         'Просроченных проектов',
                         'Рабочих проектов',
@@ -170,7 +174,8 @@ export default class Dashboard extends Component{
                             '#ADFF2F',
                             '#faff5c'
                         ]
-                    }]}
+                    }]
+                }
             })
 
         } catch (e) { // на случай ошибки
@@ -199,8 +204,8 @@ export default class Dashboard extends Component{
             console.log(e)
         }
 
-        for(let q=0; q<this.state.dataTeatcher.length; q++){
-            let url5 = link + `/teachers/${this.state.dataTeatcher[q].id}/files`
+        for (let q = 0; q < this.state.dataTeatcher.length; q++) {
+            let url5 = link + `/teachers/${this.state.dataTeatcher[q].id}/files_ind_plan`
             try {
                 const response = await fetch(url5, {
                     method: 'GET', //метод для получения данных
@@ -210,41 +215,89 @@ export default class Dashboard extends Component{
                     }
                 })
                 const item = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-                console.log('Я дата filesTeatcher', item)
+                //console.log('Я дата filesTeatcher', item)
                 this.state.filesTeatcherSum.push(item)
 
             } catch (e) { // на случай ошибки
                 console.log(e)
             }
         }
-        console.log('filesTeatcherSum',this.state.filesTeatcherSum)
+        //console.log('filesTeatcherSum',this.state.filesTeatcherSum)
 
-        this.state.filesTeatcherSum.map(item=>{
-            if(item.length === 0){
+        let teatcherSAPR = 0
+        let teatcherWEB = 0
+        let teatcherKIS = 0
+
+        for (let t = 0; t < this.state.dataTeatcher.length; t++) {
+            if (this.state.dataTeatcher[t].sub_unit_id === 1) {
+                teatcherSAPR++
+
+            } else if (this.state.dataTeatcher[t].sub_unit_id === 2) {
+                teatcherWEB++
+
+            } else if (this.state.dataTeatcher[t].sub_unit_id === 3) {
+                teatcherKIS++
+
+            }
+            //console.log(`id ${this.state.dataTeatcher[t].id}`,teatcherSAPR, teatcherWEB, teatcherKIS)
+        }
+        this.setState({
+            teatcherSAPR,
+            teatcherWEB,
+            teatcherKIS
+        })
+        //console.log('Финал',this.state.teatcherSAPR, this.state.teatcherWEB, this.state.teatcherKIS)
+
+        this.state.filesTeatcherSum.map(item => {
+            if (item.length === 0) {
                 this.state.failTeatcher++
             }
         })
 
 
         this.setState({
-            failTeatcherGraf:{
+            failTeatcherGraf: {
                 labels: [
-                    'Преподааватели БЕЗ инд. плана',
                     'Преподааватели С инд. планом',
+                    'Преподааватели БЕЗ инд. плана',
                 ],
                 datasets: [{
                     data: [this.state.filesTeatcherSum.length - this.state.failTeatcher, this.state.failTeatcher],
                     backgroundColor: [
-                        '#FF6384',
                         '#ADFF2F',
+                        '#FF6384',
+                    ],
+                    hoverBackgroundColor: [
+                        '#ADFF2F',
+                        '#FF6384',
+                    ]
+                }]
+            }
+        })
+
+
+        this.setState({
+            teatcherGraf: {
+                labels: [
+                    'САПР',
+                    'ВЕБ',
+                    'КИС'
+                ],
+                datasets: [{
+                    data: [this.state.teatcherSAPR, this.state.teatcherWEB, this.state.teatcherKIS],
+                    backgroundColor: [
+                        '#FF6384',
+                        '#36A2EB',
+                        '#FFCE56'
                     ],
                     hoverBackgroundColor: [
                         '#FF6384',
-                        '#ADFF2F',
+                        '#36A2EB',
+                        '#FFCE56'
                     ]
-                }]}
+                }]
+            }
         })
-
     }
 
     testingProject(){
@@ -503,7 +556,7 @@ export default class Dashboard extends Component{
                         <TextField
                             margin="dense"
                             id="acad"
-                            label="Acad"
+                            label="Выберете учебный план"
                             type="text"
                             fullWidth={true}
                             //error={!!this.state.errors.Acad_data_choise}
@@ -520,7 +573,7 @@ export default class Dashboard extends Component{
                         <TextField
                             margin="dense"
                             id="dep"
-                            label="Dep"
+                            label="Выберете нагрузку"
                             type="text"
                             fullWidth={true}
                             //error={!!this.state.errors.Acad_data_choise}
@@ -534,16 +587,41 @@ export default class Dashboard extends Component{
                             {this.renderOptionsDep()}
                         </TextField>
 
-                     <Button
-                         variant="contained"
-                         color="primary"
-                         onClick={this.comparison}
-                     >
-                         Сравнить
-                    </Button>
+                        {(this.state.choiseDep && this.state.choiseAcad)
+                            ?
+                            <Button
+                            variant="contained"
+                            //color="primary"
+                            style={{backgroundColor:'#007cff', color:'white'}}
+                            size="small"
+                            onClick={this.comparison}
+                        >
+                            Сравнить
+                        </Button>
+                            :
+                        <Button
+                            variant="contained"
+                            //color="primary"
+                            //style={{backgroundColor:'#007cff', color:'white'}}
+                            size="small"
+                            disabled
+                        >
+                            Сравнить
+                        </Button>
+                        }
+
+                    {/* <Button*/}
+                    {/*     variant="contained"*/}
+                    {/*     //color="primary"*/}
+                    {/*     style={{backgroundColor:'#007cff', color:'white'}}*/}
+                    {/*     size="small"*/}
+                    {/*     onClick={this.comparison}*/}
+                    {/* >*/}
+                    {/*     Сравнить*/}
+                    {/*</Button>*/}
                     </div>
                     <div className="col-4" style={{height: '300px', width: '300px'}}>
-                        <div className="col-6" style={{border: '1px solid', padding: '5px'}}>
+                        <div className="col-6" style={{padding: '5px'}}>
                             <div className='row' style={{padding: '5px'}}>
                                 <div className="col">
                                     <h4>Результат сравнения</h4>
@@ -600,6 +678,23 @@ export default class Dashboard extends Component{
                                 <h5>Просроченные проекты: {this.state.failProject.length}</h5>
                             </div>
                         </div>
+
+                        <div className="col">
+                            {(this.state.failProject)?
+                                <button
+                                    type="button"
+                                    className="btn btn-link"
+                                >
+                                    <Link to={{
+                                        pathname: "/fail_project",
+                                        data: this.state.failProject,
+                                    }}>
+                                        {/* <FA name='external-link-square-alt'/>  */}
+                                        Подробнее
+                                    </Link>
+                                </button>
+                                : null}
+                        </div>
                     </div>
                 </div>
                 <div className="row">
@@ -612,11 +707,12 @@ export default class Dashboard extends Component{
                          <Pie data={this.state.failTeatcherGraf} width={730} height={550} />
                     </div>
                     <div className="col-4" style={{height: '500px', width: '500px'}}>
-
+                        <h5>Распределение преподавателей по профилям</h5>
+                        <Pie data={this.state.teatcherGraf} width={730} height={550} />
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col" style={{height: '123px'}}>7</div>
+                    <div className="col" style={{height: '123px'}}></div>
                 </div>
             </div>
         );

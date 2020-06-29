@@ -531,7 +531,7 @@ async uploadData(){
               <TextField
                   margin="dense"
                   id="option_id"
-                  label="Выберете Учебный план или Нагрузку"
+                  label="Выберете загрузка учебного плана или нагрузки"
                   type="text"
                   fullWidth={true}
                   error={!!this.state.errors.option_id}
@@ -541,7 +541,7 @@ async uploadData(){
                   select
               >
                   <MenuItem key={Math.random()*100} value="1">Учебный план</MenuItem>
-                  <MenuItem key={Math.random()*100} value="2">Кафедра</MenuItem>
+                  <MenuItem key={Math.random()*100} value="2">Нагрузка</MenuItem>
 
               </TextField>
               {this.state.option_id == 1?
@@ -571,7 +571,7 @@ async uploadData(){
                   <TextField
                       margin="dense"
                       id="depart_id"
-                      label="Выберете кафедру"
+                      label="Выберете кафедру для загрузки нагрузки"
                       type="text"
                       fullWidth={true}
                       error={!!this.state.errors.id}
@@ -590,7 +590,7 @@ async uploadData(){
                   <TextField
                       margin="dense"
                       id="year_join"
-                      label="Год начала действия"
+                      label="Год начала действия нагрузки"
                       type="date"
                       fullWidth={true}
                       error={!!this.state.errors.begin_date}
@@ -605,7 +605,7 @@ async uploadData(){
                   <TextField
                   margin="dense"
                   id="year_join"
-                  label="Год окончания действия"
+                  label="Год окончания действия нагрузки"
                   type="date"
                   fullWidth={true}
                   error={!!this.state.errors.end_date}
@@ -623,10 +623,23 @@ async uploadData(){
               }
           </div>
         {/* <button onClick={(e)=>this.loadClick(e)}>Загрузить с сервера</button> */}
-        <Button style={{marginBottom: '5px'}} color="primary" variant="contained" onClick={this.uploadData}>Загрузить на сервер</Button>
+        <Button
+            style={{backgroundColor:'#007cff', color:'white', marginLeft: '10px'}}
+            size="small"
+            //color="primary"
+            variant="contained"
+            onClick={this.uploadData}
+        >Загрузить на сервер</Button>
         <br />
         <input type="text" value={this.state.search_Text_Value} onChange ={this.nameSer}  disabled = {(this.state.disabled)? "disabled" : ""} />
-        <Button style={{marginLeft: '10px'}} color="primary" variant="contained" type="button" onClick={this.search}>Поиск</Button>
+        <Button
+            style={{backgroundColor:'#007cff', color:'white', marginLeft: '10px'}}
+            size="small"
+            //color="primary"
+            variant="contained"
+            type="button"
+            onClick={this.search}
+        >Поиск</Button>
         <ViewerTable data={(this.state.search_Text==='') ? this.state.data : this.state.data_filtered} schema={ this.state.cols } filtered={this.state.search_Text!==""}></ViewerTable>
       </div>
     )

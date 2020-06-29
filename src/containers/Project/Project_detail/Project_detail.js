@@ -44,12 +44,12 @@ export default class Project_detail extends Component{
             console.log('Я ответ', response)
             const dataProj = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             console.log('Я дата proj', dataProj)
-            let newBeginDate = dataProj.project.begin_date.split('T')
-            let newEndDate = dataProj.project.end_date.split('T')
-            dataProj.project.begin_date = newBeginDate[0]
-            dataProj.project.end_date = newEndDate[0]
+            let newBeginDate = dataProj.begin_date.split('T')
+            let newEndDate = dataProj.end_date.split('T')
+            dataProj.begin_date = newBeginDate[0]
+            dataProj.end_date = newEndDate[0]
 
-            const newData = dataProj.project
+            const newData = dataProj
             console.log('newdata',newData)
             this.setState({ // обновляем state
                 //isLoading: false,
@@ -330,7 +330,9 @@ export default class Project_detail extends Component{
                                             }
                                         </TextField>
                                         <Button
-                                            color="primary"
+                                            //color="primary"
+                                            style={{backgroundColor:'#007cff', color:'white'}}
+                                            size="small"
                                             variant="contained"
                                             onClick={this.postStudent}
                                             className="mb-2"

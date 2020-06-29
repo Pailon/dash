@@ -11,7 +11,9 @@ export default (props)=>{
                     return(
                         <li
                             key={item.id + Math.random()*100}
-                            style={{marginBottom: '10px'}}
+                            style={{
+                                marginBottom: '10px',
+                            }}
                             // onClick={(event)=>{
                             //     props.isApprov(!item.is_approved, item, item.id)
                             // }}

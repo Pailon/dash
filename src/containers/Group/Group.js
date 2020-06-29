@@ -372,7 +372,9 @@ export default class Group extends Component {
                             <GroupSearch onSearch={this.searchHandler} />
 
                             <Button
-                                color="primary"
+                                style={{backgroundColor:'#007cff', color:'white'}}
+                                size="small"
+                                //color="primary"
                                 variant="contained"
                                 onClick={this.newGroup}
                                 className="mb-2"
@@ -458,13 +460,17 @@ export default class Group extends Component {
                     <DialogActions>
                         <Button  //компонент кнопки закрытия модального окна
                             onClick={this.onClose.bind(this)}
-                            color="primary"
+                            //color="primary"
+                            style={{backgroundColor:'#007cff', color:'white'}}
+                            size="small"
                             variant="contained"
                         >
                             Отмена
                         </Button>
                         <Button
-                            color="primary"
+                            //color="primary"
+                            style={{backgroundColor:'#007cff', color:'white'}}
+                            size="small"
                             variant="contained"
                             onClick={this.onAdd.bind(this)}
                         >

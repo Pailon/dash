@@ -11,7 +11,7 @@ export default props => (
     // таблица в стиле bootstrap
     <table className="table">
         <thead>
-        <tr style={{textAlign:'center'}}>
+        <tr>
             <th onClick={props.onSort.bind(null, 'id')}>
                 ID {props.sortField === 'id' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>

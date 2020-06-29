@@ -397,7 +397,9 @@ export default class Department extends Component {
                             <DepartmentSearch onSearch={this.searchHandler} />
 
                             <Button
-                                color="primary"
+                                style={{backgroundColor:'#007cff', color:'white'}}
+                                size="small"
+                                //color="primary"
                                 variant="contained"
                                 onClick={this.newDepartment}
                                 className="mb-2"
@@ -445,16 +447,16 @@ export default class Department extends Component {
                     open={this.state.openModal}
                     onClose={this.onClose.bind(this)}
                     aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">Добавление новой группы</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Добавление кафедры</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Введите данные о новой группе
+                            Введите данные о новой кафедре
                         </DialogContentText>
                         <TextField   //все модули TextFiled это поля ввода имеющие несколько ключевых свойств
                             autoFocus
                             margin="dense"
                             id="name"
-                            label="аименование кафедры" //описание поля ввода
+                            label="Наименование кафедры" //описание поля ввода
                             type="text" //тип вводимой информации
                             fullWidth={true}
                             error={!!this.state.errors.name}// true or false, отображать ошибку или нет
@@ -484,13 +486,17 @@ export default class Department extends Component {
                     <DialogActions>
                         <Button  //компонент кнопки закрытия модального окна
                             onClick={this.onClose.bind(this)}
-                            color="primary"
+                            //color="primary"
+                            style={{backgroundColor:'#007cff', color:'white'}}
+                            size="small"
                             variant="contained"
                         >
                             Отмена
                         </Button>
                         <Button
-                            color="primary"
+                            //color="primary"
+                            style={{backgroundColor:'#007cff', color:'white'}}
+                            size="small"
                             variant="contained"
                             onClick={this.onAdd.bind(this)}
                         >

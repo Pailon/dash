@@ -11,7 +11,7 @@ export default props => (
     // таблица в стиле bootstrap 
     <table className="table">  
         <thead>
-            <tr style={{textAlign:'center'}}>
+            <tr>
                 <th onClick={props.onSort.bind(null, 'id')}>
                     ID {props.sortField === 'person_id' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
@@ -23,7 +23,7 @@ export default props => (
                     Код {props.sortField === 'code' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'name')}>
-                    Name {props.sortField === 'name' ? <small><FA name={props.sortArrow} /></small> : null}
+                    Наименование {props.sortField === 'name' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'profile')}>
                     Профиль {props.sortField === 'profile' ? <small><FA name={props.sortArrow} /></small> : null}

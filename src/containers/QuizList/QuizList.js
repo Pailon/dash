@@ -14,6 +14,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Alert from '../../components/UI/Alert/Alert'
 import {link} from "../../Link";
+import MenuItem from "@material-ui/core/MenuItem";
 
 export default class QuizList extends Component {
 
@@ -57,6 +58,7 @@ export default class QuizList extends Component {
         birthday:'',
         login:'',
         password:'',
+        sub_unit_id:'',
         //значения ошибок при добавлении преподавателя
         errors:{
             // id:'',
@@ -101,7 +103,7 @@ export default class QuizList extends Component {
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            //console.log('Я ответ', data)
+            console.log('Я ответ', data)
             this.setState({ // обновляем state
                 isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -201,6 +203,7 @@ export default class QuizList extends Component {
                 birthday:'',
                 login:'',
                 password:'',
+                sub_unit_id:'',
             }  
         })
     }
@@ -248,12 +251,15 @@ export default class QuizList extends Component {
             if (!this.state.password) {
                 errors.password = 'Это поле не может быть пустым'
             }
+            if (!this.state.sub_unit_id) {
+                errors.sub_unit_id = 'Это поле не может быть пустым'
+            }
             //Если хотя бы одно из этих полей пустое мы обновляем state и добавляем туда сообщения об ошибках в пустых полях
             //В ином случае, если все поля заполнены мы берем все данные из полей и производим запрос к серверу
             if(/*errors.rank_id || errors.degree_id ||*/ errors.rate
                 || errors.hourse_worked || errors.rinc || errors.web_of_science || errors.scopus || errors.name
                 || errors.surname || errors.patronymic || errors.birthday || errors.phone || errors.email 
-                ||errors.login || errors.password)
+                ||errors.login || errors.password || errors.sub_unit_id)
                 {
                     this.setState({errors}) //добавление ошибок в state
                     console.log(this.state.data);//для проверки выводим в консоль - временно
@@ -278,7 +284,7 @@ export default class QuizList extends Component {
                 email:this.state.email,
                 status:2,//статично
                 role:4,//статично
-                sub_unit_id:1,//не знаю что это
+                sub_unit_id:this.state.sub_unit_id,// САПР || ВЕБ || КИС
                 login:this.state.login.trim(),
                 password:this.state.password.trim()
             }
@@ -288,7 +294,7 @@ export default class QuizList extends Component {
             let url = 'http://dashboard.kholodov.xyz/api/teachers' //ссылка для запроса к таблице преподаавтелей
             const token = localStorage.getItem('token')// взяли токен
 
-            try {
+            //try {
                 const response = await fetch(url, {
                 method: 'POST', // или 'PUT'
                 body: JSON.stringify(newTeatcher), // данные могут быть 'строкой' или {объектом}!
@@ -297,33 +303,29 @@ export default class QuizList extends Component {
                     'Authorization': `Bearer ${token}`
                 }
                 });
-                const json = await response.json();
-                console.log('Успех:', JSON.stringify(json));// результат запроса
-                console.log(newTeatcher)//выводит обьект того, что добавлено на сервер
-                newTeatcher = {}//обнулили буферный обьект для нового преподавателя
+                console.log('Response',response)
+                //const json = await response.json();
 
-                // data.push({ //добавляем в обьект data все то же что и в newTeatcher, чтобы сразу видить изменения в таблице
-                //     position:'Преподаватель',
-                //     rank_id:this.state.rank_id,
-                //     degree_id:this.state.degree_id,
-                //     rate:this.state.rate,
-                //     hourse_worked:this.state.hourse_worked,
-                //     rinc:this.state.rinc,
-                //     web_of_science:this.state.web_of_science,
-                //     scopus:this.state.scopus,
-                //     name:this.state.name,
-                //     surname:this.state.surname,
-                //     patronymic:this.state.patronymic,
-                //     birthday:this.state.birthday,
-                //     phone:this.state.phone,
-                //     email:this.state.email,
-                //     status:2,
-                //     role:4,
-                //     sub_unit_id:1,
-                //     login:this.state.login,
-                //     password:this.state.password,
-                //     id:json.id
-                // })
+                if(response.status === 400){
+                    console.log(400)
+                    this.setState({openAlert:true, color:'danger', text:`Успешно`},()=>{
+                        window.setTimeout(()=>{
+                            this.setState({openAlert:false})
+                        },2000)
+                    });
+                }
+                if(response.status === 201){
+                    console.log(201)
+                    this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
+                        window.setTimeout(()=>{
+                            this.setState({openAlert:false})
+                        },2000)
+                    });
+                    this.componentDidMount()
+                }
+                //console.log('Успех:', JSON.stringify(json));// результат запроса
+                //console.log(newTeatcher)//выводит обьект того, что добавлено на сервер
+                newTeatcher = {}//обнулили буферный обьект для нового преподавателя
                 this.setState({ //обнуляем буферные значения  для добавления будущего преподавателя
                     name:'',
                     secondName:'',
@@ -358,29 +360,15 @@ export default class QuizList extends Component {
                         password:'',
                     }
                 })
+           // } catch (error) {
+           //     console.error('Ошибка:', error); //выдаёт ошибку в консоль
+                // this.setState({openAlert:true, color:'danger', text:'Произошла ошибка'},()=>{
+                //     window.setTimeout(()=>{
+                //         this.setState({openAlert:false})
+                //     },2000)
+                // });
 
-
-                if(response.status === 400){
-                    this.setState({openAlert:true, color:'danger', text:`${json.message}`},()=>{
-                        window.setTimeout(()=>{
-                            this.setState({openAlert:false})
-                        },2000)
-                    });
-                }
-                this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
-                    window.setTimeout(()=>{
-                        this.setState({openAlert:false})
-                    },2000)
-                });
-                this.componentDidMount()
-            } catch (error) {
-                console.error('Ошибка:', error); //выдаёт ошибку в консоль
-                this.setState({openAlert:true, color:'danger', text:'Произошла ошибка'},()=>{
-                    window.setTimeout(()=>{
-                        this.setState({openAlert:false})
-                    },2000)
-                });
-            }
+           // }
             }  
         }
 
@@ -455,10 +443,11 @@ export default class QuizList extends Component {
             <div className="container">
                 {
                     this.state.openAlert ?  //компонент вывода предупреждения
-                    <Alert  
+                    <Alert
                         color={this.state.color} //цвет оповещения
                         text={this.state.text} // текст в оповещении
                         onCloseAlert={this.onCloseAlert} // функция как закрыть это окошко
+
                     />
                     :null
                 }
@@ -469,7 +458,9 @@ export default class QuizList extends Component {
                             <TableSearch onSearch={this.searchHandler} />
 
                             <Button
-                                color="primary"
+                                style={{backgroundColor:'#007cff', color:'white'}}
+                                size="small"
+                                //color="primary"
                                 variant="contained"
                                 onClick={this.newTeatcher}
                                 className="mb-2"
@@ -648,6 +639,26 @@ export default class QuizList extends Component {
             onChange={(event)=>this.setState({scopus :event.target.value.trim()})}
             defaultValue='0.1'//знчение по умолчанию
           />
+
+            <TextField
+                margin="dense"
+                id="sub_unit_id"
+                label="Направление преподавателя"
+                type="text"
+                fullWidth={true}
+                error={!!this.state.errors.sub_unit_id}
+                helperText={this.state.errors.sub_unit_id}
+                onChange={(event) => {
+                    console.log(event.target.value)
+                    this.setState({ sub_unit_id: event.target.value })
+                }}
+                select
+            >
+                <MenuItem key={Math.random()*100} value="1">САПР</MenuItem>
+                <MenuItem key={Math.random()*100} value="2">ВЕБ</MenuItem>
+                <MenuItem key={Math.random()*100} value="3">КИС</MenuItem>
+            </TextField>
+
         <TextField
             margin="dense"
             id="login"
