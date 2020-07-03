@@ -1,5 +1,6 @@
 import React from 'react'
 import classes from './Group.module.css'
+import DeleteIcon from "@material-ui/icons/Delete";
 
 //компонент отображения таблицы
 
@@ -26,6 +27,7 @@ export default props => (
                 <th onClick={props.onSort.bind(null, 'sub_unit_name')}>
                     Направление {props.sortField === 'sub_unit_name' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
+                <th> </th>
                 {/*<th onClick={props.onSort.bind(null, 'specialties_id')}>*/}
                 {/*    ID Специальности {props.sortField === 'specialties_id' ? <small><FA name={props.sortArrow} /></small> : null}*/}
                 {/*</th>*/}
@@ -94,6 +96,15 @@ export default props => (
                         // }}
                         // suppressContentEditableWarning={true}
                     >{item.sub_unit_name}</td>
+
+                    <td>
+                        <DeleteIcon
+                            className={classes.deleteIcon}
+                            onClick={(event)=>{
+                                props.openModalDelete(item.id)
+                            }}
+                        />
+                    </td>
                     {/*<td*/}
                     {/*    className={classes.edit}*/}
                     {/*    contentEditable="true"*/}

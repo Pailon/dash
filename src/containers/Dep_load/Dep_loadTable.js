@@ -1,5 +1,7 @@
 import React from 'react'
 import {Link} from "react-router-dom";
+import classes from './Dep_load.module.css'
+import DeleteIcon from "@material-ui/icons/Delete";
 
 //компонент отображения таблицы
 
@@ -22,6 +24,9 @@ export default props => (
                 </th>
                 <th onClick={props.onSort.bind(null, 'modified_date')}>
                     Дата изменения {props.sortField === 'modified_date' ? <small>{props.sort}</small> : null}
+                </th>
+                <th>
+
                 </th>
                 <th>
 
@@ -50,6 +55,15 @@ export default props => (
                                 Подробнее
                             </Link>
                         </button>
+                    </td>
+
+                    <td>
+                        <DeleteIcon
+                            className={classes.deleteIcon}
+                            onClick={(event)=>{
+                                props.openModalDelete(item.id)
+                            }}
+                        />
                     </td>
                 </tr>
             ))}

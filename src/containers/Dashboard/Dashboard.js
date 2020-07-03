@@ -48,6 +48,9 @@ export default class Dashboard extends Component{
             teatcherWEB:0,
             teatcherKIS:0,
             teatcherGraf:{},
+            dataStudents:[],
+            statisticStudents:{},
+            dataStudentsGraf:[],
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -298,6 +301,94 @@ export default class Dashboard extends Component{
                 }]
             }
         })
+
+
+
+
+        ////
+        let url6 = link + `/students`
+        try {
+            const response = await fetch(url6, {
+                method: 'GET', //метод для получения данных
+                headers: {
+                    'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            const dataStudents = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
+            console.log('Я дата dataStudents', dataStudents)
+            this.setState({ // обновляем state
+                isLoading: false,
+                dataStudents //_.orderBy(Acad_data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
+            })
+
+        } catch (e) { // на случай ошибки
+            console.log(e)
+        }
+    }
+
+    testingStudents(){
+        const {dataStudents} = this.state
+        var massYear = []
+
+        function unique(arr) {
+            let result = [];
+
+            for (let str of arr) {
+                if (!result.includes(str)) {
+                    result.push(str);
+                }
+            }
+
+            return result;
+        }
+
+        var statisticStudents = {}
+
+        dataStudents.map(item=>{
+            let numGroup = item.group_name.match(/.{1,2}/g)
+            massYear.push(numGroup[0])
+            //console.log(massYear)
+
+            let numYear = unique(massYear)
+            //console.log(numYear)
+            //var arr = [1, 3, 4, 1, 1, 3, 4, 5];
+            var result = {};
+            massYear.forEach(function(a){
+                result[a] = result[a] + 1 || 1;
+            });
+            for (var key in result){
+                statisticStudents[key] = result[key]
+            }
+            console.log(statisticStudents)
+        })
+
+        //this.setState({statisticStudents})
+        //this.state.statisticStudents = statisticStudents
+
+        let names = Object.keys(statisticStudents)
+        let numbers = Object.values(statisticStudents)
+        console.log(names)
+        console.log(numbers)
+
+        this.state.dataStudentsGraf = {
+            labels:
+                names
+            ,
+            datasets: [{
+                data: numbers,
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56'
+                ],
+                hoverBackgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56'
+                ]
+            }]
+        };
     }
 
     testingProject(){
@@ -546,6 +637,7 @@ export default class Dashboard extends Component{
     render(){
         this.state.failProject = []
         this.testingProject()
+        this.testingStudents()
         //this.testingTeatcher()
         const date = new Date();
         return (
@@ -620,7 +712,7 @@ export default class Dashboard extends Component{
                     {/*     Сравнить*/}
                     {/*</Button>*/}
                     </div>
-                    <div className="col-4" style={{height: '300px', width: '300px'}}>
+                    <div className="col-4" style={{height: '500px', width: '500px'}}>
                         <div className="col-6" style={{padding: '5px'}}>
                             <div className='row' style={{padding: '5px'}}>
                                 <div className="col">
@@ -662,39 +754,42 @@ export default class Dashboard extends Component{
                             </div>
                         </div>
                     </div>
-                    <div className="col-4" style={{height: '300px', width: '300px'}}>
-                        <div className='row' style={{padding: '5px'}}>
-                            <div className="col">
-                                <h4>Проектная деятельность</h4>
-                            </div>
-                        </div>
-                        <div className="row" style={{padding: '5px'}}>
-                            <div className="col">
-                                <h5>Активных проектов:{this.state.dataProject.length} </h5>
-                            </div>
-                        </div>
-                        <div className="row" style={{padding: '5px'}}>
-                            <div className="col">
-                                <h5>Просроченные проекты: {this.state.failProject.length}</h5>
-                            </div>
-                        </div>
+                    <div className="col-4" style={{height: '500px', width: '500px'}}>
+                        {/*<div className='row' style={{padding: '5px'}}>*/}
+                        {/*    <div className="col">*/}
+                        {/*        <h4>Проектная деятельность</h4>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                        {/*<div className="row" style={{padding: '5px'}}>*/}
+                        {/*    <div className="col">*/}
+                        {/*        <h5>Активных проектов:{this.state.dataProject.length} </h5>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                        {/*<div className="row" style={{padding: '5px'}}>*/}
+                        {/*    <div className="col">*/}
+                        {/*        <h5>Просроченные проекты: {this.state.failProject.length}</h5>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
 
-                        <div className="col">
-                            {(this.state.failProject)?
-                                <button
-                                    type="button"
-                                    className="btn btn-link"
-                                >
-                                    <Link to={{
-                                        pathname: "/fail_project",
-                                        data: this.state.failProject,
-                                    }}>
-                                        {/* <FA name='external-link-square-alt'/>  */}
-                                        Подробнее
-                                    </Link>
-                                </button>
-                                : null}
-                        </div>
+                        {/*<div className="col">*/}
+                        {/*    {(this.state.failProject)?*/}
+                        {/*        <button*/}
+                        {/*            type="button"*/}
+                        {/*            className="btn btn-link"*/}
+                        {/*        >*/}
+                        {/*            <Link to={{*/}
+                        {/*                pathname: "/fail_project",*/}
+                        {/*                data: this.state.failProject,*/}
+                        {/*            }}>*/}
+                        {/*                /!* <FA name='external-link-square-alt'/>  *!/*/}
+                        {/*                Подробнее*/}
+                        {/*            </Link>*/}
+                        {/*        </button>*/}
+                        {/*        : null}*/}
+                        {/*</div>*/}
+                        <h5>Соотношение студентов по году поступления</h5>
+                        <Pie data={this.state.dataStudentsGraf} width={730} height={550} />
+
                     </div>
                 </div>
                 <div className="row">
@@ -712,7 +807,9 @@ export default class Dashboard extends Component{
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col" style={{height: '123px'}}></div>
+                    <div className="col" style={{height: '123px'}}>
+
+                    </div>
                 </div>
             </div>
         );

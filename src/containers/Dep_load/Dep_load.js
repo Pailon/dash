@@ -5,9 +5,18 @@ import ReactPaginate from 'react-paginate';
 import Dep_loadSearch from './Dep_loadSearch.js'
 import Dep_loadTable from './Dep_loadTable.js'
 import {link} from "../../Link";
+import ProjectTable from "../Project/ProjectTable";
+import ModalWindow from "../../components/ModalWindow/ModalWindow";
 
 
 export default class Dep_load extends Component{
+
+    constructor(props) { //конструктор этого класса
+        super(props);
+        this.onAgreeDelete = this.onAgreeDelete.bind(this)
+        this.onCloseDelete = this.onCloseDelete.bind(this)
+        this.openModalDelete = this.openModalDelete.bind(this)
+    }
 
     state ={
         data: [],
@@ -17,6 +26,9 @@ export default class Dep_load extends Component{
         row: null, // поле для хранения строки для её будущего отображения отдельно
         currentPage: 0, //количество страниц на данный момент
         search:'', //что искать
+
+        openModalDelete:false,
+        id_delete:'',
     }
 
     async componentDidMount() {
@@ -114,6 +126,56 @@ export default class Dep_load extends Component{
         })
     }
 
+    onCloseDelete(){
+        this.setState({openModalDelete: false})
+    }
+
+    async onAgreeDelete(){
+        this.setState({openModalDelete: false})
+        console.log('Удалим - ',this.state.id_delete)
+
+        let url = link + `/teachers/${this.state.id_delete}`
+        const token = localStorage.getItem('token')// взяли токен
+
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE', // или 'PUT'
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            console.log(response)
+
+            if(response.status === 204) {
+                this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {
+                    window.setTimeout(() => {
+                        this.setState({openAlert: false})
+                    }, 2000)
+                });
+            }
+            if (response.status === 409) {
+                this.setState({openAlert: true, color: 'danger', text: 'Удаление невозможно'}, () => {
+                    window.setTimeout(() => {
+                        this.setState({openAlert: false})
+                    }, 2000)
+                });
+            }
+            await this.componentDidMount()
+        } catch (error) {
+            console.error('Ошибка:', error); //выдаёт ошибку в консоль
+            this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
+                window.setTimeout(()=>{
+                    this.setState({openAlert:false})
+                },2000)
+            });
+        }
+    }
+
+    openModalDelete(id){
+        this.setState({openModalDelete: true, id_delete:id})
+    }
+
     render() {
         //количество строк на одну страницу
         const pageSize = 10
@@ -142,6 +204,7 @@ export default class Dep_load extends Component{
                                 sort={this.state.sort}
                                 sortField={this.state.sortField}
                                 onRowSelect={this.onRowSelect}
+                                openModalDelete={this.openModalDelete}
                             />
                         </React.Fragment>
 
@@ -170,6 +233,14 @@ export default class Dep_load extends Component{
                             forcePage={this.state.currentPage}
                         /> : null
                 }
+
+                <ModalWindow
+                    openModal ={this.state.openModalDelete}
+                    onClose={this.onCloseDelete}
+                    onAgree={this.onAgreeDelete}
+                    title = {'Вы действительно хотите удалить данные?'}
+                    content = {'При удалении произойдет так же удаление всех связанных данных'}
+                />
 
                 {/* {
                     this.state.row //отрисовка окна дополнительных данных

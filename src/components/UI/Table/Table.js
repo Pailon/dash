@@ -1,6 +1,7 @@
 import React from 'react'
 import classes from './Table.module.css'
 import {Link} from 'react-router-dom'
+import DeleteIcon from "@material-ui/icons/Delete";
 
 //компонент отображения таблицы
 
@@ -33,13 +34,14 @@ export default props => (
                     Номер телефона {props.sortField === 'phone' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th> </th>
+                <th> </th>
                 </tr>
         </thead>
         <tbody>
             {props.data.map(item => (
                 <tr key={item.id} onClick={props.onRowSelect.bind(null, item)} spellCheck="false">
 
-                    <td>{item.person_id}</td>
+                    <td>{item.id}</td>
 
                     
                     <td 
@@ -116,6 +118,14 @@ export default props => (
                                 Подробнее
                             </Link>
                         </button>
+                    </td>
+                    <td>
+                        <DeleteIcon
+                            className={classes.deleteIcon}
+                                onClick={(event)=>{
+                                    props.openModalDelete(item.id)
+                                }}
+                        />
                     </td>
                 </tr>
             ))}

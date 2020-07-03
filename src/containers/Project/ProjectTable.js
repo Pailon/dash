@@ -1,6 +1,7 @@
 import React from 'react'
 import classes from './Project.module.css'
 import {Link} from "react-router-dom";
+import DeleteIcon from "@material-ui/icons/Delete";
 //компонент отображения таблицы
 
 var FA = require('react-fontawesome')
@@ -34,6 +35,9 @@ export default props => (
                 </th>
                 <th onClick={props.onSort.bind(null, 'link_trello')}>
                     Trello {props.sortField === 'link_trello' ? <small><FA name={props.sortArrow} /></small> : null}
+                </th>
+                <th>
+
                 </th>
                 <th>
 
@@ -131,6 +135,15 @@ export default props => (
                         }}
                         suppressContentEditableWarning={true}
                     >{item.link_trello}</td>
+
+                    <td>
+                        <DeleteIcon
+                            className={classes.deleteIcon}
+                            onClick={(event)=>{
+                                props.openModalDelete(item.id)
+                            }}
+                        />
+                    </td>
 
                     <td>
                         <Link to={{

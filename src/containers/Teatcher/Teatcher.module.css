@@ -11,13 +11,36 @@
 }
 
 .list_a{
-    text-decoration:underline
+    text-decoration:underline;
+
 }
+
 
 .list_a:hover{
     cursor: pointer;
     color: #007cff;
 }
+
+.deleteIcon{
+    display: inline-block;
+    vertical-align: top;
+    overflow: hidden;
+    margin: 4px;
+    width: 96px;
+    height: 96px;
+    font-size: 0;
+    text-indent: -9999px;
+    color: #808080;
+}
+
+.deleteIcon:hover{
+    cursor: pointer;
+    background-color: #C0C0C0;
+    background-position: 0 -96px;
+    border-radius: 100%;
+}
+
+
 
 
 /*ul p li {*/

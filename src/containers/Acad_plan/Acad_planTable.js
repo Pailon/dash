@@ -1,6 +1,7 @@
 import React from 'react'
 import {Link} from "react-router-dom";
 import classes from './Acad_plan.module.css'
+import DeleteIcon from "@material-ui/icons/Delete";
 
 
 
@@ -39,6 +40,9 @@ export default props => (
                 </th>
                 <th onClick={props.onSort.bind(null, 'year_join')}>
                     Дата окончания {props.sortField === 'year_join' ? <small><FA name={props.sortArrow} /></small> : null}
+                </th>
+                <th>
+
                 </th>
                 <th>
 
@@ -134,6 +138,14 @@ export default props => (
                         //onBlur={(event)=>{item.name = event.currentTarget.firstChild.data}}
                         suppressContentEditableWarning={true}
                     >{item.year_join}</td>
+                    <td>
+                        <DeleteIcon
+                            className={classes.deleteIcon}
+                            onClick={(event)=>{
+                                props.openModalDelete(item.id)
+                            }}
+                        />
+                    </td>
                     <td>
                         <button
                             type="button"

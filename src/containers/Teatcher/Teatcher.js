@@ -21,6 +21,8 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Dialog from "@material-ui/core/Dialog";
 import Alert from "../../components/UI/Alert/Alert";
+import DeleteIcon from "@material-ui/icons/Delete";
+import ModalWindow from "../../components/ModalWindow/ModalWindow";
 
 
 
@@ -31,6 +33,9 @@ export default class Teatcher extends Component{
         this.loadingFile = this.loadingFile.bind(this)
         this.isApprov = this.isApprov.bind(this)
         this.openModal = this.openModal.bind(this)
+        this.onAgreeDelete = this.onAgreeDelete.bind(this)
+        this.onCloseDelete = this.onCloseDelete.bind(this)
+        this.openModalDelete = this.openModalDelete.bind(this)
     }
 
     state = {
@@ -48,6 +53,8 @@ export default class Teatcher extends Component{
         openModal:false,
         newPassword:'',
         openAlert: false,//видно ли окно оповещения
+        openModalDelete:false,
+        id_delete:'',
 
     }
 
@@ -244,23 +251,86 @@ export default class Teatcher extends Component{
     renderListRpd(){
         return this.state.dataRPD_files.map((item)=>{
             return(
-                <li
-                    key={item.name}
-                    className={classes.list_a}
-                    style={{
-                        cursor:'pointer'
-                    }}
-                    //value={item.id}
+                <li>
+                    <span
+                        key={item.name}
+                        className={classes.list_a}
+                        style={{
+                            cursor:'pointer',
+                        }}
+                        //value={item.id}
+                        onClick={(event)=>{
+                            let link = 'rpd'
+                            this.loadingFile(event, item, link)
+                        }}
+                    >
+                        {`${item.name}`}
+
+                    </span><DeleteIcon
+                    className={classes.deleteIcon}
                     onClick={(event)=>{
-                        let link = 'rpd'
-                        this.loadingFile(event, item, link)
+                        console.log(`delete ${item.name}`)
+                        this.openModalDelete(item.id)
+
                     }}
-                >
-                    {`${item.name}`}
+                /><br/>
                 </li>
             )
         })
     }
+
+    onCloseDelete(){
+        this.setState({openModalDelete: false})
+    }
+
+    async onAgreeDelete(){
+        this.setState({openModalDelete: false})
+        console.log('Удалим - ',this.state.id_delete)
+
+        let url = link + `uploads/rpd/${this.state.id_delete}`
+        const token = localStorage.getItem('token')// взяли токен
+
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE', // или 'PUT'
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            console.log(response)
+
+            if(response.status === 204) {
+                this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {
+                    window.setTimeout(() => {
+                        this.setState({openAlert: false})
+                    }, 2000)
+                });
+            }
+            if (response.status === 409) {
+                this.setState({openAlert: true, color: 'danger', text: 'Удаление невозможно'}, () => {
+                    window.setTimeout(() => {
+                        this.setState({openAlert: false})
+                    }, 2000)
+                });
+            }
+            await this.componentDidMount()
+
+        } catch (error) {
+            console.error('Ошибка:', error); //выдаёт ошибку в консоль
+            this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
+                window.setTimeout(()=>{
+                    this.setState({openAlert:false})
+                },2000)
+            });
+        }
+    }
+
+    openModalDelete(id){
+        this.setState({openModalDelete: true, id_delete:id})
+    }
+
+
 
    async isApprov(data, item, id){
         //функция обновления данных в таблице, получает от таблицы
@@ -286,8 +356,6 @@ export default class Teatcher extends Component{
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                const json = await response.json();
-                console.log('Результат:', JSON.stringify(json));
                 //console.log(item)
                 //this.setState({ openAlert: true, color: 'success', text: 'Изменено' })//при успешном отображении отображаем окно об успешноти
                 this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
@@ -407,24 +475,145 @@ export default class Teatcher extends Component{
                     <div className='row'>
                         <button type="button" className="btn btn-link"><Link to='/'>Назад</Link> </button>
                     </div>
-                    <div className='row'>
-                        <div className='col-4 ml-5'>
-                            <TeatcherInfo
-                                person ={this.props.location.propsItem}
-                            />
-                            <Button
-                                //color="primary"
-                                style={{backgroundColor:'#007cff', color:'white'}}
-                                size="small"
-                                variant="contained"
-                                onClick={this.openModal}
-                                className="mb-2"
-                            >Изменить пароль</Button>
-                            <Curator
-                                project={this.state.projTeactcher}
-                            />
+
+                    <ModalWindow
+                        openModal ={this.state.openModalDelete}
+                        onClose={this.onCloseDelete}
+                        onAgree={this.onAgreeDelete}
+                        title = {'Вы действительно хотите удалить данные?'}
+                        content = {'При удалении произойдет так же удаление всех связанных данных'}
+                    />
+                    {/*<div className='row'>*/}
+                    {/*    <div className='col-4 ml-5'>*/}
+                    {/*        <TeatcherInfo*/}
+                    {/*            person ={this.props.location.propsItem}*/}
+                    {/*        />*/}
+                    {/*        <Button*/}
+                    {/*            //color="primary"*/}
+                    {/*            style={{backgroundColor:'#007cff', color:'white'}}*/}
+                    {/*            size="small"*/}
+                    {/*            variant="contained"*/}
+                    {/*            onClick={this.openModal}*/}
+                    {/*            className="mb-2"*/}
+                    {/*        >Изменить пароль</Button>*/}
+                    {/*        <Curator*/}
+                    {/*            project={this.state.projTeactcher}*/}
+                    {/*        />*/}
+                    {/*    </div>*/}
+                    {/*    <div className='col-4 ml-5'>*/}
+                    {/*        <div className="container">*/}
+                    {/*            <div className="row">*/}
+                    {/*                <React.Fragment>*/}
+                    {/*                    <div className='col-1 ml-5'>*/}
+                    {/*                        <p>Индив. план</p>*/}
+                    {/*                    </div>*/}
+                    {/*                    <div className='col-1 ml-5 mr-5'>*/}
+                    {/*                        <Switch*/}
+                    {/*                            defaultChecked*/}
+                    {/*                            checked={this.state.checked}*/}
+                    {/*                            color="default"*/}
+                    {/*                            inputProps={{ 'aria-label': 'checkbox with default color' }}*/}
+                    {/*                            onChange={(event) => {*/}
+                    {/*                                console.log(event.target.checked)*/}
+                    {/*                                this.setState({ checked: event.target.checked })*/}
+                    {/*                            }}*/}
+                    {/*                        />*/}
+                    {/*                    </div>*/}
+                    {/*                    <div className='col-1 ml-3'>*/}
+                    {/*                        <p>РПД</p>*/}
+                    {/*                    </div>*/}
+                    {/*                </React.Fragment>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*        <Uploader*/}
+                    {/*            item = {this.props.location.propsItem}*/}
+                    {/*            link = {this.state.checked}*/}
+                    {/*            data = {this.state.dataRPD}*/}
+                    {/*            discipline = {this.state.discipline_id}*/}
+                    {/*        />*/}
+                    {/*        {this.state.checked*/}
+                    {/*        ?<TextField*/}
+                    {/*                margin="dense"*/}
+                    {/*                id="rpd"*/}
+                    {/*                label="Выберете дисциплину для загрузки РПД"*/}
+                    {/*                type="text"*/}
+                    {/*                fullWidth={true}*/}
+                    {/*                //error={!!this.state.errors.newPassword}*/}
+                    {/*                //helperText={this.state.errors.newPassword}*/}
+                    {/*                onChange={(event) => {*/}
+                    {/*                    console.log(event.target.value)*/}
+                    {/*                    this.setState({ discipline_id: event.target.value })*/}
+                    {/*                }}*/}
+                    {/*                select*/}
+                    {/*            >*/}
+                    {/*                {this.renderOptionsRpd()}*/}
+                    {/*            </TextField>*/}
+                    {/*        :null}*/}
+                    {/*        <RPD*/}
+                    {/*            data={this.state.dataRPD}*/}
+                    {/*            loadingFile={this.loadingFile}*/}
+                    {/*            isApprov={this.isApprov}*/}
+                    {/*            className='mt-5'*/}
+                    {/*        />*/}
+                    {/*        <h4>РПД преподавателя</h4>*/}
+                    {/*        <ul>*/}
+                    {/*            {this.renderListRpd()}*/}
+                    {/*        </ul>*/}
+
+
+                    {/*    </div>*/}
+                    {/*    <div className='col-1 ml-5'>*/}
+                    {/*        <SaveFile*/}
+                    {/*        data={this.state.dataFiles}*/}
+                    {/*        loadingFile={this.loadingFile}*/}
+                    {/*        />*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+
+                    <div className="row">
+                        <div className="col-3" style={{height: '300px', width: '300px'}}>
+                                    <TeatcherInfo
+                                        person ={this.props.location.propsItem}
+                                    />
                         </div>
-                        <div className='col-4 ml-5'>
+                        <div className="col-3" style={{height: '300px', width: '300px', overflow:'auto'}}>
+                                    <Curator
+                                        project={this.state.projTeactcher}
+                                    />
+                        </div>
+                        <div className="col-3" style={{height: '300px', width: '300px', overflow:'auto'}}>
+                                    <h4>РПД преподавателя</h4>
+                                    <ul>
+                                        {this.renderListRpd()}
+                                    </ul>
+                        </div>
+                        <div className="col-3" style={{height: '300px', width: '300px', overflow:'auto'}}>
+                                    <SaveFile
+                                    data={this.state.dataFiles}
+                                    loadingFile={this.loadingFile}
+                                    openModalDelete={this.openModalDelete}
+                                    />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-3" style={{height: '300px', width: '300px'}}>
+                                    <Button
+                                        style={{backgroundColor:'#007cff', color:'white'}}
+                                        size="small"
+                                        variant="contained"
+                                        onClick={this.openModal}
+                                        className="mb-2"
+                                    >Изменить пароль</Button>
+                        </div>
+                        <div className="col-3" style={{height: '300px', width: '300px', overflow:'auto'}}>
+                                    <RPD
+                                        data={this.state.dataRPD}
+                                        loadingFile={this.loadingFile}
+                                        isApprov={this.isApprov}
+                                        className='mt-5'
+                                    />
+                        </div>
+                        <div className="col-3" style={{height: '300px', width: '300px'}}>
                             <div className="container">
                                 <div className="row">
                                     <React.Fragment>
@@ -447,50 +636,35 @@ export default class Teatcher extends Component{
                                             <p>РПД</p>
                                         </div>
                                     </React.Fragment>
+                                    <Uploader
+                                        item = {this.props.location.propsItem}
+                                        link = {this.state.checked}
+                                        data = {this.state.dataRPD}
+                                        discipline = {this.state.discipline_id}
+                                    />
+                                    {this.state.checked
+                                        ?<TextField
+                                            margin="dense"
+                                            id="rpd"
+                                            label="Выберете дисциплину"
+                                            type="text"
+                                            fullWidth={true}
+                                            //error={!!this.state.errors.newPassword}
+                                            //helperText={this.state.errors.newPassword}
+                                            onChange={(event) => {
+                                                console.log(event.target.value)
+                                                this.setState({ discipline_id: event.target.value })
+                                            }}
+                                            select
+                                        >
+                                            {this.renderOptionsRpd()}
+                                        </TextField>
+                                        :null}
                                 </div>
                             </div>
-                            <Uploader
-                                item = {this.props.location.propsItem}
-                                link = {this.state.checked}
-                                data = {this.state.dataRPD}
-                                discipline = {this.state.discipline_id}
-                            />
-                            {this.state.checked
-                            ?<TextField
-                                    margin="dense"
-                                    id="rpd"
-                                    label="Выберете дисциплину для загрузки РПД"
-                                    type="text"
-                                    fullWidth={true}
-                                    //error={!!this.state.errors.newPassword}
-                                    //helperText={this.state.errors.newPassword}
-                                    onChange={(event) => {
-                                        console.log(event.target.value)
-                                        this.setState({ discipline_id: event.target.value })
-                                    }}
-                                    select
-                                >
-                                    {this.renderOptionsRpd()}
-                                </TextField>
-                            :null}
-                            <RPD
-                                data={this.state.dataRPD}
-                                loadingFile={this.loadingFile}
-                                isApprov={this.isApprov}
-                                className='mt-5'
-                            />
-                            <h4>РПД преподавателя</h4>
-                            <ul>
-                                {this.renderListRpd()}
-                            </ul>
-
-
                         </div>
-                        <div className='col-1 ml-5'>
-                            <SaveFile
-                            data={this.state.dataFiles}
-                            loadingFile={this.loadingFile}
-                            />
+                        <div className="col-3" style={{height: '300px', width: '300px'}}>
+
                         </div>
                     </div>
                     <Dialog

@@ -1,5 +1,6 @@
 import React from 'react'
 import classes from './Specialty.module.css'
+import DeleteIcon from "@material-ui/icons/Delete";
 var FA = require('react-fontawesome')
 
 //компонент отображения таблицы
@@ -39,6 +40,7 @@ export default props => (
                 <th onClick={props.onSort.bind(null, 'sub_unit_name')}>
                     Дата окончания {props.sortField === 'sub_unit_name' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
+                <th> </th>
 
             </tr>
         </thead>
@@ -158,6 +160,15 @@ export default props => (
                         suppressContentEditableWarning={true}
 
                     >{item.year_join}</td>
+
+                    <td>
+                        <DeleteIcon
+                            className={classes.deleteIcon}
+                            onClick={(event)=>{
+                                props.openModalDelete(item.id)
+                            }}
+                        />
+                    </td>
 
 
                 </tr>

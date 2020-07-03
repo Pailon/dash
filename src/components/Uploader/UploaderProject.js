@@ -4,7 +4,7 @@ import Alert from "../UI/Alert/Alert";
 import {link} from "../../Link";
 
 
-export default class Upload extends React.Component {
+export default class UploaderProject extends React.Component {
     constructor(props) {
         super(props);
         this.state = {file: '',imagePreviewUrl: '', openAlert: false,//видно ли окно оповещения
@@ -24,14 +24,17 @@ export default class Upload extends React.Component {
 
         // const FormData={file: data}
 
-        let url
+        let url = link + `/uploads/projects`
+        newData.append(`project_id`, this.props.project_id);
 
-        if(this.props.link === true){
-            url = link + `/uploads/rpd`
-            newData.append(`discipline_id`, this.props.discipline);
-        }else{
-            url = link + `/uploads/ind_plan`
-        }
+        console.log(newData)
+
+        // if(this.props.link === true){
+        //     url = link + `/uploads/rpd`
+        //     newData.append(`discipline_id`, this.props.discipline);
+        // }else{
+        //     url = link + `/uploads/ind_plan`
+        // }
         //url = `http://dashboard.kholodov.xyz/api/uploads/ind_plan` //ссылка для запроса к таблице преподаавтелей
         const token = localStorage.getItem('token')// взяли токен
 
@@ -44,30 +47,28 @@ export default class Upload extends React.Component {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            const json = await response.json();
-            if(json.message === "Загрузка файла не удалась!"){
-                this.setState({openAlert:true, color:'danger', text:'Загрузка файла не удалась!'},()=>{
-                    window.setTimeout(()=>{
-                        this.setState({openAlert:false})
-                    },2000)
-                });
-            } else if(json.message === "Не был передан файл"){
-                this.setState({openAlert:true, color:'danger', text:'Не был передан файл!'},()=>{
+            console.log(response)
+            if(response.status === 201){
+                this.setState({openAlert:true, color:'success', text:'Загружено'},()=>{
                     window.setTimeout(()=>{
                         this.setState({openAlert:false})
                     },2000)
                 });
             }
-            else{
-                console.log('Ответ:', JSON.stringify(json));// результат запроса
-                this.setState({openAlert:true, color:'success', text:'Файл загружен'},()=>{
+            if(response.status === 500){
+                this.setState({openAlert:true, color:'danger', text:'Ошибка загрузки файла'},()=>{
                     window.setTimeout(()=>{
                         this.setState({openAlert:false})
                     },2000)
                 });
             }
-
-            console.log('Ответ:', JSON.stringify(json))
+            if (response.status === 400){
+                this.setState({openAlert:true, color:'danger', text:'Невалидные данные'},()=>{
+                    window.setTimeout(()=>{
+                        this.setState({openAlert:false})
+                    },2000)
+                });
+            }
         } catch (error) {
             console.error('Ошибка:', error); //выдаёт ошибку в консоль
             this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
@@ -82,6 +83,7 @@ export default class Upload extends React.Component {
 
     _handleImageChange(e) {
         e.preventDefault();
+
         let file = e.target.files[0];
         console.log(file)
         let reader = new FileReader();

@@ -15,6 +15,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {link} from "../../Link";
 import MenuItem from "@material-ui/core/MenuItem";
+import ModalWindow from "../../components/ModalWindow/ModalWindow";
 
 
 export default class Project extends Component {
@@ -22,6 +23,9 @@ export default class Project extends Component {
     constructor(props) { //конструктор этого класса
         super(props);
         this.onUpdate = this.onUpdate.bind(this)
+        this.onAgreeDelete = this.onAgreeDelete.bind(this)
+        this.onCloseDelete = this.onCloseDelete.bind(this)
+        this.openModalDelete = this.openModalDelete.bind(this)
     }
 
     state = {
@@ -47,6 +51,9 @@ export default class Project extends Component {
         end_date: '',
         description: '',
         teacher_id:'',
+
+        openModalDelete:false,
+        id_delete:'',
 
         errors: {
             name: '',
@@ -313,16 +320,21 @@ export default class Project extends Component {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                const json = await response.json();
-                console.log('Ответ:', JSON.stringify(json));// результат запроса
-                console.log(newProject)//выводит обьект того, что добавлено на сервер
-                newProject = {}//обнулили буферный обьект для нового преподавателя
-                this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
-                    window.setTimeout(()=>{
-                        this.setState({openAlert:false})
-                    },2000)
-                });
-                this.componentDidMount()
+                if(response.status === 201) {
+                    this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {
+                        window.setTimeout(() => {
+                            this.setState({openAlert: false})
+                        }, 2000)
+                    });
+                }
+                if (response.status === 400) {
+                    this.setState({openAlert: true, color: 'danger', text: 'Ошибка при изменении'}, () => {
+                        window.setTimeout(() => {
+                            this.setState({openAlert: false})
+                        }, 2000)
+                    });
+                }
+                await this.componentDidMount()
             } catch (error) {
                 console.error('Ошибка:', error); //выдаёт ошибку в консоль
                 this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
@@ -364,15 +376,28 @@ export default class Project extends Component {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                const json = await response.json();
-                console.log('Результат:', JSON.stringify(json));
-                console.log(item)
-                //this.setState({ openAlert: true, color: 'success', text: 'Изменено' })//при успешном отображении отображаем окно об успешноти
-                this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
-                    window.setTimeout(()=>{
-                        this.setState({openAlert:false})
-                    },2000)
-                });
+                if(response.status === 204) {
+                    this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {
+                        window.setTimeout(() => {
+                            this.setState({openAlert: false})
+                        }, 2000)
+                    });
+                }
+                if (response.status === 400) {
+                    this.setState({openAlert: true, color: 'danger', text: 'Ошибка при изменении'}, () => {
+                        window.setTimeout(() => {
+                            this.setState({openAlert: false})
+                        }, 2000)
+                    });
+                }
+                if (response.status === 404) {
+                    this.setState({openAlert: true, color: 'danger', text: 'Данный студент не найден'}, () => {
+                        window.setTimeout(() => {
+                            this.setState({openAlert: false})
+                        }, 2000)
+                    });
+                }
+                await this.componentDidMount()
                 item = {}
             } catch (error) {
                 console.error('Ошибка:', error);//Отображаем ошибку в консоль
@@ -409,6 +434,56 @@ export default class Project extends Component {
                 </MenuItem>
             )
         })
+    }
+
+    onCloseDelete(){
+        this.setState({openModalDelete: false})
+    }
+
+    async onAgreeDelete(){
+        this.setState({openModalDelete: false})
+        console.log('Удалим - ',this.state.id_delete)
+
+        let url = link + `/teachers/${this.state.id_delete}`
+        const token = localStorage.getItem('token')// взяли токен
+
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE', // или 'PUT'
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            console.log(response)
+
+            if(response.status === 204) {
+                this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {
+                    window.setTimeout(() => {
+                        this.setState({openAlert: false})
+                    }, 2000)
+                });
+            }
+            if (response.status === 409) {
+                this.setState({openAlert: true, color: 'danger', text: 'Удаление невозможно'}, () => {
+                    window.setTimeout(() => {
+                        this.setState({openAlert: false})
+                    }, 2000)
+                });
+            }
+            await this.componentDidMount()
+        } catch (error) {
+            console.error('Ошибка:', error); //выдаёт ошибку в консоль
+            this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
+                window.setTimeout(()=>{
+                    this.setState({openAlert:false})
+                },2000)
+            });
+        }
+    }
+
+    openModalDelete(id){
+        this.setState({openModalDelete: true, id_delete:id})
     }
 
 
@@ -466,6 +541,8 @@ export default class Project extends Component {
                                 onRowSelect={this.onRowSelect}
                                 sortArrow={this.state.sortArrow}
                                 onUpdate={this.onUpdate}
+                                openModalDelete={this.openModalDelete}
+
                             />
                         </React.Fragment>
 
@@ -494,6 +571,14 @@ export default class Project extends Component {
                             forcePage={this.state.currentPage}
                         /> : null
                 }
+
+                <ModalWindow
+                    openModal ={this.state.openModalDelete}
+                    onClose={this.onCloseDelete}
+                    onAgree={this.onAgreeDelete}
+                    title = {'Вы действительно хотите удалить данные?'}
+                    content = {'При удалении произойдет так же удаление всех связанных данных'}
+                />
 
                 <Dialog
                     open={this.state.openModal}

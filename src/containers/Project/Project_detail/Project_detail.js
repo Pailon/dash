@@ -9,6 +9,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import MenuItem from "@material-ui/core/MenuItem";
 import Alert from "../../../components/UI/Alert/Alert";
 import {Link} from "react-router-dom";
+import UploaderProject from "../../../components/Uploader/UploaderProject";
+import Uploader from "../../../components/Uploader/Uploader";
+import classes from "../../Teatcher/Teatcher.module.css";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 export default class Project_detail extends Component{
 
@@ -24,6 +28,7 @@ export default class Project_detail extends Component{
             group_id:'',
             student:'',
             openAlert: false,//видно ли окно оповещения
+            dataProject_files:'',
 
         }
         this.postStudent = this.postStudent.bind(this)
@@ -77,7 +82,7 @@ export default class Project_detail extends Component{
            const dataGroup = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
            console.log('Я дата dataGroup', dataGroup)
            this.setState({ // обновляем state
-               isLoading: false,
+               //isLoading: false,
                dataGroup //: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
            })
 
@@ -85,9 +90,62 @@ export default class Project_detail extends Component{
            console.log(e)
        }
 
+       console.log('this.state.data.id',this.state.data.id)
+       let url2 = link + `/projects/${this.state.data.id}/files`
 
+       try {
 
+           const response = await fetch(url2, {
+               method: 'GET', //метот для получения данных
+               headers: {
+                   'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                   'Authorization': `Bearer ${token}`
+               }
+           })
+           // console.log('Я ответ', response)
+           //const dataProject_files = JSON.stringify(response) // Запоминаем ответ сервера в переменную data которая есть в state
+           const dataProject_files = await response.json()
+           console.log('Я ответ dataProject_files', dataProject_files)
+           this.setState({ // обновляем state
+               dataProject_files,
+               isLoading: false,
+           })
+       } catch (e) { // на случай ошибки
+           console.log(e)
+       }
 
+    }
+
+    renderListProjectFiles(){
+        return this.state.dataProject_files.map((item)=>{
+            return(
+                <li>
+                    <span
+                        key={item.name}
+                        className={classes.list_a}
+                        style={{
+                            cursor:'pointer',
+                        }}
+                        //value={item.id}
+                        onClick={(event)=>{
+                            // let link = 'rpd'
+                            // this.loadingFile(event, item, link)
+                            console.log('Хочу скачать')
+                        }}
+                    >
+                        {`${item.name}`}
+
+                    </span><DeleteIcon
+                    className={classes.deleteIcon}
+                    onClick={(event)=>{
+                        console.log(`delete ${item.name}`)
+                        //this.openModalDelete(item.id)
+
+                    }}
+                /><br/>
+                </li>
+            )
+        })
     }
 
     async getStudents(id){
@@ -273,15 +331,17 @@ export default class Project_detail extends Component{
                 {
                     this.state.isLoading
                         ? <Loader /> //пока не получены данные отображается loader иначе отображам таблицу
-                        : <div className="row">
-                            <div className="col-4">
+                        :
+                        <React.Fragment>
+                        <div className="row">
+                            <div className="col-3">
                                 <h4>Информация о проекте</h4>
                                 <p>Название проекта: <strong>{this.state.dataProj.name}</strong></p>
                                 <p>Временные рамки проекта: <strong>{this.state.dataProj.begin_date}</strong> - <strong>{this.state.dataProj.end_date}</strong></p>
                                 <p>Ссылка на проект в Trello: <strong>{this.state.dataProj.link_trello}</strong></p>
                                 <p>Описание проекта: {this.state.dataProj.description}</p>
                             </div>
-                            <div className="col-4">
+                            <div className="col-3">
                                 <h4>Добавить студента на проект</h4>
                                 <TextField
                                     margin="dense"
@@ -342,13 +402,30 @@ export default class Project_detail extends Component{
                                 }
 
                             </div>
-                            <div className="col-4">
+                            <div className="col-3">
                                 <h4>Студенты участвующие в проекте</h4>
                                 <ul>
                                     {this.renderListStudents()}
                                 </ul>
                             </div>
+
+                            <div className="col-3">
+                                <h4>Загрузить файлы по проекту</h4>
+                                <UploaderProject
+                                    item = {this.props.location.item}
+                                    project_id = {this.state.data.id}
+                                />
+                            </div>
                         </div>
+                            <div className="row mt-5">
+                                <div className="col-3" style={{height: '300px', width: '300px', overflow:'auto'}}>
+                                    {this.renderListProjectFiles()}
+                                </div>
+                                <div className="col-3">2</div>
+                                <div className="col-3">3</div>
+                                <div className="col-3">4</div>
+                            </div>
+                        </React.Fragment>
                 }
 
             </div>

@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import ReactPaginate from "react-paginate";
 import {link} from "../../../Link";
 import { saveAs } from 'file-saver';
+import {Link} from "react-router-dom";
 
 
 export default class Acad_plan_detail extends Component{
@@ -33,7 +34,7 @@ export default class Acad_plan_detail extends Component{
     async componentDidMount() {
         //console.log(this.props.location.propsItem)
         //в этом методе происходит запрос к серверу по ссылке из параметра url
-        let url = `http://dashboard.kholodov.xyz/api/acad_plan/${this.props.location.propsId}` //localhost:3000
+        let url = link + `/acad_plan/${this.props.location.propsId}` //localhost:3000
         //let url = link + `/dep_load/${this.props.location.propsItem}`
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
         //console.log(token)
@@ -45,11 +46,11 @@ export default class Acad_plan_detail extends Component{
                     'Authorization': `Bearer ${token}`
                 }
             })
-            //console.log('Я ответ', response)
+            console.log('Я ответ', response)
 
 
             const full_data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            const data = full_data.acad_plan.disciplines
+            const data = full_data.disciplines
 
             console.log('Я дата', data)
             console.log('full_data',full_data)
@@ -57,7 +58,7 @@ export default class Acad_plan_detail extends Component{
             //console.log(disciplines)
             this.setState({ // обновляем state
                 isLoading: false,
-                data: _.orderBy(data, this.state.sortField, this.state.sort),//первичная сортировка данных, для порядка
+                data,//: _.orderBy(data, this.state.sortField, this.state.sort),//первичная сортировка данных, для порядка
                 full_data
                 //data: _.orderBy(data.disciplines, this.state.sortField, this.state.sort)
             })
@@ -67,8 +68,8 @@ export default class Acad_plan_detail extends Component{
         }
 
 
-        console.log(this.state.full_data.acad_plan.id)
-        let url3 = link + `/acad_plan/${this.state.full_data.acad_plan.id}/files`
+        //console.log(this.state.full_data.acad_plan.id)
+        let url3 = link + `/acad_plan/${this.state.id}/files`
 
         try {
 
@@ -190,6 +191,12 @@ export default class Acad_plan_detail extends Component{
                     this.state.isLoading
                         ? <Loader /> //пока не получены данные отображается loader иначе отображам таблицу
                         : <React.Fragment>
+                            <Link to={{
+                                pathname: "/acad_plan",
+                            }}>
+                                {/* <FA name='external-link-square-alt'/>  */}
+                                Назад
+                            </Link>
                             <Acad_planSearch onSearch={this.searchHandler} />
                             <Button
                                 color="primary"

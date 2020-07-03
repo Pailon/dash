@@ -10,6 +10,24 @@
     outline: 0;
 }
 
+.deleteIcon:hover{
+    cursor: pointer;
+    background-color: #C0C0C0;
+    background-position: 0 -96px;
+    border-radius: 100%;
+}
+
+.deleteIcon{
+    display: inline-block;
+    vertical-align: top;
+    overflow: hidden;
+    margin: 4px;
+    width: 96px;
+    height: 96px;
+    font-size: 0;
+    text-indent: -9999px;
+}
+
 html{
     font-family: Roboto;
 

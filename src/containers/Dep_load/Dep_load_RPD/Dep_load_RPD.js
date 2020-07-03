@@ -5,6 +5,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import DialogContent from "@material-ui/core/DialogContent";
 import {Button} from "@material-ui/core";
+import {Link} from "react-router-dom";
 
 
 export default class Depa_load_RPD extends Component{
@@ -104,6 +105,13 @@ export default class Depa_load_RPD extends Component{
                 <div className="row">
                     <div className="col">
 
+                        <Link to={{
+                            pathname: "/dep_load_detail",
+                            propsId: this.props.location.data.id,
+                        }}>
+                            {/* <FA name='external-link-square-alt'/>  */}
+                            Назад
+                        </Link>
                         <TextField
                             margin="dense"
                             id="teacher_id"

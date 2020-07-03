@@ -14,6 +14,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Alert from '../../components/UI/Alert/Alert'
 import MenuItem from '@material-ui/core/MenuItem';
 import {link} from "../../Link";
+import ModalWindow from "../../components/ModalWindow/ModalWindow";
 
 
 export default class Group extends Component {
@@ -22,6 +23,9 @@ export default class Group extends Component {
     constructor(props){ //конструктор этого класса
         super(props);
         this.onUpdate = this.onUpdate.bind(this)
+        this.onAgreeDelete = this.onAgreeDelete.bind(this)
+        this.onCloseDelete = this.onCloseDelete.bind(this)
+        this.openModalDelete = this.openModalDelete.bind(this)
     }
     
     state = {
@@ -41,6 +45,9 @@ export default class Group extends Component {
 
         name: '',
         specialties_id: '',
+
+        openModalDelete:false,
+        id_delete:'',
 
         errors: {
             name: '',
@@ -337,6 +344,56 @@ export default class Group extends Component {
         this.setState({ openAlert: false }) // закрыть окно оповещения
     }
 
+    onCloseDelete(){
+        this.setState({openModalDelete: false})
+    }
+
+    async onAgreeDelete(){
+        this.setState({openModalDelete: false})
+        console.log('Удалим - ',this.state.id_delete)
+
+        let url = link + `/groups/${this.state.id_delete}`
+        const token = localStorage.getItem('token')// взяли токен
+
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE', // или 'PUT'
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            console.log(response)
+
+            if(response.status === 204) {
+                this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {
+                    window.setTimeout(() => {
+                        this.setState({openAlert: false})
+                    }, 2000)
+                });
+            }
+            if (response.status === 409) {
+                this.setState({openAlert: true, color: 'danger', text: 'Удаление невозможно'}, () => {
+                    window.setTimeout(() => {
+                        this.setState({openAlert: false})
+                    }, 2000)
+                });
+            }
+            await this.componentDidMount()
+        } catch (error) {
+            console.error('Ошибка:', error); //выдаёт ошибку в консоль
+            this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
+                window.setTimeout(()=>{
+                    this.setState({openAlert:false})
+                },2000)
+            });
+        }
+    }
+
+    openModalDelete(id){
+        this.setState({openModalDelete: true, id_delete:id})
+    }
+
 
 
     render() {
@@ -389,6 +446,7 @@ export default class Group extends Component {
                                 onRowSelect={this.onRowSelect}
                                 sortArrow={this.state.sortArrow}
                                 onUpdate={this.onUpdate}
+                                openModalDelete={this.openModalDelete}
                             />
                         </React.Fragment>
 
@@ -417,6 +475,14 @@ export default class Group extends Component {
                             forcePage={this.state.currentPage}
                         /> : null
                 }
+                <ModalWindow
+                    openModal ={this.state.openModalDelete}
+                    onClose={this.onCloseDelete}
+                    onAgree={this.onAgreeDelete}
+                    title = {'Вы действительно хотите удалить данные?'}
+                    content = {'При удалении произойдет так же удаление всех связанных данных'}
+                />
+
                 <Dialog
                     open={this.state.openModal}
                     onClose={this.onClose.bind(this)}

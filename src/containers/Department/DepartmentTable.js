@@ -65,7 +65,7 @@ export default props => (
                     <DeleteIcon
                         className={classes.deleteIcon}
                         onClick={(event)=>{
-                            props.delete(item.id)
+                            props.openModalDelete(item.id)
                         }}
                     />
                 </td>

@@ -51,7 +51,7 @@ export default class Dep_load_detail extends Component{
 
 
             const full_data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            const data = full_data.dep_load.disciplines
+            const data = full_data.disciplines
             console.log('Я дата', data)
             //const disciplines = data.disciplines
             //console.log(disciplines)
@@ -67,8 +67,8 @@ export default class Dep_load_detail extends Component{
             console.log(e)
         }
 
-        console.log(this.state.full_data.dep_load.id)
-        let url3 = link + `/dep_load/${this.state.full_data.dep_load.id}/files`
+        console.log(this.state.full_data.id)
+        let url3 = link + `/dep_load/${this.state.full_data.id}/files`
 
         try {
 
@@ -205,6 +205,12 @@ export default class Dep_load_detail extends Component{
                         this.state.isLoading
                             ? <Loader /> //пока не получены данные отображается loader иначе отображам таблицу
                             : <React.Fragment>
+                                <Link to={{
+                                    pathname: "/dep_load",
+                                }}>
+                                    {/* <FA name='external-link-square-alt'/>  */}
+                                    Назад
+                                </Link>
                                 <Dep_load_detail_Search onSearch={this.searchHandler} />
                                 <Button
                                     color="primary"

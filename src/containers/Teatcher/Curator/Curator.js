@@ -2,8 +2,8 @@ import React from 'react'
 
 export default ({project}) => {
     return (
-        <div className='container m-5 bg-light'>
-            <h3>Куратор проектов</h3>
+        <div className='container'>
+            <h4>Куратор проектов</h4>
             {/*<div className="input-group mb-3">*/}
 
             {/*    <input */}
@@ -17,9 +17,9 @@ export default ({project}) => {
             {/*            <button className="btn btn-outline-primary" type="button" id="button-addon2">Поиск</button>*/}
             {/*        </div>*/}
             {/*</div>*/}
-            <ul className="list-group">
+            <ul /*className="list-group"*/>
                 {project.map(item=>(
-                    <li key={item} className="list-group-item">{item.name}</li>
+                    <li key={item} /*className="list-group-item"*/>{item.name}</li>
 
                 ))}
             </ul>
