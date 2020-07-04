@@ -13,6 +13,9 @@ import UploaderProject from "../../../components/Uploader/UploaderProject";
 import Uploader from "../../../components/Uploader/Uploader";
 import classes from "../../Teatcher/Teatcher.module.css";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { saveAs } from 'file-saver';
+import ModalWindow from "../../../components/ModalWindow/ModalWindow";
+
 
 export default class Project_detail extends Component{
 
@@ -29,9 +32,14 @@ export default class Project_detail extends Component{
             student:'',
             openAlert: false,//видно ли окно оповещения
             dataProject_files:'',
+            openModalDelete:false,
+            id_delete:'',
 
         }
         this.postStudent = this.postStudent.bind(this)
+        this.onAgreeDelete = this.onAgreeDelete.bind(this)
+        this.onCloseDelete = this.onCloseDelete.bind(this)
+        this.openModalDelete = this.openModalDelete.bind(this)
     }
 
    async componentDidMount() {
@@ -113,7 +121,37 @@ export default class Project_detail extends Component{
        } catch (e) { // на случай ошибки
            console.log(e)
        }
+    }
 
+    async loadingFile(event,item){
+        event.preventDefault()
+        console.log(item)
+
+        let url
+
+        url = link + `/uploads/projects/${item.id}`
+
+        const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
+        //console.log(token) //проверяем взяли ли токен
+        try {
+
+            fetch(url, {
+                method: 'GET', //метот для получения данных
+                headers: {
+                    //'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then(res => {
+                console.log(res);
+                return res.blob();
+            })
+                .then(blob => {
+                    saveAs(blob, `${item.name}`)
+                })
+            await this.componentDidMount()
+        } catch (e) { // на случай ошибки
+            console.log(e)
+        }
     }
 
     renderListProjectFiles(){
@@ -129,7 +167,7 @@ export default class Project_detail extends Component{
                         //value={item.id}
                         onClick={(event)=>{
                             // let link = 'rpd'
-                            // this.loadingFile(event, item, link)
+                            this.loadingFile(event, item)
                             console.log('Хочу скачать')
                         }}
                     >
@@ -139,7 +177,7 @@ export default class Project_detail extends Component{
                     className={classes.deleteIcon}
                     onClick={(event)=>{
                         console.log(`delete ${item.name}`)
-                        //this.openModalDelete(item.id)
+                        this.openModalDelete(item.id)
 
                     }}
                 /><br/>
@@ -223,10 +261,21 @@ export default class Project_detail extends Component{
         if(this.state.dataProj.students.length > 1){
             return this.state.dataProj.students.map((item)=>{
                 return(
-                    <li
+                    <li>
+                    <span
                         key={item.student_id}
                     >
                         {`${item.name} ${item.surname} ${item.student_id}`}
+                    </span>
+                    {/*</span><DeleteIcon*/}
+                    {/*    className={classes.deleteIcon}*/}
+                    {/*    onClick={(event)=>{*/}
+                    {/*        console.log(`delete ${item.name}`)*/}
+                    {/*        this.removeStudent(item.student_id, this.state.dataProj.students)*/}
+
+                    {/*    }}*/}
+                    {/*/><br/>*/}
+                    <br/>
                     </li>
                 )
             })
@@ -280,8 +329,6 @@ export default class Project_detail extends Component{
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                const json = await response.json();
-                console.log('Успех:', JSON.stringify(json));// результат запроса
                 console.log('studentPost',studentPost)//выводит обьект того, что добавлено на сервер
                 studentPost = {}//обнулили буферный обьект для нового преподавателя
                 this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
@@ -298,7 +345,7 @@ export default class Project_detail extends Component{
                 });
             }
 
-            this.componentDidMount()
+            await this.componentDidMount()
         }else{
             this.setState({openAlert:true, color:'danger', text:'Такой студент уже есть на данном проекте'},()=>{
                 window.setTimeout(()=>{
@@ -309,8 +356,63 @@ export default class Project_detail extends Component{
 
     }
 
+    removeStudent(id, listStudents){
+        console.log('Щас удалю', id, 'из', listStudents)
+    }
+
     onCloseAlert = () => {
         this.setState({ openAlert: false }) // закрыть окно оповещения
+    }
+
+    onCloseDelete(){
+        this.setState({openModalDelete: false})
+    }
+
+    async onAgreeDelete(){
+        this.setState({openModalDelete: false})
+        console.log('Удалим - ',this.state.id_delete)
+
+        let url = link + `/uploads/projects/${this.state.id_delete}`
+        const token = localStorage.getItem('token')// взяли токен
+
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE', // или 'PUT'
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            console.log(response)
+
+            if(response.status === 204) {
+                this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {
+                    window.setTimeout(() => {
+                        this.setState({openAlert: false})
+                    }, 2000)
+                });
+            }
+            if (response.status === 409) {
+                this.setState({openAlert: true, color: 'danger', text: 'Удаление невозможно'}, () => {
+                    window.setTimeout(() => {
+                        this.setState({openAlert: false})
+                    }, 2000)
+                });
+            }
+            await this.componentDidMount()
+
+        } catch (error) {
+            console.error('Ошибка:', error); //выдаёт ошибку в консоль
+            this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
+                window.setTimeout(()=>{
+                    this.setState({openAlert:false})
+                },2000)
+            });
+        }
+    }
+
+    openModalDelete(id){
+        this.setState({openModalDelete: true, id_delete:id})
     }
 
 
@@ -419,14 +521,30 @@ export default class Project_detail extends Component{
                         </div>
                             <div className="row mt-5">
                                 <div className="col-3" style={{height: '300px', width: '300px', overflow:'auto'}}>
+                                    <h4>Файлы прикрепленные к проекту</h4>
                                     {this.renderListProjectFiles()}
                                 </div>
-                                <div className="col-3">2</div>
-                                <div className="col-3">3</div>
-                                <div className="col-3">4</div>
+                                <div className="col-3">
+
+                                </div>
+                                <div className="col-3">
+
+                                </div>
+                                <div className="col-3">
+
+                                </div>
                             </div>
                         </React.Fragment>
                 }
+
+
+                <ModalWindow
+                    openModal ={this.state.openModalDelete}
+                    onClose={this.onCloseDelete}
+                    onAgree={this.onAgreeDelete}
+                    title = {'Вы действительно хотите удалить данные?'}
+                    content = {'При удалении произойдет так же удаление всех связанных данных'}
+                />
 
             </div>
         )

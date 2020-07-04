@@ -231,8 +231,6 @@ export default class Teatcher extends Component{
        } catch (e) { // на случай ошибки
            console.log(e)
        }
-
-
     }
 
     renderOptionsRpd(){
