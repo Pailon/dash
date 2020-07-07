@@ -79,7 +79,7 @@ export default class Group extends Component {
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             console.log('Я дата group', data)
             this.setState({ // обновляем state
-                isLoading: false,
+                //isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
             })
 
@@ -171,7 +171,7 @@ export default class Group extends Component {
     getFiltredData() {
         const { data, search } = this.state
         //фильтрация данных
-
+        const oldData = data
 
         if (!search) {//если нечего фильтровать то отображать все данные
             return data
@@ -179,20 +179,24 @@ export default class Group extends Component {
 
         //иначе получаем поле для фильтра, приводим его к нижнему регистру на всякий случай на будущее, используем 
         //из state поле search и на основе него проводим поиск
-        return data.filter(item => {
-            return item['id'].toLowerCase().includes(search.toLowerCase())
-                || item['name'].toLowerCase().includes(search.toLowerCase())
+        let result = data.filter(item => {
+            return  item['name'].toLowerCase().includes(search.toLowerCase())
                 || item['specialties_code'].toLowerCase().includes(search.toLowerCase())
                 || item['specialties_name'].toLowerCase().includes(search.toLowerCase())
                 || item['sub_unit_name'].toLowerCase().includes(search.toLowerCase())
 
         })
+        if(result.length === 0){
+            let data = [{name:'Не найдено'}]
+            return data
+        }else return result
     }
 
     newGroup = () => { //открыть модальное окно для добавления преподавателя
         this.setState({ openModal: true })
 
     }
+
 
     onClose = () => {
         //функция зарытия модального окна без завершения добавления преподавателя

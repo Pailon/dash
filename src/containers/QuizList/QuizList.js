@@ -159,12 +159,16 @@ export default class QuizList extends Component {
         }
         //иначе получаем поле для фильтра, приводим его к нижнему регистру на всякий случай на будущее, используем 
         //из state поле search и на основе него проводим поиск
-        return data.filter(item => {
+        let result = data.filter(item => {
             return item['name'].toLowerCase().includes(search.toLowerCase())
                 || item['surname'].toLowerCase().includes(search.toLowerCase()) 
                 || item['patronymic'].toLowerCase().includes(search.toLowerCase())
                 || item['email'].toLowerCase().includes(search.toLowerCase())
         })
+        if(result.length === 0){
+            let data = [{name:'Не найдено'}]
+            return data
+        }else return result
     }
 
     newTeatcher = () => { //открыть модальное окно для добавления преподавателя
@@ -482,7 +486,7 @@ export default class QuizList extends Component {
                     }, 2000)
                 });
             }
-            this.componentDidMount()
+            await this.componentDidMount()
         } catch (error) {
             console.error('Ошибка:', error); //выдаёт ошибку в консоль
             this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
@@ -517,7 +521,6 @@ export default class QuizList extends Component {
                         color={this.state.color} //цвет оповещения
                         text={this.state.text} // текст в оповещении
                         onCloseAlert={this.onCloseAlert} // функция как закрыть это окошко
-
                     />
                     :null
                 }

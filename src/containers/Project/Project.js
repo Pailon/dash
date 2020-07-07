@@ -96,7 +96,7 @@ export default class Project extends Component {
                 data[x].end_date = newEndDate[0]
             }
             this.setState({ // обновляем state
-                isLoading: false,
+                //isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
             })
 
@@ -190,7 +190,7 @@ export default class Project extends Component {
 
         //иначе получаем поле для фильтра, приводим его к нижнему регистру на всякий случай на будущее, используем 
         //из state поле search и на основе него проводим поиск
-        return data.filter(item => {
+        let result = data.filter(item => {
             return item['name'].toLowerCase().includes(search.toLowerCase())
                 || item['students_count'].toLowerCase().includes(search.toLowerCase())
                 || item['link_trello'].toLowerCase().includes(search.toLowerCase())
@@ -199,6 +199,10 @@ export default class Project extends Component {
                 || item['description'].toLowerCase().includes(search.toLowerCase())
 
         })
+        if(result.length === 0){
+            let data = [{name:'Не найдено'}]
+            return data
+        }else return result
     }
 
     newProject = () => {

@@ -148,16 +148,20 @@ export default class Acad_plan extends Component{
 
         //иначе получаем поле для фильтра, приводим его к нижнему регистру на всякий случай на будущее, используем 
         //из state поле search и на основе него проводим поиск
-        return data.filter(item=>{
+        let result = data.filter(item=>{
             return item['name'].toLowerCase().includes(search.toLowerCase()) 
             || item['code'].toLowerCase().includes(search.toLowerCase())
             || item['profile'].toLowerCase().includes(search.toLowerCase())
             || item['educ_form'].toLowerCase().includes(search.toLowerCase())
-            || item['educ_programm'].toLowerCase().includes(search.toLowerCase())
-            || item['educ_years'].toLowerCase().includes(search.toLowerCase())
-            || item['year_join'].toLowerCase().includes(search.toLowerCase())
+            || String(item['educ_programm']).toLowerCase().includes(search.toLowerCase())
+            || String(item['educ_years']).toLowerCase().includes(search.toLowerCase())
+            || String(item['year_join']).toLowerCase().includes(search.toLowerCase())
 
         })
+        if(result.length === 0){
+            let data = [{name:'Не найдено'}]
+            return data
+        }else return result
     }
 
     newAcad_plan = () => {

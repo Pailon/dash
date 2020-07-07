@@ -102,7 +102,7 @@ export default class Students extends Component {
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             console.log('Я дата студенты 2 специальности', data)
             this.setState({ // обновляем state
-                isLoading: false,
+                //isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
             })
 
@@ -132,7 +132,7 @@ export default class Students extends Component {
             //this.state.data.spec = dataSpec
             //console.log(this.state.data)
             this.setState({ // обновляем state
-                isLoading: false,
+                //isLoading: false,
                 dataSpec //: _.orderBy(dataSpec, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
             })
 
@@ -247,17 +247,19 @@ export default class Students extends Component {
         //иначе получаем поле для фильтра, приводим его к нижнему регистру на всякий случай на будущее, используем
         //из state поле search и на основе него проводим поиск
 
-        return data.filter(item => {
-            return item['id'].toLowerCase().includes(search.toLowerCase())
-                || item['name'].toLowerCase().includes(search.toLowerCase())
+        let result = data.filter(item => {
+            return item['name'].toLowerCase().includes(search.toLowerCase())
                 || item['surname'].toLowerCase().includes(search.toLowerCase())
                 || item['patronymic'].toLowerCase().includes(search.toLowerCase())
                 || item['birthday'].toLowerCase().includes(search.toLowerCase())
                 || item['phone'].toLowerCase().includes(search.toLowerCase())
                 || item['email'].toLowerCase().includes(search.toLowerCase())
-                || item['group_id'].toLowerCase().includes(search.toLowerCase())
 
         })
+        if(result.length === 0){
+            let data = [{name:'Не найдено'}]
+            return data
+        }else return result
     }
 
     newStudents = () => { //открыть модальное окно для добавления преподавателя

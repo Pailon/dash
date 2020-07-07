@@ -115,15 +115,18 @@ export default class Dep_load extends Component{
 
         //иначе получаем поле для фильтра, приводим его к нижнему регистру на всякий случай на будущее, используем 
         //из state поле search и на основе него проводим поиск
-        return data.filter(item=>{
-            return item['name'].toLowerCase().includes(search.toLowerCase()) 
-            || item['code'].toLowerCase().includes(search.toLowerCase())
-            || item['profile'].toLowerCase().includes(search.toLowerCase())
-            || item['educ_form'].toLowerCase().includes(search.toLowerCase())
-            || item['educ_programm'].toLowerCase().includes(search.toLowerCase())
-            || item['educ_years'].toLowerCase().includes(search.toLowerCase())
-            || item['year_join'].toLowerCase().includes(search.toLowerCase())
+        let result = data.filter(item=>{
+            return item['department_name'].toLowerCase().includes(search.toLowerCase())
+            || item['begin_date'].toLowerCase().includes(search.toLowerCase())
+            || item['end_date'].toLowerCase().includes(search.toLowerCase())
+            || item['modified_date'].toLowerCase().includes(search.toLowerCase())
+
+
         })
+        if(result.length === 0){
+            let data = [{department_name:'Не найдено'}]
+            return data
+        }else return result
     }
 
     onCloseDelete(){

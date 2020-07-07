@@ -80,7 +80,7 @@ export default class Teatcher extends Component{
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             //console.log('Я ответ data', data)
             this.setState({ // обновляем state
-                isLoading: false,
+                //isLoading: false,
                 // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
                 data
             })
@@ -105,7 +105,7 @@ export default class Teatcher extends Component{
             const dataFiles = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             console.log('Я ответ dataFiles', dataFiles)
             this.setState({ // обновляем state
-                isLoading: false,
+                //isLoading: false,
                 // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
                 dataFiles
             })
@@ -128,7 +128,7 @@ export default class Teatcher extends Component{
             const dataProj = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             //console.log('Я ответ', dataProj)
             this.setState({ // обновляем state
-                isLoading: false,
+                //isLoading: false,
                 // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
                 dataProj,
             })
@@ -152,7 +152,7 @@ export default class Teatcher extends Component{
             const dataRPD = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             console.log('Я ответ dataRPD', dataRPD)
             this.setState({ // обновляем state
-                isLoading: false,
+                //isLoading: false,
                 // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
                 dataRPD,
             })
@@ -176,7 +176,7 @@ export default class Teatcher extends Component{
             const dataRPD_files = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             console.log('Я ответ dataRPD', dataRPD_files)
             this.setState({ // обновляем state
-                //isLoading: false,
+                isLoading: false,
                 // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
                 dataRPD_files,
             })

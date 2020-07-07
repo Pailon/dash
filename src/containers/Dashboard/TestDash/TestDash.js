@@ -22,6 +22,15 @@ export default class TestDash extends Component{
         console.log('Согласился')
         this.setState({openModal: false})
     }
+
+    func(){
+        let mass = []
+        for(let i=1; i<99; i++){
+            mass.push(`Листинг П.1.${i} – \r`)
+        }
+        return mass
+    }
+
     render() {
         return(
             <div className="container mt-5">
@@ -51,7 +60,8 @@ export default class TestDash extends Component{
                     <div className="col-3" style={{backgroundColor: 'grey', height: '300px', width: '300px'}}>5</div>
                     <div className="col-3" style={{backgroundColor: 'orange', height: '300px', width: '300px'}}>6</div>
                     <div className="col-3" style={{backgroundColor: '#007aff', height: '300px', width: '300px'}}>7</div>
-                    <div className="col-3" style={{backgroundColor: '#887add', height: '300px', width: '300px'}}>8</div>
+                    <div className="col-3" style={{backgroundColor: '#887add', height: '300px', width: '100px'}}>8</div>
+                    <div style={{backgroundColor: '#887add', height: '300px', width: '150px'}}>{this.func()}</div>
                 </div>
             </div>
         )

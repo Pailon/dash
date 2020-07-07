@@ -187,7 +187,7 @@ export default class Project_detail extends Component{
     }
 
     async getStudents(id){
-        let url3 = link + `/students/group/${id}`
+        let url3 = link + `/students?filter=group_name%20eq%20'${id}'&orderBy=birthday%20DESC&limit=2&offset=2`
         const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
         try {
             const response = await fetch(url3, {
@@ -197,8 +197,9 @@ export default class Project_detail extends Component{
                     'Authorization': `Bearer ${token}`
                 }
             })
-            //console.log('Я ответ', response)
-            const dataStudents = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
+            console.log('Я ответ', response)
+             const dataStudents = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
+            //const dataStudents = JSON.parse(response)
             console.log('Я дата студенты 2 специальности', dataStudents)
             this.setState({ // обновляем state
                 loadingStudents: false,
@@ -215,7 +216,7 @@ export default class Project_detail extends Component{
                 return (
                     <MenuItem
                         key={item.name}
-                        value={item.id}
+                        value={item.name}
                     >
                         {item.name}
                     </MenuItem>
@@ -448,7 +449,7 @@ export default class Project_detail extends Component{
                                 <TextField
                                     margin="dense"
                                     id="group_id"
-                                    label="Группа студента"
+                                    label="Выберете группу студента"
                                     type="text"
                                     fullWidth={true}
                                     //error={!!this.state.errors.group_id}
@@ -472,8 +473,8 @@ export default class Project_detail extends Component{
                                     ?<React.Fragment>
                                         <TextField
                                             margin="dense"
-                                            id="group_id"
-                                            label="Группа студента"
+                                            id="student_id"
+                                            label="Выберете студента"
                                             type="text"
                                             fullWidth={true}
                                             //error={!!this.state.errors.group_id}
@@ -504,7 +505,7 @@ export default class Project_detail extends Component{
                                 }
 
                             </div>
-                            <div className="col-3">
+                            <div className="col-3" style={{height: '300px', width: '300px', overflow:'auto'}}>
                                 <h4>Студенты участвующие в проекте</h4>
                                 <ul>
                                     {this.renderListStudents()}

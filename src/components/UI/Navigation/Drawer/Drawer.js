@@ -61,7 +61,7 @@ class Drawer extends Component {
             links.push({to: '/department', label:'Кафедры', exact:false})
             links.push({to: '/parser', label:'Загрузка данных', exact:false})
             links.push({to: '/logout', label:'Выход', exact:false})
-            links.push({to: '/test_dash', label:'Тест', exact:false})
+            // links.push({to: '/test_dash', label:'Тест', exact:false})
         }else{
             links.push({to: '/', label:'Авторизация', exact:true})
         }

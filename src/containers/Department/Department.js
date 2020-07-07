@@ -178,10 +178,13 @@ export default class Department extends Component {
 
         //иначе получаем поле для фильтра, приводим его к нижнему регистру на всякий случай на будущее, используем
         //из state поле search и на основе него проводим поиск
-        return data.filter(item => {
-            return item['id'].toLowerCase().includes(search.toLowerCase())
-                || item['name'].toLowerCase().includes(search.toLowerCase())
+        let result = data.filter(item => {
+            return item['name'].toLowerCase().includes(search.toLowerCase())
         })
+        if(result.length === 0){
+            let data = [{name:'Не найдено'}]
+            return data
+        }else return result
     }
 
     newDepartment = () => { //открыть модальное окно для добавления преподавателя

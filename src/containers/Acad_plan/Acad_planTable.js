@@ -138,14 +138,7 @@ export default props => (
                         //onBlur={(event)=>{item.name = event.currentTarget.firstChild.data}}
                         suppressContentEditableWarning={true}
                     >{item.year_join}</td>
-                    <td>
-                        <DeleteIcon
-                            className={classes.deleteIcon}
-                            onClick={(event)=>{
-                                props.openModalDelete(item.id)
-                            }}
-                        />
-                    </td>
+
                     <td>
                         <button
                             type="button"
@@ -158,6 +151,14 @@ export default props => (
                                 Подробнее
                             </Link>
                         </button>
+                    </td>
+                    <td>
+                        <DeleteIcon
+                            className={classes.deleteIcon}
+                            onClick={(event)=>{
+                                props.openModalDelete(item.id)
+                            }}
+                        />
                     </td>
                 </tr>
             ))}

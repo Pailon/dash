@@ -9,8 +9,6 @@ var FA = require('react-fontawesome')
 
 export default props => (
 
-    
-
     // таблица в стиле bootstrap 
     <table className="table">
         <thead>

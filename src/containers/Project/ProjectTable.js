@@ -136,14 +136,7 @@ export default props => (
                         suppressContentEditableWarning={true}
                     >{item.link_trello}</td>
 
-                    <td>
-                        <DeleteIcon
-                            className={classes.deleteIcon}
-                            onClick={(event)=>{
-                                props.openModalDelete(item.id)
-                            }}
-                        />
-                    </td>
+
 
                     <td>
                         <Link to={{
@@ -153,6 +146,14 @@ export default props => (
                             {/* <FA name='external-link-square-alt'/>  */}
                             Подробнее
                         </Link>
+                    </td>
+                    <td>
+                        <DeleteIcon
+                            className={classes.deleteIcon}
+                            onClick={(event)=>{
+                                props.openModalDelete(item.id)
+                            }}
+                        />
                     </td>
                 </tr>
             ))}

@@ -57,7 +57,7 @@ export default class Acad_plan_detail extends Component{
             //const disciplines = data.disciplines
             //console.log(disciplines)
             this.setState({ // обновляем state
-                isLoading: false,
+                //isLoading: false,
                 data,//: _.orderBy(data, this.state.sortField, this.state.sort),//первичная сортировка данных, для порядка
                 full_data
                 //data: _.orderBy(data.disciplines, this.state.sortField, this.state.sort)

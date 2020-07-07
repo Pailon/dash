@@ -7,7 +7,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 export default (props)=>{
     return(
         <React.Fragment>
-            <h5>Файлы преподавателя</h5>
+            <h5>Индивидуальные планы преподавателя</h5>
     <ul key={Math.random()*100}>
         {props.data.map(item=>{
                 return(

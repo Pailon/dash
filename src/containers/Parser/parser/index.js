@@ -8,6 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import {link} from "../../../Link";
 import DialogContent from "@material-ui/core/DialogContent";
+import Alert from "../../../components/UI/Alert/Alert";
 
 class Parser extends Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class Parser extends Component {
         spec_id:'',
         begin_date:'',
         end_date:'',
+        openAlert:false,
       file: {},
       data: [],
       data_filtered: [],
@@ -71,7 +73,7 @@ class Parser extends Component {
       }
 
 
-      let url4 = link + '/Department'
+      let url4 = link + '/department'
       //const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
       //console.log(token)
       try {
@@ -328,9 +330,30 @@ async uploadData(){
                             'Authorization': `Bearer ${token1}`
                         }
                     });
-                    const json = await response.json();
+                    //const json = await response.json();
 
-                    console.log('Ответ:', JSON.stringify(json))
+                    //console.log('Ответ:', JSON.stringify(json))
+                    if(response.status === 201) {
+                        this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {
+                            window.setTimeout(() => {
+                                this.setState({openAlert: false})
+                            }, 2000)
+                        });
+                    }
+                    if (response.status === 400) {
+                        this.setState({openAlert: true, color: 'danger', text: 'Неверные данные'}, () => {
+                            window.setTimeout(() => {
+                                this.setState({openAlert: false})
+                            }, 2000)
+                        });
+                    }
+                    if (response.status === 500) {
+                        this.setState({openAlert: true, color: 'danger', text: 'Ошибка загрузки файла'}, () => {
+                            window.setTimeout(() => {
+                                this.setState({openAlert: false})
+                            }, 2000)
+                        });
+                    }
                 } catch (error) {
                     console.error('Ошибка:', error); //выдаёт ошибку в консоль
                 }
@@ -500,9 +523,32 @@ async uploadData(){
                             'Authorization': `Bearer ${token1}`
                         }
                     });
-                    const json = await response.json();
+                    //const json = await response.json();
+                    //console.log('Ответ:', JSON.stringify(json))
 
-                    console.log('Ответ:', JSON.stringify(json))
+                    if(response.status === 201) {
+                        this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {
+                            window.setTimeout(() => {
+                                this.setState({openAlert: false})
+                            }, 2000)
+                        });
+                    }
+                    if (response.status === 400) {
+                        this.setState({openAlert: true, color: 'danger', text: 'Неверные данные'}, () => {
+                            window.setTimeout(() => {
+                                this.setState({openAlert: false})
+                            }, 2000)
+                        });
+                    }
+                    if (response.status === 500) {
+                        this.setState({openAlert: true, color: 'danger', text: 'Ошибка загрузки файла'}, () => {
+                            window.setTimeout(() => {
+                                this.setState({openAlert: false})
+                            }, 2000)
+                        });
+                    }
+
+
                 } catch (error) {
                     console.error('Ошибка:', error); //выдаёт ошибку в консоль
                 }
@@ -524,6 +570,15 @@ async uploadData(){
 
       return (
       <div style={{marginLeft: '10%'}}>
+          {
+              this.state.openAlert ?  //компонент вывода предупреждения
+                  <Alert
+                      color={this.state.color} //цвет оповещения
+                      text={this.state.text} // текст в оповещении
+                      onCloseAlert={this.onCloseAlert} // функция как закрыть это окошко
+                  />
+                  :null
+          }
           <form name='inputForm' >
             <input type="file" id="file" name='file' accept={ SheetJSFT } onChange={this.handleChange} />
           </form>
