@@ -481,92 +481,6 @@ export default class Teatcher extends Component{
                         title = {'Вы действительно хотите удалить данные?'}
                         content = {'При удалении произойдет так же удаление всех связанных данных'}
                     />
-                    {/*<div className='row'>*/}
-                    {/*    <div className='col-4 ml-5'>*/}
-                    {/*        <TeatcherInfo*/}
-                    {/*            person ={this.props.location.propsItem}*/}
-                    {/*        />*/}
-                    {/*        <Button*/}
-                    {/*            //color="primary"*/}
-                    {/*            style={{backgroundColor:'#007cff', color:'white'}}*/}
-                    {/*            size="small"*/}
-                    {/*            variant="contained"*/}
-                    {/*            onClick={this.openModal}*/}
-                    {/*            className="mb-2"*/}
-                    {/*        >Изменить пароль</Button>*/}
-                    {/*        <Curator*/}
-                    {/*            project={this.state.projTeactcher}*/}
-                    {/*        />*/}
-                    {/*    </div>*/}
-                    {/*    <div className='col-4 ml-5'>*/}
-                    {/*        <div className="container">*/}
-                    {/*            <div className="row">*/}
-                    {/*                <React.Fragment>*/}
-                    {/*                    <div className='col-1 ml-5'>*/}
-                    {/*                        <p>Индив. план</p>*/}
-                    {/*                    </div>*/}
-                    {/*                    <div className='col-1 ml-5 mr-5'>*/}
-                    {/*                        <Switch*/}
-                    {/*                            defaultChecked*/}
-                    {/*                            checked={this.state.checked}*/}
-                    {/*                            color="default"*/}
-                    {/*                            inputProps={{ 'aria-label': 'checkbox with default color' }}*/}
-                    {/*                            onChange={(event) => {*/}
-                    {/*                                console.log(event.target.checked)*/}
-                    {/*                                this.setState({ checked: event.target.checked })*/}
-                    {/*                            }}*/}
-                    {/*                        />*/}
-                    {/*                    </div>*/}
-                    {/*                    <div className='col-1 ml-3'>*/}
-                    {/*                        <p>РПД</p>*/}
-                    {/*                    </div>*/}
-                    {/*                </React.Fragment>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*        <Uploader*/}
-                    {/*            item = {this.props.location.propsItem}*/}
-                    {/*            link = {this.state.checked}*/}
-                    {/*            data = {this.state.dataRPD}*/}
-                    {/*            discipline = {this.state.discipline_id}*/}
-                    {/*        />*/}
-                    {/*        {this.state.checked*/}
-                    {/*        ?<TextField*/}
-                    {/*                margin="dense"*/}
-                    {/*                id="rpd"*/}
-                    {/*                label="Выберете дисциплину для загрузки РПД"*/}
-                    {/*                type="text"*/}
-                    {/*                fullWidth={true}*/}
-                    {/*                //error={!!this.state.errors.newPassword}*/}
-                    {/*                //helperText={this.state.errors.newPassword}*/}
-                    {/*                onChange={(event) => {*/}
-                    {/*                    console.log(event.target.value)*/}
-                    {/*                    this.setState({ discipline_id: event.target.value })*/}
-                    {/*                }}*/}
-                    {/*                select*/}
-                    {/*            >*/}
-                    {/*                {this.renderOptionsRpd()}*/}
-                    {/*            </TextField>*/}
-                    {/*        :null}*/}
-                    {/*        <RPD*/}
-                    {/*            data={this.state.dataRPD}*/}
-                    {/*            loadingFile={this.loadingFile}*/}
-                    {/*            isApprov={this.isApprov}*/}
-                    {/*            className='mt-5'*/}
-                    {/*        />*/}
-                    {/*        <h4>РПД преподавателя</h4>*/}
-                    {/*        <ul>*/}
-                    {/*            {this.renderListRpd()}*/}
-                    {/*        </ul>*/}
-
-
-                    {/*    </div>*/}
-                    {/*    <div className='col-1 ml-5'>*/}
-                    {/*        <SaveFile*/}
-                    {/*        data={this.state.dataFiles}*/}
-                    {/*        loadingFile={this.loadingFile}*/}
-                    {/*        />*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
 
                     <div className="row">
                         <div className="col-3" style={{height: '300px', width: '300px'}}>
@@ -593,7 +507,7 @@ export default class Teatcher extends Component{
                                     />
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row mt-5">
                         <div className="col-3" style={{height: '300px', width: '300px'}}>
                                     <Button
                                         style={{backgroundColor:'#007cff', color:'white'}}

@@ -4,6 +4,9 @@ import {Link} from "react-router-dom";
 
 //компонент отображения таблицы
 
+var FA = require('react-fontawesome')
+
+
 export default props => (
     // таблица в стиле bootstrap
     <table className="table table-sm table-hover">
@@ -13,58 +16,58 @@ export default props => (
             {/*    ID {props.sortField === 'id' ? <small>{props.sort}</small> : null}*/}
             {/*</th>*/}
             <th onClick={props.onSort.bind(null, 'code')}>
-                Код {props.sortField === 'code' ? <small>{props.sort}</small> : null}
+                Код {props.sortField === 'code' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'name')}>
-                Наименование {props.sortField === 'name' ? <small>{props.sort}</small> : null}
+                Наименование {props.sortField === 'name' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'zet')}>
-                ЗЕТ {props.sortField === 'zet' ? <small>{props.sort}</small> : null}
+                ЗЕТ {props.sortField === 'zet' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'zet')}>
-                Всего часов {props.sortField === 'zet' ? <small>{props.sort}</small> : null}
+                Всего часов {props.sortField === 'zet' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'zet')}>
-                Аудиторные часы {props.sortField === 'zet' ? <small>{props.sort}</small> : null}
+                Аудиторные часы {props.sortField === 'zet' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'hours_lec')}>
-                Лекционные часы {props.sortField === 'hours_lec' ? <small>{props.sort}</small> : null}
+                Лекционные часы {props.sortField === 'hours_lec' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'hours_sem')}>
-                Семинарские часы {props.sortField === 'hours_sem' ? <small>{props.sort}</small> : null}
+                Семинарские часы {props.sortField === 'hours_sem' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'hours_lab')}>
-                Лабораторные часы {props.sortField === 'hours_lab' ? <small>{props.sort}</small> : null}
+                Лабораторные часы {props.sortField === 'hours_lab' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'zet')}>
-                Самостоятельные работы {props.sortField === 'zet' ? <small>{props.sort}</small> : null}
+                Самостоятельные работы {props.sortField === 'zet' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'semesters')}>
-                Cеместр 1 (час) {props.sortField === 'semesters' ? <small>{props.sort}</small> : null}
+                Cеместр 1 (час) {props.sortField === 'semesters' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'semesters')}>
-                Семестр 2 (час) {props.sortField === 'semesters' ? <small>{props.sort}</small> : null}
+                Семестр 2 (час) {props.sortField === 'semesters' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'semesters')}>
-                Семестр 3 (час) {props.sortField === 'semesters' ? <small>{props.sort}</small> : null}
+                Семестр 3 (час) {props.sortField === 'semesters' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'semesters')}>
-               Семестр 4 (час) {props.sortField === 'semesters' ? <small>{props.sort}</small> : null}
+               Семестр 4 (час) {props.sortField === 'semesters' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'semesters')}>
-                семестр 5 (час) {props.sortField === 'semesters' ? <small>{props.sort}</small> : null}
+                семестр 5 (час) {props.sortField === 'semesters' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'semesters')}>
-                Семестр 6 (час) {props.sortField === 'semesters' ? <small>{props.sort}</small> : null}
+                Семестр 6 (час) {props.sortField === 'semesters' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'semesters')}>
-                Семестр 7 (час) {props.sortField === 'semesters' ? <small>{props.sort}</small> : null}
+                Семестр 7 (час) {props.sortField === 'semesters' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'zachets')}>
-                Зачеты (сем.) {props.sortField === 'zachets' ? <small>{props.sort}</small> : null}
+                Зачеты (сем.) {props.sortField === 'zachets' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
             <th onClick={props.onSort.bind(null, 'exams')}>
-                Экзамены (сем.) {props.sortField === 'exams' ? <small>{props.sort}</small> : null}
+                Экзамены (сем.) {props.sortField === 'exams' ? <small><FA name={props.sortArrow} /></small> : null}
             </th>
 
 

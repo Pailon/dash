@@ -69,8 +69,8 @@ export default class Dashboard extends Component{
         let nowDateD = new Date().getDate()
         let nowDate = `${nowFullYear}-${nowMonth}-${nowDateD}`
         let now = `${nowDate}T${nowTime}`
-        console.log(nowDate)
-        console.log(now)
+        //console.log(nowDate)
+        //console.log(now)
         this.setState({date: nowDate})
 
         //в этом методе происходит запрос к серверу по ссылке из параметра url
@@ -112,7 +112,7 @@ export default class Dashboard extends Component{
                 }
             })
             const Dep_data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я дата DEP', Dep_data)
+            //console.log('Я дата DEP', Dep_data)
             for (let x = 0; x < Dep_data.length; x++) {
                 let newBeginDate = Dep_data[x].begin_date.split('T')
                 let newEndDate = Dep_data[x].end_date.split('T')
@@ -142,7 +142,7 @@ export default class Dashboard extends Component{
                 }
             })
             const dataProject = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я дата dataProject', dataProject)
+            //console.log('Я дата dataProject', dataProject)
             for (let x = 0; x < dataProject.length; x++) {
                 let newBeginDate = dataProject[x].begin_date.split('T')
                 let newEndDate = dataProject[x].end_date.split('T')
@@ -199,7 +199,7 @@ export default class Dashboard extends Component{
                 }
             })
             const dataTeatcher = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я дата dataTeatcher', dataTeatcher)
+            //console.log('Я дата dataTeatcher', dataTeatcher)
             this.setState({ // обновляем state
                 //isLoading: false,
                 dataTeatcher //_.orderBy(Acad_data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -350,11 +350,9 @@ export default class Dashboard extends Component{
         dataStudents.map(item=>{
             let numGroup = item.group_name.match(/.{1,2}/g)
             massYear.push(numGroup[0])
-            //console.log(massYear)
 
             let numYear = unique(massYear)
-            //console.log(numYear)
-            //var arr = [1, 3, 4, 1, 1, 3, 4, 5];
+
             var result = {};
             massYear.forEach(function(a){
                 result[a] = result[a] + 1 || 1;
@@ -362,27 +360,44 @@ export default class Dashboard extends Component{
             for (var key in result){
                 statisticStudents[key] = result[key]
             }
-            console.log(statisticStudents)
+            //console.log(statisticStudents)
         })
-
-        //this.setState({statisticStudents})
-        //this.state.statisticStudents = statisticStudents
 
         let names = Object.keys(statisticStudents)
         let numbers = Object.values(statisticStudents)
-        console.log(names)
-        console.log(numbers)
+
+        let names_group = []
+        for (var i = 0, l = names.length; i < l; i++) {
+            names_group.push(`Год 20${names[i]}`)
+        }
 
         this.state.dataStudentsGraf = {
             labels:
-                names
+                names_group
             ,
             datasets: [{
                 data: numbers,
                 backgroundColor: [
-                    '#FF6384',
-                    '#36A2EB',
-                    '#FFCE56'
+                    '#00C90D',
+                    '#0776A0',
+                    '#FF8500',
+                    '#FF0700',
+                    '#26972D',
+                    '#226078',
+                    '#BF7A30',
+                    '#BF3330',
+                    '#008209',
+                    '#024C68',
+                    '#A65600',
+                    '#A60400',
+                    '#39E444',
+                    '#3AA6D0',
+                    '#FFA340',
+                    '#FF4540',
+                    '#67E46F',
+                    '#62B1D0',
+                    '#FFBC73',
+                    '#FF7673',
                 ],
                 hoverBackgroundColor: [
                     '#FF6384',
@@ -425,6 +440,7 @@ export default class Dashboard extends Component{
                 <option
                     key={item.name}
                     value={item.id}
+                    className={classes.optionList}
                 >
                     {item.name}
                 </option>
@@ -438,6 +454,7 @@ export default class Dashboard extends Component{
                 <option
                     key={item.department_name}
                     value={item.id}
+                    className={classes.optionList}
                 >
                     {`${item.department_name} ${item.begin_date}:${item.end_date}`}
                 </option>
@@ -446,7 +463,7 @@ export default class Dashboard extends Component{
     }
 
     handleChange(e){
-        console.log('Выбрано',e.target.value)
+        //console.log('Выбрано',e.target.value)
         this.setState({
             choise:e.target.value
         })
@@ -492,9 +509,9 @@ export default class Dashboard extends Component{
 
     async comparison(){
         const {choiseDep, choiseAcad} = this.state
-        console.log('сравнение')
-        console.log(choiseAcad)
-        console.log(choiseDep)
+        //console.log('сравнение')
+        //console.log(choiseAcad)
+        //console.log(choiseDep)
 
          let url1 = link + `/acad_plan/${choiseAcad}`
         //let url1 = link + `/acad_plan/102`
@@ -539,96 +556,84 @@ export default class Dashboard extends Component{
         } catch (e) { // на случай ошибки
             console.log(e)
         }
-        //console.log(this.state.Acad_data_choise.acad_plan.disciplines)
-        // for(let i=0; i<this.state.Acad_data_choise.acad_plan.disciplines.length; i++){
-        //     //console.log(this.state.Dep_data_choise.dep_load.disciplines)
-        //     this.state.Dep_data_choise.dep_load.disciplines.map((item)=>{
-        //         if(this.state.Acad_data_choise.acad_plan.disciplines[i].name === item.name){
-        //             console.log('совпало')
-        //             if(this.state.Acad_data_choise.acad_plan.disciplines.hours_lab !== item.hours_lab){
-        //                 console.log('Ошибка в лабах')}
-        //             if(this.state.Acad_data_choise.acad_plan.disciplines.hours_lec !== item.hours_lec){
-        //                 console.log('Ошибка в лекциях')
-        //             }
-        //             if(this.state.Acad_data_choise.acad_plan.disciplines.hours_sem !== item.hours_sem){
-        //                 console.log('Ошибка в семенарах')
-        //             }
-        //         }
-        //     })
-        // }
-        //console.log('dep',this.state.Dep_data_choise)
-        //console.log('acad',this.state.Acad_data_choise)
         let errorsLab = 0
         let errorsSem = 0
         let notData = 0
-        for(let i=0; i<this.state.Dep_data_choise.dep_load.disciplines.length; i++){
-            this.state.Acad_data_choise.acad_plan.disciplines.map((item)=>{
-                if(this.state.Dep_data_choise.dep_load.disciplines[i].name === item.name){
+
+        let item_dep = this.state.Dep_data_choise.disciplines
+        let item_acad = this.state.Acad_data_choise.disciplines
+
+        for(let j=0; j<item_dep.length; j++){
+
+            for (let k = 0;k<item_acad.length; k++ ){
+
+
+                if(item_dep[j].name === item_acad[k].name){
                     let countGroup = 0
-                    //for(let j=0; j<this.state.Dep_data_choise.dep_load.disciplines[i].groups.length; j++){
-                        //countGroup= countGroup+ this.state.Dep_data_choise.dep_load.disciplines[i].groups.count
-                        this.state.Dep_data_choise.dep_load.disciplines[i].groups.map(item =>{
-                            countGroup += item.count
-                        })
-                    //}
-                    //console.log('Сумма всех студентов',countGroup)
+                    item_dep[j].groups.map(itemG =>{
+                        countGroup += itemG.count
+                    })
                     let xl = 1
                     let xs = 1
                     if(countGroup > 12){
-                         xl = Math.ceil(countGroup/12)
-                         xs = Math.ceil(countGroup/15)
-                        //console.log(`${xl} : ${xs}`)
+                        xl = Math.ceil(countGroup/12)
+                        xs = Math.ceil(countGroup/15)
                     }
 
                     let idealModel = {
-                        i_hours_lec:item.i_hours_lec,
-                        i_hours_lab:item.hours_lab*xl,
-                        i_hours_sem:item.hours_sem*xs,
+                        i_hours_lec:item_acad.i_hours_lec,
+                        i_hours_lab:item_acad.hours_lab*xl,
+                        i_hours_sem:item_acad.hours_sem*xs,
                     }
 
-                    if (idealModel.i_hours_lab !== this.state.Dep_data_choise.dep_load.disciplines[i].hours_lab){
-                        // console.log('Ошибка лабы')
-                        // console.log(idealModel.i_hours_lab)
-                        // console.log(this.state.Dep_data_choise.dep_load.disciplines[i].hours_lab)
+                    if (idealModel.i_hours_lab !== item_dep[j].hours_lab){
                         errorsLab++
                         this.setState({errorsLab})
-                        this.state.errorCol_Acad.push(item)
-                        this.state.errorCol_Dep.push(this.state.Dep_data_choise.dep_load.disciplines[i])
+                        this.state.errorCol_Acad.push(item_acad[k])
+                        this.state.errorCol_Dep.push(item_dep[j])
                     }
 
-                    if (idealModel.i_hours_sem !== this.state.Dep_data_choise.dep_load.disciplines[i].hours_sem){
-                        // console.log('Ошибка семенары')
-                        // console.log(idealModel.i_hours_sem)
-                        // console.log(this.state.Dep_data_choise.dep_load.disciplines[i].hours_sem)
+                    if (idealModel.i_hours_sem !== item_dep[j].hours_sem){
                         errorsSem++
                         this.setState({errorsSem})
-                        this.state.errorCol_Acad.push(item)
-                        this.state.errorCol_Dep.push(this.state.Dep_data_choise.dep_load.disciplines[i])
+                        this.state.errorCol_Acad.push(item_acad[k])
+                        this.state.errorCol_Dep.push(item_dep[j])
                     }
 
-                    console.log(idealModel)
                 }
-            })
-            notData++
-            this.setState({notData})
+            }
         }
-        console.log('Без совпадений',notData)
-        console.log('Ошибок в лабах',errorsLab)
-        console.log('Ошибок в семенарах',errorsSem)
-        console.log('Ошибочные акады',this.state.errorCol_Acad)
-        console.log('Ошибочные депы',this.state.errorCol_Dep)
+
+        var obj = {};
+
+        for ( var q=0, len=this.state.errorCol_Acad.length; q < len; q++ )
+            obj[this.state.errorCol_Acad[q]['id']] = this.state.errorCol_Acad[q];
+
+        this.state.errorCol_Acad = new Array();
+        for ( var key in obj )
+            this.state.errorCol_Acad.push(obj[key]);
+
+        var obj1 = {};
+
+        for ( var q1=0, len1=this.state.errorCol_Dep.length; q1 < len1; q1++ )
+            obj1[this.state.errorCol_Dep[q1]['id']] = this.state.errorCol_Dep[q1];
+
+        this.state.errorCol_Dep = new Array();
+        for ( var key1 in obj1 )
+            this.state.errorCol_Dep.push(obj1[key1]);
+
+        let errorCol_Acad = this.state.errorCol_Acad
+        let errorCol_Dep = this.state.errorCol_Dep
+
+        this.setState({
+            errorCol_Acad,
+            errorCol_Dep
+        })
 
         this.setState({sendData:{
-            acad:this.state.errorCol_Acad,
-            dep:this.state.errorCol_Dep
+                acad:this.state.errorCol_Acad,
+                dep:this.state.errorCol_Dep
             }})
-
-        // this.state.sendData.acad = this.state.errorCol_Acad
-        // this.state.sendData.dep = this.state.errorCol_Dep
-
-        console.log(this.state.sendData)
-
-
     }
 
 
@@ -707,26 +712,12 @@ export default class Dashboard extends Component{
                                     </Button>
                                 }
 
-                                {/* <Button*/}
-                                {/*     variant="contained"*/}
-                                {/*     //color="primary"*/}
-                                {/*     style={{backgroundColor:'#007cff', color:'white'}}*/}
-                                {/*     size="small"*/}
-                                {/*     onClick={this.comparison}*/}
-                                {/* >*/}
-                                {/*     Сравнить*/}
-                                {/*</Button>*/}
                             </div>
                             <div className="col-4" style={{height: '500px', width: '500px'}}>
                                 <div className="col-6" style={{padding: '5px'}}>
                                     <div className='row' style={{padding: '5px'}}>
                                         <div className="col">
                                             <h4>Результат сравнения</h4>
-                                        </div>
-                                    </div>
-                                    <div className="row" style={{padding: '5px'}}>
-                                        <div className="col">
-                                            <h5>Без совпадения:{this.state.notData} </h5>
                                         </div>
                                     </div>
                                     <div className="row" style={{padding: '5px'}}>
@@ -760,38 +751,6 @@ export default class Dashboard extends Component{
                                 </div>
                             </div>
                             <div className="col-4" style={{height: '500px', width: '500px'}}>
-                                {/*<div className='row' style={{padding: '5px'}}>*/}
-                                {/*    <div className="col">*/}
-                                {/*        <h4>Проектная деятельность</h4>*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
-                                {/*<div className="row" style={{padding: '5px'}}>*/}
-                                {/*    <div className="col">*/}
-                                {/*        <h5>Активных проектов:{this.state.dataProject.length} </h5>*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
-                                {/*<div className="row" style={{padding: '5px'}}>*/}
-                                {/*    <div className="col">*/}
-                                {/*        <h5>Просроченные проекты: {this.state.failProject.length}</h5>*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
-
-                                {/*<div className="col">*/}
-                                {/*    {(this.state.failProject)?*/}
-                                {/*        <button*/}
-                                {/*            type="button"*/}
-                                {/*            className="btn btn-link"*/}
-                                {/*        >*/}
-                                {/*            <Link to={{*/}
-                                {/*                pathname: "/fail_project",*/}
-                                {/*                data: this.state.failProject,*/}
-                                {/*            }}>*/}
-                                {/*                /!* <FA name='external-link-square-alt'/>  *!/*/}
-                                {/*                Подробнее*/}
-                                {/*            </Link>*/}
-                                {/*        </button>*/}
-                                {/*        : null}*/}
-                                {/*</div>*/}
                                 <h5>Соотношение студентов по году поступления</h5>
                                 <Pie data={this.state.dataStudentsGraf} width={730} height={550} />
 

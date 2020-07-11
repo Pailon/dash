@@ -128,7 +128,9 @@ export default class Depa_load_RPD extends Component{
                             {this.renderOptions()}
                         </TextField>
                         <Button
-                            color="primary"
+                            // color="primary"
+                             style={{backgroundColor:'#007cff', color:'white'}}
+                             size="small"
                             variant="contained"
                             onClick={this.choiseTeatcher}
                             className="mb-2"

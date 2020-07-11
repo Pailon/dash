@@ -10,6 +10,7 @@ import Loader from "../../../components/UI/Loader/Loader";
 import Button from "@material-ui/core/Button";
 import ReactPaginate from "react-paginate";
 import { saveAs } from 'file-saver';
+import Alert from "../../../components/UI/Alert/Alert";
 
 
 
@@ -30,6 +31,8 @@ export default class Dep_load_detail extends Component{
         currentPage: 0, //количество страниц на данный момент
         search:'', //что искать
         DepFile:[],
+        openAlert:false,
+        sortArrow: 'arrow-up',
     }
 
     async componentDidMount() {
@@ -97,6 +100,7 @@ export default class Dep_load_detail extends Component{
     onSort = (sortField) => { // функция для сортировки данных в таблице
         const clonedData = this.state.data.concat() // клонируем массив из state чтобы случайно не изменить исходные данные
         const sort = this.state.sort === 'asc' ? 'desc' : 'asc' // выбор метода сортировки
+        const sortArrow = this.state.sortArrow === 'arrow-up' ? 'arrow-down' : 'arrow-up'
 
         const data = _.orderBy(clonedData, sortField, sort) // создание нового объекта data при помощи библиотеки logash,
                                                             // которая на вход получала 3 параметра, необходимый массив, по какому полю фильтровать
@@ -104,7 +108,8 @@ export default class Dep_load_detail extends Component{
         this.setState({
             data,
             sort,
-            sortField
+            sortField,
+            sortArrow
         })
 
     }
@@ -159,34 +164,42 @@ export default class Dep_load_detail extends Component{
         //event.preventDefault()
         console.log(this.props.location.propsId)
 
-        let url = link + `/uploads/dep_load/${this.state.DepFile[0].id}`
+        if(this.state.DepFile[0] === undefined){
+            this.setState({openAlert: true, color: 'danger', text: 'Не найдено'}, () => {
+                window.setTimeout(() => {
+                    this.setState({openAlert: false})
+                }, 2000)
+            });
+        }else{
+            let url = link + `/uploads/dep_load/${this.state.DepFile[0].id}`
 
-        const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
-        //console.log(token) //проверяем взяли ли токен
-        try {
-            fetch(url, {
-                method: 'GET', //метот для получения данных
-                headers: {
-                    //'Content-Type': 'application/json',//заголовки обязателны для получения данных
-                    'Authorization': `Bearer ${token}`
-                }
-            }).then(res => {
-                console.log(res);
-                return res.blob();
-            })
-                .then(blob => {
-                    saveAs(blob, `${this.state.DepFile[0].name}`)
+            const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
+            //console.log(token) //проверяем взяли ли токен
+            try {
+                fetch(url, {
+                    method: 'GET', //метот для получения данных
+                    headers: {
+                        //'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then(res => {
+                    console.log(res);
+                    return res.blob();
                 })
+                    .then(blob => {
+                        saveAs(blob, `${this.state.DepFile[0].name}`)
+                    })
 
 
-        } catch (e) { // на случай ошибки
-            console.log(e)
+            } catch (e) { // на случай ошибки
+                console.log(e)
+            }
         }
-
-
     }
 
-
+    onCloseAlert = () =>{
+        this.setState({openAlert:false}) // закрыть окно оповещения
+    }
 
     render() {
         const pageSize = 7
@@ -202,6 +215,15 @@ export default class Dep_load_detail extends Component{
         return(
                 <div className="container">
                     {
+                        this.state.openAlert ?  //компонент вывода предупреждения
+                            <Alert
+                                color={this.state.color} //цвет оповещения
+                                text={this.state.text} // текст в оповещении
+                                onCloseAlert={this.onCloseAlert} // функция как закрыть это окошко
+                            />
+                            :null
+                    }
+                    {
                         this.state.isLoading
                             ? <Loader /> //пока не получены данные отображается loader иначе отображам таблицу
                             : <React.Fragment>
@@ -213,7 +235,9 @@ export default class Dep_load_detail extends Component{
                                 </Link>
                                 <Dep_load_detail_Search onSearch={this.searchHandler} />
                                 <Button
-                                    color="primary"
+                                    //color="primary"
+                                    style={{backgroundColor:'#007cff', color:'white'}}
+                                    size="small"
                                     variant="contained"
                                     onClick={this.loadingFile}
                                     className="mb-2"

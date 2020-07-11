@@ -41,6 +41,8 @@ export default class Acad_plan extends Component{
         color: '',//значение для окна оповещения - его цвет
         text: '',//текст окна оповещения
         item: '',
+        sortArrow: 'arrow-up',
+
 
         name:'',
         code:'',

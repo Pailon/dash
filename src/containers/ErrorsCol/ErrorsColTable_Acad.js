@@ -9,9 +9,9 @@ export default props => (
     <table className="table table-sm table-hover table-responsive">
         <thead>
         <tr>
-            {/*<th onClick={props.onSort.bind(null, 'id')}>*/}
-            {/*    ID {props.sortField === 'id' ? <small>{props.sort}</small> : null}*/}
-            {/*</th>*/}
+            <th onClick={props.onSort.bind(null, 'id')}>
+                ID {props.sortField === 'id' ? <small>{props.sort}</small> : null}
+            </th>
             <th onClick={props.onSort.bind(null, 'code')}>
                 Код {props.sortField === 'code' ? <small>{props.sort}</small> : null}
             </th>
@@ -73,6 +73,7 @@ export default props => (
         <tbody>
         {props.data.map(item => (
             <tr key={Math.random()*100} onClick={props.onRowSelect.bind(null, item)}>
+                <td>{item.id!== null? item.id:<p>---</p>}</td>
                 <td>{item.code!== null? item.code:<p>---</p>}</td>
                 <td>{item.name!==null ? item.name : <p>---</p>}</td>
                 <td>{item.zet!==null ? item.zet : <p>---</p>}</td>

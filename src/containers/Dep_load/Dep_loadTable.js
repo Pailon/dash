@@ -5,25 +5,28 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 //компонент отображения таблицы
 
+var FA = require('react-fontawesome')
+
+
 export default props => (
     // таблица в стиле bootstrap 
     <table className="table">  
         <thead>
             <tr>
                 <th onClick={props.onSort.bind(null, 'id')}>
-                    ID {props.sortField === 'id' ? <small>{props.sort}</small> : null}
+                    ID {props.sortField === 'id' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'department_name')}>
-                    Наименование кафедры {props.sortField === 'department_name' ? <small>{props.sort}</small> : null}
+                    Наименование кафедры {props.sortField === 'department_name' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'begin_date')}>
-                    Дата начала {props.sortField === 'begin_date' ? <small>{props.sort}</small> : null}
+                    Дата начала {props.sortField === 'begin_date' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'end_date')}>
-                    Дата окончания {props.sortField === 'end_date' ? <small>{props.sort}</small> : null}
+                    Дата окончания {props.sortField === 'end_date' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'modified_date')}>
-                    Дата изменения {props.sortField === 'modified_date' ? <small>{props.sort}</small> : null}
+                    Дата изменения {props.sortField === 'modified_date' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th>
 

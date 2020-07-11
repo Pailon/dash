@@ -4,6 +4,9 @@ import {Link} from "react-router-dom";
 
 //компонент отображения таблицы
 
+var FA = require('react-fontawesome')
+
+
 export default props => (
     // таблица в стиле bootstrap 
     <table className="table table-sm table-hover">
@@ -13,49 +16,49 @@ export default props => (
                 {/*    ID {props.sortField === 'dep_load_id' ? <small>{props.sort}</small> : null}*/}
                 {/*</th>*/}
                 <th onClick={props.onSort.bind(null, 'name')}>
-                    Наименование {props.sortField === 'name' ? <small>{props.sort}</small> : null}
+                    Наименование {props.sortField === 'name' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'groups')}>
-                    Группы {props.sortField === 'groups' ? <small>{props.sort}</small> : null}
+                    Группы {props.sortField === 'groups' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'hours_con_project')}>
-                    Консультация проекта {props.sortField === 'hours_con_project' ? <small>{props.sort}</small> : null}
+                    Консультация проекта {props.sortField === 'hours_con_project' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'hours_lec')}>
-                    Лекций часов {props.sortField === 'hours_lec' ? <small>{props.sort}</small> : null}
+                    Лекций часов {props.sortField === 'hours_lec' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'hours_sem')}>
-                    Семенаров часов {props.sortField === 'hours_sem' ? <small>{props.sort}</small> : null}
+                    Семенаров часов {props.sortField === 'hours_sem' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'hours_leb')}>
-                    Лабораторных часов {props.sortField === 'hours_lab' ? <small>{props.sort}</small> : null}
+                    Лабораторных часов {props.sortField === 'hours_lab' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'hours_con_exam')}>
-                    Консультация экзамена {props.sortField === 'hours_con_exam' ? <small>{props.sort}</small> : null}
+                    Консультация экзамена {props.sortField === 'hours_con_exam' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'hours_zachet')}>
-                    Зачет {props.sortField === 'hours_zachet' ? <small>{props.sort}</small> : null}
+                    Зачет {props.sortField === 'hours_zachet' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'hours_exam')}>
-                    Экзамен {props.sortField === 'hours_exam' ? <small>{props.sort}</small> : null}
+                    Экзамен {props.sortField === 'hours_exam' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'hours_kurs_project')}>
-                    Курсовой проект {props.sortField === 'hours_kurs_project' ? <small>{props.sort}</small> : null}
+                    Курсовой проект {props.sortField === 'hours_kurs_project' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'hours_gek')}>
-                    ГЭК {props.sortField === 'hours_gek' ? <small>{props.sort}</small> : null}
+                    ГЭК {props.sortField === 'hours_gek' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'hours_ruk_prakt')}>
-                    Руководство практикой {props.sortField === 'hours_ruk_prakt' ? <small>{props.sort}</small> : null}
+                    Руководство практикой {props.sortField === 'hours_ruk_prakt' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'hours_ruk_vkr')}>
-                    Руководство ВКР {props.sortField === 'hours_ruk_vkr' ? <small>{props.sort}</small> : null}
+                    Руководство ВКР {props.sortField === 'hours_ruk_vkr' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'hours_ruk_mag')}>
-                    Руководство магистратурой {props.sortField === 'hours_ruk_mag' ? <small>{props.sort}</small> : null}
+                    Руководство магистратурой {props.sortField === 'hours_ruk_mag' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 <th onClick={props.onSort.bind(null, 'hours_ruk_aspirant')}>
-                    Руководство асперантурой {props.sortField === 'hours_ruk_aspirant' ? <small>{props.sort}</small> : null}
+                    Руководство асперантурой {props.sortField === 'hours_ruk_aspirant' ? <small><FA name={props.sortArrow} /></small> : null}
                 </th>
                 {/*<th onClick={props.onSort.bind(null, 'is_approved')}>*/}
                 {/*    Подтверждено {props.sortField === 'is_approved' ? <small>{props.sort}</small> : null}*/}

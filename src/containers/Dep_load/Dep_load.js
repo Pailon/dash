@@ -26,6 +26,7 @@ export default class Dep_load extends Component{
         row: null, // поле для хранения строки для её будущего отображения отдельно
         currentPage: 0, //количество страниц на данный момент
         search:'', //что искать
+        sortArrow: 'arrow-up',
 
         openModalDelete:false,
         id_delete:'',
@@ -75,6 +76,7 @@ export default class Dep_load extends Component{
     onSort = (sortField) => { // функция для сортировки данных в таблице
         const clonedData = this.state.data.concat() // клонируем массив из state чтобы случайно не изменить исходные данные
         const sort = this.state.sort === 'asc' ? 'desc' : 'asc' // выбор метода сортировки
+        const sortArrow = this.state.sortArrow === 'arrow-up' ? 'arrow-down' : 'arrow-up'//выбор в какую сторону отображать "стрелочку"
 
         const data = _.orderBy(clonedData, sortField, sort) // создание нового объекта data при помощи библиотеки logash,  
                                                             // которая на вход получала 3 параметра, необходимый массив, по какому полю фильтровать
@@ -83,7 +85,8 @@ export default class Dep_load extends Component{
         this.setState({
             data,
             sort,
-            sortField
+            sortField,
+            sortArrow
         })
 
     }
@@ -208,7 +211,9 @@ export default class Dep_load extends Component{
                                 sortField={this.state.sortField}
                                 onRowSelect={this.onRowSelect}
                                 openModalDelete={this.openModalDelete}
-                            />
+                                sortArrow={this.state.sortArrow}
+
+                        />
                         </React.Fragment>
 
 

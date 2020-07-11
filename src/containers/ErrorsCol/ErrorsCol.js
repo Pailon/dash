@@ -101,41 +101,36 @@ export default class Dep_load extends Component{
         return (
             //отрисовка таблицы в базовом контейнере bootstrap
             <div className="container">
+                <div className="row">
+                    <div className="col">
+                        <div className='row'>
+                            <button type="button" className="btn btn-link"><Link to='/dashboard'>Назад</Link> </button>
+                        </div>
+                    </div>
+                </div>
                 <div className="row justify-content-between">
                     <div className="col-6">
-                        {/*{*/}
-                        {/*    this.state.isLoading*/}
-                        {/*        ? <Loader /> //пока не получены данные отображается loader иначе отображам таблицу*/}
-                                 <React.Fragment>
-                                    {/*<Dep_loadSearch onSearch={this.searchHandler}/>*/}
-                                    <ErrorsColTable_Acad
-                                        data={this.state.dataAcad}
-                                        onSort={this.onSort}
-                                        sort={this.state.sort}
-                                        sortField={this.state.sortField}
-                                        onRowSelect={this.onRowSelect}
-                                    />
-                                </React.Fragment>
-                        {/*}*/}
+                         <React.Fragment>
+                            {/*<Dep_loadSearch onSearch={this.searchHandler}/>*/}
+                            <ErrorsColTable_Acad
+                                data={this.state.dataAcad}
+                                onSort={this.onSort}
+                                sort={this.state.sort}
+                                sortField={this.state.sortField}
+                                onRowSelect={this.onRowSelect}
+                            />
+                        </React.Fragment>
                     </div>
                     <div className="col-6">
-                        {/*{*/}
-                        {/*    this.state.isLoading*/}
-                        {/*        ? <Loader /> //пока не получены данные отображается loader иначе отображам таблицу*/}
-                                 <React.Fragment>
-                                    {/*<Dep_loadSearch onSearch={this.searchHandler}/>*/}
-                                     <div className='row'>
-                                         <button type="button" className="btn btn-link"><Link to='/dashboard'>Назад</Link> </button>
-                                     </div>
-                                    <ErrorsColTable_Dep
-                                        data={this.state.dataDep}
-                                        onSort={this.onSort}
-                                        sort={this.state.sort}
-                                        sortField={this.state.sortField}
-                                        onRowSelect={this.onRowSelect}
-                                    />
-                                </React.Fragment>
-                        {/*}*/}
+                         <React.Fragment>
+                            <ErrorsColTable_Dep
+                                data={this.state.dataDep}
+                                onSort={this.onSort}
+                                sort={this.state.sort}
+                                sortField={this.state.sortField}
+                                onRowSelect={this.onRowSelect}
+                            />
+                        </React.Fragment>
                     </div>
                 </div>
 

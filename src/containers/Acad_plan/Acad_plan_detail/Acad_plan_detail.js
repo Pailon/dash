@@ -9,6 +9,7 @@ import ReactPaginate from "react-paginate";
 import {link} from "../../../Link";
 import { saveAs } from 'file-saver';
 import {Link} from "react-router-dom";
+import Alert from "../../../components/UI/Alert/Alert";
 
 
 export default class Acad_plan_detail extends Component{
@@ -28,7 +29,9 @@ export default class Acad_plan_detail extends Component{
         row: null, // поле для хранения строки для её будущего отображения отдельно
         currentPage: 0, //количество страниц на данный момент
         search:'', //что искать
-        id:this.props.location.propsId
+        id:this.props.location.propsId,
+        openAlert:false,
+        sortArrow: 'arrow-up',
     }
 
     async componentDidMount() {
@@ -99,6 +102,7 @@ export default class Acad_plan_detail extends Component{
     onSort = (sortField) => { // функция для сортировки данных в таблице
         const clonedData = this.state.data.concat() // клонируем массив из state чтобы случайно не изменить исходные данные
         const sort = this.state.sort === 'asc' ? 'desc' : 'asc' // выбор метода сортировки
+        const sortArrow = this.state.sortArrow === 'arrow-up' ? 'arrow-down' : 'arrow-up'
 
         const data = _.orderBy(clonedData, sortField, sort) // создание нового объекта data при помощи библиотеки logash,
                                                             // которая на вход получала 3 параметра, необходимый массив, по какому полю фильтровать
@@ -106,7 +110,8 @@ export default class Acad_plan_detail extends Component{
         this.setState({
             data,
             sort,
-            sortField
+            sortField,
+            sortArrow
         })
 
     }
@@ -147,30 +152,41 @@ export default class Acad_plan_detail extends Component{
         //event.preventDefault()
         console.log(this.props.location.propsId)
 
-        let url = link + `/uploads/acad_plan/${this.state.acadFile[0].id}`
 
-        const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
-        //console.log(token) //проверяем взяли ли токен
-        try {
-            fetch(url, {
-                method: 'GET', //метот для получения данных
-                headers: {
-                    //'Content-Type': 'application/json',//заголовки обязателны для получения данных
-                    'Authorization': `Bearer ${token}`
-                }
-            }).then(res => {
-                console.log(res);
-                return res.blob();
-            })
-                .then(blob => {
-                    saveAs(blob, `${this.state.acadFile[0].name}`)
+        if(this.state.acadFile[0]===undefined){
+            this.setState({openAlert: true, color: 'danger', text: 'Не найдено'}, () => {
+                window.setTimeout(() => {
+                    this.setState({openAlert: false})
+                }, 2000)
+            });
+        }else{
+            let url = link + `/uploads/acad_plan/${this.state.acadFile[0].id}`
+
+            const token = localStorage.getItem('token') // из localstorage берем токен, если он там есть
+            //console.log(token) //проверяем взяли ли токен
+            try {
+                fetch(url, {
+                    method: 'GET', //метот для получения данных
+                    headers: {
+                        //'Content-Type': 'application/json',//заголовки обязателны для получения данных
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then(res => {
+                    console.log(res);
+                    return res.blob();
                 })
+                    .then(blob => {
+                        saveAs(blob, `${this.state.acadFile[0].name}`)
+                    })
 
-        } catch (e) { // на случай ошибки
-            console.log(e)
+            } catch (e) { // на случай ошибки
+                console.log(e)
+            }
         }
+    }
 
-
+    onCloseAlert = () =>{
+        this.setState({openAlert:false}) // закрыть окно оповещения
     }
 
 
@@ -188,6 +204,15 @@ export default class Acad_plan_detail extends Component{
         return(
             <div className="container">
                 {
+                    this.state.openAlert ?  //компонент вывода предупреждения
+                        <Alert
+                            color={this.state.color} //цвет оповещения
+                            text={this.state.text} // текст в оповещении
+                            onCloseAlert={this.onCloseAlert} // функция как закрыть это окошко
+                        />
+                        :null
+                }
+                {
                     this.state.isLoading
                         ? <Loader /> //пока не получены данные отображается loader иначе отображам таблицу
                         : <React.Fragment>
@@ -199,7 +224,9 @@ export default class Acad_plan_detail extends Component{
                             </Link>
                             <Acad_planSearch onSearch={this.searchHandler} />
                             <Button
-                                color="primary"
+                                // color="primary"
+                                style={{backgroundColor:'#007cff', color:'white'}}
+                                size="small"
                                 variant="contained"
                                 onClick={this.loadingFile}
                                 className="mb-2"

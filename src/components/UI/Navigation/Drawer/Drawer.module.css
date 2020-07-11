@@ -43,5 +43,9 @@
 
 .Drawer ul li a:hover, .active{
     opacity: .7;
-
+    font-weight: bold;
+    color: #007cff;
 }
+
+
+

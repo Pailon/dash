@@ -1,3 +1,11 @@
 .inputText{
     margin-left: 30%;
 }
+
+.optionList{
+    cursor: pointer;
+}
+
+.optionList:hover{
+    color:#007cff;
+}

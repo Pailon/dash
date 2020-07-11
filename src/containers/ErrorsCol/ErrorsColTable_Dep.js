@@ -9,9 +9,9 @@ export default props => (
     <table className="table table-sm table-hover table-responsive">
         <thead>
         <tr style={{textAlign:'center'}}>
-            {/*<th onClick={props.onSort.bind(null, 'dep_load_id')}>*/}
-            {/*    ID {props.sortField === 'dep_load_id' ? <small>{props.sort}</small> : null}*/}
-            {/*</th>*/}
+            <th onClick={props.onSort.bind(null, 'dep_load_id')}>
+                ID {props.sortField === 'dep_load_id' ? <small>{props.sort}</small> : null}
+            </th>
             <th onClick={props.onSort.bind(null, 'name')}>
                 Наименование {props.sortField === 'name' ? <small>{props.sort}</small> : null}
             </th>
@@ -65,7 +65,7 @@ export default props => (
         <tbody>
         {props.data.map(item => (
             <tr key={Math.random()*100} onClick={props.onRowSelect.bind(null, item)}>
-                {/*<td>{item.dep_load_id}</td>*/}
+                <td>{item.id}</td>
                 <td>{item.name}</td>
                 <td>{(item.groups!== null&& item.groups!==undefined)? item.groups.map(it =>(`${it.name} `)):<p>---</p>}</td>
                 <td>{item.hours_con_project!==null ? item.hours_con_project : <p>---</p>}</td>
