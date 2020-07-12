@@ -87,7 +87,7 @@ export default class Dashboard extends Component{
                 }
             })
             const Acad_data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я дата ACAD', Acad_data)
+            //console.log('Я дата ACAD', Acad_data)
             for (let x = 0; x < Acad_data.length; x++) {
                 let newYear_join = Acad_data[x].year_join.split('T')
                 Acad_data[x].year_join = newYear_join[0]
@@ -318,7 +318,7 @@ export default class Dashboard extends Component{
                 }
             })
             const dataStudents = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я дата dataStudents', dataStudents)
+            //console.log('Я дата dataStudents', dataStudents)
             this.setState({ // обновляем state
                 isLoading: false,
                 dataStudents //_.orderBy(Acad_data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -483,7 +483,7 @@ export default class Dashboard extends Component{
             return item['name'].toLowerCase().includes(choise.toLowerCase())
         })
         choiseAcad = res_acad[0]
-        console.log('Результат акад планов, первый, имя',res_acad[0].name)
+        //console.log('Результат акад планов, первый, имя',res_acad[0].name)
 
         let res_dep = Dep_data.filter(item=>{
             return item['department_name'].toLowerCase().includes(choise.toLowerCase())
@@ -492,10 +492,10 @@ export default class Dashboard extends Component{
         if(res_dep.length === 0){
             res_dep.push({department_name:'пусто'})
         }
-        console.log('Результат , первый, имя',res_dep[0].department_name)
+        //console.log('Результат , первый, имя',res_dep[0].department_name)
         if(res_acad[0].name === res_dep[0].department_name){
             let result_choise = res_acad[0].name
-            console.log(result_choise)
+            //console.log(result_choise)
             this.setState({
                 result_choise,
                 choiseAcad,
@@ -503,7 +503,7 @@ export default class Dashboard extends Component{
                 button_active:true,
             })
         }else{
-            console.log('Нет совпадений')
+            //console.log('Нет совпадений')
         }
     }
 
@@ -664,7 +664,7 @@ export default class Dashboard extends Component{
                                     //error={!!this.state.errors.Acad_data_choise}
                                     //helperText={this.state.errors.Acad_data_choise}
                                     onChange={(event) => {
-                                        console.log(event.target.value)
+                                        //console.log(event.target.value)
                                         this.setState({choiseAcad: event.target.value})
                                     }}
                                     select
@@ -681,7 +681,7 @@ export default class Dashboard extends Component{
                                     //error={!!this.state.errors.Acad_data_choise}
                                     //helperText={this.state.errors.Acad_data_choise}
                                     onChange={(event) => {
-                                        console.log(event.target.value)
+                                        //console.log(event.target.value)
                                         this.setState({choiseDep: event.target.value})
                                     }}
                                     select
@@ -759,8 +759,7 @@ export default class Dashboard extends Component{
                         <div className="row">
                             <div className="col-4" style={{height: '500px', width: '500px'}}>
                                 <h5>Статистика проектов</h5>
-                                <Pie data={this.state.dataProjectGraf} width={730} height={550} getElementAtEvent={e => {
-                                    console.log(e)}} />
+                                <Pie data={this.state.dataProjectGraf} width={730} height={550} />
                             </div>
                             <div className="col-4" style={{height: '500px', width: '500px'}}>
                                 <h5>Статистика сдачи Индив. планов</h5>

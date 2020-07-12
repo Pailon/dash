@@ -21,7 +21,7 @@ export default class Depa_load_RPD extends Component{
     }
 
    async componentDidMount() {
-        console.log(this.state.data)
+        //console.log(this.state.data)
 
         let url = link + '/teachers'
         //console.log(url1)
@@ -40,7 +40,7 @@ export default class Depa_load_RPD extends Component{
 
 
             const dataTeatchers = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я ответ dataTeatchers', dataTeatchers)
+            //console.log('Я ответ dataTeatchers', dataTeatchers)
             this.setState({ // обновляем state
                 isLoading: false,
                 dataTeatchers //: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -73,7 +73,7 @@ export default class Depa_load_RPD extends Component{
             discipline_id: data.id,
             teacher_id: teatcher_id
         }
-       console.log(fetchData)
+       //console.log(fetchData)
         try {
 
             const response = await fetch(url, {
@@ -88,7 +88,7 @@ export default class Depa_load_RPD extends Component{
 
 
             const resJson = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я ответ добавления', resJson)
+            //console.log('Я ответ добавления', resJson)
             // this.setState({ // обновляем state
             //     isLoading: false,
             //     dataTeatchers //: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка

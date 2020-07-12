@@ -103,7 +103,7 @@ export default class Teatcher extends Component{
 
 
             const dataFiles = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я ответ dataFiles', dataFiles)
+            //console.log('Я ответ dataFiles', dataFiles)
             this.setState({ // обновляем state
                 //isLoading: false,
                 // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -150,7 +150,7 @@ export default class Teatcher extends Component{
             })
             // console.log('Я ответ', response)
             const dataRPD = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я ответ dataRPD', dataRPD)
+            //console.log('Я ответ dataRPD', dataRPD)
             this.setState({ // обновляем state
                 //isLoading: false,
                 // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -174,7 +174,7 @@ export default class Teatcher extends Component{
             })
             // console.log('Я ответ', response)
             const dataRPD_files = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я ответ dataRPD', dataRPD_files)
+            //console.log('Я ответ dataRPD', dataRPD_files)
             this.setState({ // обновляем state
                 isLoading: false,
                 // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -197,7 +197,7 @@ export default class Teatcher extends Component{
 
    async loadingFile(event,item, link){
         event.preventDefault()
-        console.log(item)
+        //console.log(item)
 
        let url
 
@@ -214,7 +214,7 @@ export default class Teatcher extends Component{
                        'Authorization': `Bearer ${token}`
                    }
                }).then(res => {
-               console.log(res);
+               //console.log(res);
                return res.blob();
            })
                .then(blob => {
@@ -267,7 +267,7 @@ export default class Teatcher extends Component{
                     </span><DeleteIcon
                     className={classes.deleteIcon}
                     onClick={(event)=>{
-                        console.log(`delete ${item.name}`)
+                        //console.log(`delete ${item.name}`)
                         this.openModalDelete(item.id)
 
                     }}
@@ -283,7 +283,7 @@ export default class Teatcher extends Component{
 
     async onAgreeDelete(){
         this.setState({openModalDelete: false})
-        console.log('Удалим - ',this.state.id_delete)
+        //console.log('Удалим - ',this.state.id_delete)
 
         let url = link + `uploads/rpd/${this.state.id_delete}`
         const token = localStorage.getItem('token')// взяли токен
@@ -296,7 +296,7 @@ export default class Teatcher extends Component{
                 }
             });
 
-            console.log(response)
+            //console.log(response)
 
             if(response.status === 204) {
                 this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {
@@ -332,7 +332,7 @@ export default class Teatcher extends Component{
 
    async isApprov(data, item, id){
         //функция обновления данных в таблице, получает от таблицы
-        console.log(data)                    //data-значение которое меняют item-весь обьект, в котором значение меняют id oldData
+        //console.log(data)                    //data-значение которое меняют item-весь обьект, в котором значение меняют id oldData
         //console.log(item)                    //id-параметр из обьекта item чтобы проще производить запрос к api oldData-значение до изменения
         //console.log(oldData)
 
@@ -343,7 +343,7 @@ export default class Teatcher extends Component{
             const token = localStorage.getItem('token')//берем токен и локального хранилищя
             let putItem = item
             putItem.is_approved = data
-            console.log(putItem)
+            //console.log(putItem)
 
             try {
                 const response = await fetch(url, { //производим запрос
@@ -405,7 +405,7 @@ export default class Teatcher extends Component{
 
         if (errors.newPassword) {
             this.setState({ errors }) //добавление ошибок в state
-            console.log('Error');//для проверки выводим в консоль - временно
+            //console.log('Error');//для проверки выводим в консоль - временно
             return
         } else {
 

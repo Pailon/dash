@@ -83,11 +83,11 @@ export default class Acad_plan extends Component{
                     'Authorization': `Bearer ${token}`
                 }
             })
-             console.log('Я ответ', response)
+             //console.log('Я ответ', response)
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-             console.log('Я дата', data)
+             //console.log('Я дата', data)
             for(let x=0; x<data.length; x++){
                 let newYear_join = data[x].year_join.split('T')
                 data[x].year_join = newYear_join[0]
@@ -229,7 +229,7 @@ export default class Acad_plan extends Component{
             || errors.profile || errors.educ_form || errors.educ_programm|| errors.educ_years
             || errors.year_join) {
             this.setState({ errors }) //добавление ошибок в state
-            console.log('Я из ошибки',this.state.data);//для проверки выводим в консоль - временно
+            //console.log('Я из ошибки',this.state.data);//для проверки выводим в консоль - временно
             return
         } else {
             let data = this.state.data // клонируем обьект data из state
@@ -275,7 +275,7 @@ export default class Acad_plan extends Component{
                 }
 
             })
-            console.log('После добавления',this.state.data);// выведем обьект с данными для проверки
+            //console.log('После добавления',this.state.data);// выведем обьект с данными для проверки
             this.setState({ openModal: false })//Закрываем модальное окно добавления преподавателя
 
             let url = 'http://dashboard.kholodov.xyz/api/acad_plan' //ссылка для запроса к таблице преподаавтелей
@@ -291,8 +291,8 @@ export default class Acad_plan extends Component{
                     }
                 });
                 const json = await response.json();
-                console.log('Ответ:', JSON.stringify(json));// результат запроса
-                console.log(newAcad_plan)//выводит обьект того, что добавлено на сервер
+               // console.log('Ответ:', JSON.stringify(json));// результат запроса
+                //console.log(newAcad_plan)//выводит обьект того, что добавлено на сервер
                 newAcad_plan = {}//обнулили буферный обьект для нового преподавателя
             } catch (error) {
                 console.error('Ошибка:', error); //выдаёт ошибку в консоль
@@ -331,8 +331,8 @@ export default class Acad_plan extends Component{
                     }
                 });
                 const json = await response.json();
-                console.log('Результат:', JSON.stringify(json));
-                console.log(item)
+                //console.log('Результат:', JSON.stringify(json));
+                //console.log(item)
                 this.setState({ openAlert: true, color: 'success', text: 'Изменено' })//при успешном отображении отображаем окно об успешноти
                 item = {}
             } catch (error) {
@@ -355,7 +355,7 @@ export default class Acad_plan extends Component{
 
     async onAgreeDelete(){
         this.setState({openModalDelete: false})
-        console.log('Удалим - ',this.state.id_delete)
+        //console.log('Удалим - ',this.state.id_delete)
 
         let url = link + `/teachers/${this.state.id_delete}`
         const token = localStorage.getItem('token')// взяли токен
@@ -368,7 +368,7 @@ export default class Acad_plan extends Component{
                 }
             });
 
-            console.log(response)
+            //console.log(response)
 
             if(response.status === 204) {
                 this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {

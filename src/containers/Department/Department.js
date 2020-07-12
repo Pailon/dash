@@ -76,7 +76,7 @@ export default class Department extends Component {
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я дата Department', data)
+            //console.log('Я дата Department', data)
             this.setState({ // обновляем state
                 isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -223,7 +223,7 @@ export default class Department extends Component {
         //В ином случае, если все поля заполнены мы берем все данные из полей и производим запрос к серверу
         if (errors.name) {
             this.setState({ errors }) //добавление ошибок в state
-            console.log(this.state.data);//для проверки выводим в консоль - временно
+            //console.log(this.state.data);//для проверки выводим в консоль - временно
             return
         } else {
             let data = this.state.data // клонируем обьект data из state
@@ -242,7 +242,7 @@ export default class Department extends Component {
                     name: '',
                 }
             })
-            console.log(this.state.data);// выведем обьект с данными для проверки
+            //console.log(this.state.data);// выведем обьект с данными для проверки
             this.setState({ openModal: false })//Закрываем модальное окно добавления преподавателя
 
             let url = 'http://dashboard.kholodov.xyz/api/department' //ссылка для запроса к таблице преподаавтелей
@@ -341,7 +341,7 @@ export default class Department extends Component {
                 });
             }
         } else {
-            console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
+            //console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
             this.setState({openAlert:true, color:'secondary', text:'Без изменений'},()=>{
                 window.setTimeout(()=>{
                     this.setState({openAlert:false})
@@ -369,7 +369,7 @@ export default class Department extends Component {
                 }
             });
 
-            console.log(response)
+            //console.log(response)
             if(response.status === 204){
                 this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
                     window.setTimeout(()=>{
@@ -396,7 +396,7 @@ export default class Department extends Component {
 
     async onAgreeDelete(){
         this.setState({openModalDelete: false})
-        console.log('Удалим - ',this.state.id_delete)
+        //console.log('Удалим - ',this.state.id_delete)
 
         let url = link + `/specialties/${this.state.id_delete}`
         const token = localStorage.getItem('token')// взяли токен
@@ -409,7 +409,7 @@ export default class Department extends Component {
                 }
             });
 
-            console.log(response)
+            //console.log(response)
 
             if(response.status === 204) {
                 this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {

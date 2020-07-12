@@ -180,7 +180,7 @@ export default class Project extends Component {
         if (errors.name /* || errors.students_count */ || errors.link_trello
             || errors.begin_date || errors.end_date || errors.description) {
             this.setState({ errors }) //добавление ошибок в state
-            console.log('Я из ошибки',this.state.data);//для проверки выводим в консоль - временно
+            //console.log('Я из ошибки',this.state.data);//для проверки выводим в консоль - временно
             return
         } else {
             let data = this.state.data // клонируем обьект data из state
@@ -225,7 +225,7 @@ export default class Project extends Component {
                 }
 
             })
-            console.log('После добавления',this.state.data);// выведем обьект с данными для проверки
+            //console.log('После добавления',this.state.data);// выведем обьект с данными для проверки
             this.setState({ openModal: false })//Закрываем модальное окно добавления преподавателя
 
             let url = 'http://dashboard.kholodov.xyz/api/projects' //ссылка для запроса к таблице преподаавтелей
@@ -241,8 +241,8 @@ export default class Project extends Component {
                     }
                 });
                 const json = await response.json();
-                console.log('Ответ:', JSON.stringify(json));// результат запроса
-                console.log(newProject)//выводит обьект того, что добавлено на сервер
+                //console.log('Ответ:', JSON.stringify(json));// результат запроса
+                //console.log(newProject)//выводит обьект того, что добавлено на сервер
                 newProject = {}//обнулили буферный обьект для нового преподавателя
                 this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
                     window.setTimeout(()=>{
@@ -291,8 +291,8 @@ export default class Project extends Component {
                     }
                 });
                 const json = await response.json();
-                console.log('Результат:', JSON.stringify(json));
-                console.log(item)
+                //console.log('Результат:', JSON.stringify(json));
+                //console.log(item)
                 //this.setState({ openAlert: true, color: 'success', text: 'Изменено' })//при успешном отображении отображаем окно об успешноти
                 this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
                     window.setTimeout(()=>{
@@ -310,7 +310,7 @@ export default class Project extends Component {
                 });
             }
         } else {
-            console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
+            //console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
             this.setState({openAlert:true, color:'secondary', text:'Без изменений'},()=>{
                 window.setTimeout(()=>{
                     this.setState({openAlert:false})

@@ -77,7 +77,7 @@ export default class Group extends Component {
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я дата group', data)
+            //console.log('Я дата group', data)
             this.setState({ // обновляем state
                 //isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -102,7 +102,7 @@ export default class Group extends Component {
 
 
             const dataSpec = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я дата spec', dataSpec)
+            //console.log('Я дата spec', dataSpec)
             for(let i = 0; i<this.state.data.length; i++) {
                 this.state.data[i].spec = dataSpec
             }
@@ -229,7 +229,7 @@ export default class Group extends Component {
         //В ином случае, если все поля заполнены мы берем все данные из полей и производим запрос к серверу
         if (errors.name || errors.specialties_id) {
             this.setState({ errors }) //добавление ошибок в state
-            console.log(this.state.data);//для проверки выводим в консоль - временно
+            //console.log(this.state.data);//для проверки выводим в консоль - временно
             return
         } else {
             let data = this.state.data // клонируем обьект data из state
@@ -252,7 +252,7 @@ export default class Group extends Component {
                     specialties_id: '',
                 }
             })
-            console.log(this.state.data);// выведем обьект с данными для проверки
+            //console.log(this.state.data);// выведем обьект с данными для проверки
             this.setState({ openModal: false })//Закрываем модальное окно добавления преподавателя
 
             let url = 'http://dashboard.kholodov.xyz/api/groups' //ссылка для запроса к таблице преподаавтелей
@@ -268,8 +268,8 @@ export default class Group extends Component {
                     }
                 });
                 const json = await response.json();
-                console.log('Успех:', JSON.stringify(json));// результат запроса
-                console.log(newGroup)//выводит обьект того, что добавлено на сервер
+                //console.log('Успех:', JSON.stringify(json));// результат запроса
+                //console.log(newGroup)//выводит обьект того, что добавлено на сервер
                 newGroup = {}//обнулили буферный обьект для нового преподавателя
                 this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
                     window.setTimeout(()=>{
@@ -315,7 +315,7 @@ export default class Group extends Component {
                     }
                 });
                 const json = await response.json();
-                console.log('Результат:', JSON.stringify(json));
+                //console.log('Результат:', JSON.stringify(json));
                 //console.log(item)
                 //this.setState({ openAlert: true, color: 'success', text: 'Изменено' })//при успешном отображении отображаем окно об успешноти
                 this.setState({openAlert:true, color:'success', text:'Успешно'},()=>{
@@ -334,7 +334,7 @@ export default class Group extends Component {
                 });
             }
         } else {
-            console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
+            //console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
             this.setState({openAlert:true, color:'secondary', text:'Без изменений'},()=>{
                 window.setTimeout(()=>{
                     this.setState({openAlert:false})
@@ -354,7 +354,7 @@ export default class Group extends Component {
 
     async onAgreeDelete(){
         this.setState({openModalDelete: false})
-        console.log('Удалим - ',this.state.id_delete)
+        //console.log('Удалим - ',this.state.id_delete)
 
         let url = link + `/groups/${this.state.id_delete}`
         const token = localStorage.getItem('token')// взяли токен
@@ -367,7 +367,7 @@ export default class Group extends Component {
                 }
             });
 
-            console.log(response)
+            //console.log(response)
 
             if(response.status === 204) {
                 this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {

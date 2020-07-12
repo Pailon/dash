@@ -55,7 +55,7 @@ export default class Dep_load_detail extends Component{
 
             const full_data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
             const data = full_data.disciplines
-            console.log('Я дата', data)
+            //console.log('Я дата', data)
             //const disciplines = data.disciplines
             //console.log(disciplines)
             this.setState({ // обновляем state
@@ -84,7 +84,7 @@ export default class Dep_load_detail extends Component{
             })
             // console.log('Я ответ', response)
             const DepFile = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я ответ DepFile', DepFile)
+            //console.log('Я ответ DepFile', DepFile)
             this.setState({ // обновляем state
                 isLoading: false,
                 // data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -162,7 +162,7 @@ export default class Dep_load_detail extends Component{
 
     loadingFile(){
         //event.preventDefault()
-        console.log(this.props.location.propsId)
+        //console.log(this.props.location.propsId)
 
         if(this.state.DepFile[0] === undefined){
             this.setState({openAlert: true, color: 'danger', text: 'Не найдено'}, () => {
@@ -183,7 +183,7 @@ export default class Dep_load_detail extends Component{
                         'Authorization': `Bearer ${token}`
                     }
                 }).then(res => {
-                    console.log(res);
+                    //console.log(res);
                     return res.blob();
                 })
                     .then(blob => {

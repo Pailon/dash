@@ -28,7 +28,7 @@ export default (props)=>{
                         >{item.name}</span><DeleteIcon
                         className={classes.deleteIcon}
                         onClick={(event)=>{
-                            console.log(`delete ${item.name}`)
+                            //console.log(`delete ${item.name}`)
                             props.openModalDelete(item.id)
                         }}
                     /><br/>

@@ -13,8 +13,8 @@ export default class Upload extends React.Component {
 
     async _handleSubmit(e) {
         e.preventDefault();
-        console.log('handle uploading-', this.state.file);
-        console.log(this.props)
+        //console.log('handle uploading-', this.state.file);
+       // console.log(this.props)
 
         let newData = new FormData(document.forms.inputForm)
 
@@ -59,7 +59,7 @@ export default class Upload extends React.Component {
                 });
             }
             else{
-                console.log('Ответ:', JSON.stringify(json));// результат запроса
+                //console.log('Ответ:', JSON.stringify(json));// результат запроса
                 this.setState({openAlert:true, color:'success', text:'Файл загружен'},()=>{
                     window.setTimeout(()=>{
                         this.setState({openAlert:false})
@@ -67,7 +67,7 @@ export default class Upload extends React.Component {
                 });
             }
 
-            console.log('Ответ:', JSON.stringify(json))
+           // console.log('Ответ:', JSON.stringify(json))
         } catch (error) {
             console.error('Ошибка:', error); //выдаёт ошибку в консоль
             this.setState({openAlert:true, color:'danger', text:'Ошибка'},()=>{
@@ -83,7 +83,7 @@ export default class Upload extends React.Component {
     _handleImageChange(e) {
         e.preventDefault();
         let file = e.target.files[0];
-        console.log(file)
+        //console.log(file)
         let reader = new FileReader();
 
         reader.onload= () => {

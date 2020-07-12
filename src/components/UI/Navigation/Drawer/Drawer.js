@@ -3,17 +3,6 @@ import classes from './Drawer.module.css'
 import Backdrop from '../../Backdrop/Backdrop'
 import {NavLink} from 'react-router-dom'
 
-
-const links = [
-    {to: '/', label:'Авторизация', exact:true},
-    {to: '/quizlist', label:'Преподаватели', exact:false},
-    {to: '/rpd', label:'РПД', exact:false},
-    {to: '/pd', label:'ПД', exact:false},
-    {to: '/group', label:'Группы', exact:false},
-]
-
-
-
 class Drawer extends Component {
 
     clickHandler= () =>{
@@ -51,7 +40,6 @@ class Drawer extends Component {
         if(this.props.isAuthenticated){
             links.push({to: '/dashboard', label:'Дашборд', exact:false})
             links.push({to: '/quizlist', label:'Преподаватели', exact:false})
-            //links.push({to: '/rpd', label:'РПД', exact:false})
             links.push({to: '/project', label:'Проектная деятельность', exact:false})
             links.push({to: '/group', label:'Группы', exact:false})
             links.push({to: '/students', label:'Студенты', exact:false})

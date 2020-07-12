@@ -109,7 +109,7 @@ export default class QuizList extends Component {
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я ответ', data)
+            //console.log('Я ответ', data)
             this.setState({ // обновляем state
                 isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -272,7 +272,7 @@ export default class QuizList extends Component {
                 ||errors.login || errors.password || errors.sub_unit_id)
                 {
                     this.setState({errors}) //добавление ошибок в state
-                    console.log(this.state.data);//для проверки выводим в консоль - временно
+                    //console.log(this.state.data);//для проверки выводим в консоль - временно
                     return 
                 }else{
             let data = this.state.data // клонируем обьект data из state
@@ -313,7 +313,7 @@ export default class QuizList extends Component {
                     'Authorization': `Bearer ${token}`
                 }
                 });
-                console.log('Response',response)
+                //console.log('Response',response)
                 //const json = await response.json();
 
                 if(response.status === 201) {
@@ -438,7 +438,7 @@ export default class QuizList extends Component {
             });
           }
         }else{
-            console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
+            //console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
             this.setState({openAlert:true, color:'secondary', text:'Без изменений'},()=>{
                 window.setTimeout(()=>{
                     this.setState({openAlert:false})
@@ -457,7 +457,7 @@ export default class QuizList extends Component {
 
     async onAgreeDelete(){
         this.setState({openModalDelete: false})
-        console.log('Удалим - ',this.state.id_delete)
+        //console.log('Удалим - ',this.state.id_delete)
 
         let url = link + `/teachers/${this.state.id_delete}`
         const token = localStorage.getItem('token')// взяли токен
@@ -470,7 +470,7 @@ export default class QuizList extends Component {
                 }
             });
 
-            console.log(response)
+            //console.log(response)
 
             if(response.status === 204) {
                 this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {

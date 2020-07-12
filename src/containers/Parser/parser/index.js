@@ -62,7 +62,7 @@ class Parser extends Component {
           })
           //console.log('Я ответ', response)
           const dataSpec = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-          console.log('Я дата dataSpec', dataSpec)
+          //console.log('Я дата dataSpec', dataSpec)
           this.setState({ // обновляем state
               isLoading: false,
               //dataAcad: _.orderBy(dadataAcadta, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -86,7 +86,7 @@ class Parser extends Component {
           })
           //console.log('Я ответ', response)
           const dataDepar = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-          console.log('Я дата Depar', dataDepar)
+          //console.log('Я дата Depar', dataDepar)
 
           this.setState({ // обновляем state
               isLoading: false,
@@ -147,7 +147,7 @@ class Parser extends Component {
       const ws = wb.Sheets[wsname];
       /* Преобразуем данные в необходимый формат */
       const data = XLSX.utils.sheet_to_json(ws, { header: "A" });
-      console.log(data);
+      //console.log(data);
       
       const html = XLSX.utils.sheet_to_html(ws);
       /* Обновляем состояние */
@@ -199,7 +199,7 @@ async uploadData(){
 
 
     const token = localStorage.getItem('token')// взяли токен
-    console.log(token)
+    //console.log(token)
     //getHours(), getMinutes(), getSeconds(), getMilliseconds()
     //getFullYear() getMonth() getDate()
     //let nowDate = new Date().toLocaleDateString()
@@ -209,7 +209,7 @@ async uploadData(){
     let nowDateD = new Date().getDate()
     let nowDate = `${nowFullYear}-${nowMonth}-${nowDateD}`
     let now = `${nowDate}T${nowTime}`
-    console.log(now)
+    //console.log(now)
 
 
 
@@ -231,11 +231,11 @@ async uploadData(){
 
     //console.log(fetchData)
     if (this.state.data === 0){
-      console.log('Не загружены данные')
+      //console.log('Не загружены данные')
     }else{
         let sem_number = 1
         if(this.state.data[0].A === 'Расчет часов учебной работы по кафедре Инфокогнитивные технологии'){
-            console.log('Нагрузка')
+           // console.log('Нагрузка')
             for(let i=4; i<this.state.data.length; i++){
                 let bufData = this.state.data[i]
 
@@ -292,8 +292,8 @@ async uploadData(){
 
             }
 
-            console.log(fetchDataDep)
-            console.log(groops)
+            //console.log(fetchDataDep)
+            //console.log(groops)
 
             let url = 'http://dashboard.kholodov.xyz/api/dep_load' //ссылка для запроса к таблице преподаавтелей
             try {
@@ -307,13 +307,13 @@ async uploadData(){
                 })
                 const res = await response;
                 //console.log('Успех:', JSON.stringify(json));// результат запроса
-                console.log('Ответ:',res);
+                //console.log('Ответ:',res);
                 
-                console.log(fetchDataDep)//выводит объект того, что добавлено на сервер
+                //console.log(fetchDataDep)//выводит объект того, что добавлено на сервер
 
 
                 const resJson = await res.json()
-                console.log('resJson:',resJson)
+                //console.log('resJson:',resJson)
                 const newData = new FormData(document.forms.inputForm)
                 newData.append('dep_load_id', resJson.id)
 
@@ -371,7 +371,7 @@ async uploadData(){
         let nameModule
 
         if(this.state.data[5].V === ' УЧЕБНЫЙ ПЛАН') {
-            console.log('Учебный план')
+            //console.log('Учебный план')
             for(let i=23; i<this.state.data.length - 11; i++){
                 let bufData = this.state.data[i]
 
@@ -417,9 +417,9 @@ async uploadData(){
                     arrayAG.push(bufData.AG)
                 }
                 if(String(bufData.AG).length > 1){
-                    console.log(bufData.AG,'bufData.AG')
+                    //console.log(bufData.AG,'bufData.AG')
                     arrayAG.push(String(bufData.AG).split('.'))
-                    console.log('arrayAG',arrayAG)
+                    //console.log('arrayAG',arrayAG)
                 }
 
                 if(bufData.AI===undefined){
@@ -488,7 +488,7 @@ async uploadData(){
                 }
                 fetchDataAcad.disciplines.push(newData)
             }
-            console.log(fetchDataAcad)
+            //console.log(fetchDataAcad)
 
             let url = 'http://dashboard.kholodov.xyz/api/acad_plan' //ссылка для запроса к таблице преподаавтелей
             //const token = localStorage.getItem('token')// взяли токен
@@ -502,11 +502,11 @@ async uploadData(){
                 }
                 });
                 const res = await response;
-                console.log('Ответ:', res)// результат запроса
-                console.log(fetchDataAcad)//выводит обьект того, что добавлено на сервер
+                //console.log('Ответ:', res)// результат запроса
+                //console.log(fetchDataAcad)//выводит обьект того, что добавлено на сервер
 
                 const resJson = await res.json()
-                console.log('resJson:',resJson)
+                //console.log('resJson:',resJson)
 
                 const newData = new FormData(document.forms.inputForm)
                 newData.append('acad_plan_id', resJson.id)
@@ -557,7 +557,7 @@ async uploadData(){
             }
 
         }else{
-            console.log('differen table')
+            //console.log('differen table')
         }
     }
         }
@@ -632,7 +632,7 @@ async uploadData(){
                       error={!!this.state.errors.id}
                       helperText={this.state.errors.id}
                       onChange={(event) => {
-                          console.log(event.target.value)
+                          //console.log(event.target.value)
                           this.setState({ depart_id: event.target.value })
                       }}
                       defaultValue=''

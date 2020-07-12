@@ -51,7 +51,7 @@ export default class Dep_load extends Component{
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я дата', data)
+            //console.log('Я дата', data)
             for(let x=0; x<data.length; x++){
                 let newBeginDate = data[x].begin_date.split('T')
                 let newEndDate = data[x].end_date.split('T')
@@ -138,7 +138,7 @@ export default class Dep_load extends Component{
 
     async onAgreeDelete(){
         this.setState({openModalDelete: false})
-        console.log('Удалим - ',this.state.id_delete)
+        //console.log('Удалим - ',this.state.id_delete)
 
         let url = link + `/teachers/${this.state.id_delete}`
         const token = localStorage.getItem('token')// взяли токен
@@ -151,7 +151,7 @@ export default class Dep_load extends Component{
                 }
             });
 
-            console.log(response)
+            //console.log(response)
 
             if(response.status === 204) {
                 this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {

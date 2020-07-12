@@ -85,11 +85,11 @@ export default class Specialty extends Component {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            console.log('Я ответ', response)
+            //console.log('Я ответ', response)
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я дата', data)
+            //console.log('Я дата', data)
             for(let x=0; x<data.length; x++){
                 let newYear_join = data[x].year_join.split('T')
                 data[x].year_join = newYear_join[0]
@@ -239,7 +239,7 @@ export default class Specialty extends Component {
             || errors.educ_form || errors.educ_programm || errors.educ_years
             || errors.year_join || errors.sub_unit_id) {
             this.setState({ errors }) //добавление ошибок в state
-            console.log('Я из ошибки', this.state);//для проверки выводим в консоль - временно
+            //console.log('Я из ошибки', this.state);//для проверки выводим в консоль - временно
             return
         } else {
             let data = this.state.data // клонируем обьект data из state
@@ -394,7 +394,7 @@ export default class Specialty extends Component {
                 });
             }
         } else {
-            console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
+            //console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
             this.setState({openAlert:true, color:'secondary', text:'Без изменений'},()=>{
                 window.setTimeout(()=>{
                     this.setState({openAlert:false})
@@ -414,7 +414,7 @@ export default class Specialty extends Component {
 
     async onAgreeDelete(){
         this.setState({openModalDelete: false})
-        console.log('Удалим - ',this.state.id_delete)
+        //console.log('Удалим - ',this.state.id_delete)
 
         let url = link + `/specialties/${this.state.id_delete}`
         const token = localStorage.getItem('token')// взяли токен
@@ -427,7 +427,7 @@ export default class Specialty extends Component {
                 }
             });
 
-            console.log(response)
+            //console.log(response)
 
             if(response.status === 204) {
                 this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {

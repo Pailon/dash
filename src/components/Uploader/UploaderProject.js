@@ -13,8 +13,8 @@ export default class UploaderProject extends React.Component {
 
     async _handleSubmit(e) {
         e.preventDefault();
-        console.log('handle uploading-', this.state.file);
-        console.log(this.props)
+        //console.log('handle uploading-', this.state.file);
+        //console.log(this.props)
 
         let newData = new FormData(document.forms.inputForm)
 
@@ -27,7 +27,7 @@ export default class UploaderProject extends React.Component {
         let url = link + `/uploads/projects`
         newData.append(`project_id`, this.props.project_id);
 
-        console.log(newData)
+        //console.log(newData)
 
         // if(this.props.link === true){
         //     url = link + `/uploads/rpd`
@@ -47,7 +47,7 @@ export default class UploaderProject extends React.Component {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            console.log(response)
+            //console.log(response)
             if(response.status === 201){
                 this.setState({openAlert:true, color:'success', text:'Загружено'},()=>{
                     window.setTimeout(()=>{
@@ -85,7 +85,7 @@ export default class UploaderProject extends React.Component {
         e.preventDefault();
 
         let file = e.target.files[0];
-        console.log(file)
+        //console.log(file)
         let reader = new FileReader();
 
         reader.onload= () => {

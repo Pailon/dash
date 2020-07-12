@@ -100,7 +100,7 @@ export default class Students extends Component {
 
 
             const data = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я дата студенты 2 специальности', data)
+            //console.log('Я дата студенты 2 специальности', data)
             this.setState({ // обновляем state
                 //isLoading: false,
                 data: _.orderBy(data, this.state.sortField, this.state.sort)//первичная сортировка данных, для порядка
@@ -125,7 +125,7 @@ export default class Students extends Component {
 
 
             const dataSpec = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я дата spec', dataSpec)
+            //console.log('Я дата spec', dataSpec)
             // for(let i = 0; i<this.state.data.length; i++) {
             //     this.state.data[i].spec = dataSpec
             // }
@@ -156,7 +156,7 @@ export default class Students extends Component {
 
 
             const dataGroup = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я дата group', dataGroup)
+            //console.log('Я дата group', dataGroup)
 
             //this.state.data.spec = dataSpec
             //console.log(this.state.dataGroup)
@@ -325,7 +325,7 @@ export default class Students extends Component {
         if (errors.name || errors.surname || errors.patronymic || errors.birthday
             || errors.phone || errors.email || errors.group_id) {
             this.setState({ errors }) //добавление ошибок в state
-            console.log(this.state.data);//для проверки выводим в консоль - временно
+            //console.log(this.state.data);//для проверки выводим в консоль - временно
             return
         } else {
             let data = this.state.data // клонируем обьект data из state
@@ -368,7 +368,7 @@ export default class Students extends Component {
                     group_id:'',
                 }
             })
-            console.log(this.state.data);// выведем обьект с данными для проверки
+            //console.log(this.state.data);// выведем обьект с данными для проверки
             this.setState({ openModal: false })//Закрываем модальное окно добавления преподавателя
 
             //let url = 'http://dashboard.kholodov.xyz/api/students' //ссылка для запроса к таблице преподаавтелей
@@ -478,7 +478,7 @@ export default class Students extends Component {
                 });
             }
         } else {
-            console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
+            //console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
             this.setState({openAlert:true, color:'secondary', text:'Без изменений'},()=>{
                 window.setTimeout(()=>{
                     this.setState({openAlert:false})
@@ -498,7 +498,7 @@ export default class Students extends Component {
 
     async onAgreeDelete(){
         this.setState({openModalDelete: false})
-        console.log('Удалим - ',this.state.id_delete)
+        //console.log('Удалим - ',this.state.id_delete)
 
         let url = link + `/students/${this.state.id_delete}`
         const token = localStorage.getItem('token')// взяли токен
@@ -511,7 +511,7 @@ export default class Students extends Component {
                 }
             });
 
-            console.log(response)
+            //console.log(response)
 
             if(response.status === 204) {
                 this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {

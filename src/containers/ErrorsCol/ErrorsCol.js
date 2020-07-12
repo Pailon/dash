@@ -87,8 +87,8 @@ export default class Dep_load extends Component{
         //количество строк на одну страницу
         const pageSize = 10
 
-        console.log('dataAcad',this.state.dataAcad)
-        console.log('dataDep',this.state.dataDep)
+       // console.log('dataAcad',this.state.dataAcad)
+       // console.log('dataDep',this.state.dataDep)
         //вызываем функцию поиска
         const filtredData = this.getFiltredData()
 

@@ -120,7 +120,7 @@ export default class Project extends Component {
             // console.log('Я ответ', response)
 
             const dataTeatch = await response.json() // Запоминаем ответ сервера в переменную data которая есть в state
-            console.log('Я ответ dataTeatch', dataTeatch)
+            //console.log('Я ответ dataTeatch', dataTeatch)
 
             for(let i = 0; i<this.state.data.length; i++) {
                 dataTeatch.map(el=>{
@@ -264,7 +264,7 @@ export default class Project extends Component {
         if (errors.name /* || errors.students_count */ || errors.link_trello
             || errors.begin_date || errors.end_date || errors.description) {
             this.setState({ errors }) //добавление ошибок в state
-            console.log('Я из ошибки',this.state.data);//для проверки выводим в консоль - временно
+            //console.log('Я из ошибки',this.state.data);//для проверки выводим в консоль - временно
             return
         } else {
             let data = this.state.data // клонируем обьект data из state
@@ -413,7 +413,7 @@ export default class Project extends Component {
                 });
             }
         } else {
-            console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
+            //console.log('Изменений не было')// а если мы ничего не меняли, скажем об этом в консоли
             this.setState({openAlert:true, color:'secondary', text:'Без изменений'},()=>{
                 window.setTimeout(()=>{
                     this.setState({openAlert:false})
@@ -459,7 +459,7 @@ export default class Project extends Component {
                 }
             });
 
-            console.log(response)
+            //console.log(response)
 
             if(response.status === 204) {
                 this.setState({openAlert: true, color: 'success', text: 'Успешно'}, () => {
